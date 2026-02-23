@@ -51,7 +51,11 @@ const LANGS = {
     favChannel: "Y\u00EAu th\u00EDch",
     hideChannel: "\u1EA8n",
     pinnedToast: "\u0110\u00E3 ghim k\u00EAnh",
-    unpinnedToast: "\u0110\u00E3 b\u1ECF ghim k\u00EAnh"
+    unpinnedToast: "\u0110\u00E3 b\u1ECF ghim k\u00EAnh",
+    shortcutsTitle: "Ph\u00EDm t\u1EAFt",
+    playPause: "Ph\u00E1t / T\u1EA1m d\u1EEBng",
+    prevChannel: "K\u00EAnh tr\u01B0\u1EDBc",
+    nextChannel: "K\u00EAnh ti\u1EBFp"
   },
   en: {
     flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "English (US)",
@@ -104,7 +108,11 @@ const LANGS = {
     favChannel: "Favorite",
     hideChannel: "Hide",
     pinnedToast: "Channel pinned",
-    unpinnedToast: "Channel unpinned"
+    unpinnedToast: "Channel unpinned",
+    shortcutsTitle: "Shortcuts",
+    playPause: "Play / Pause",
+    prevChannel: "Previous channel",
+    nextChannel: "Next channel"
   },
   "en-GB": {
     flag: "\uD83C\uDDEC\uD83C\uDDE7", label: "English (UK)",
@@ -157,7 +165,11 @@ const LANGS = {
     favChannel: "Favourite",
     hideChannel: "Hide",
     pinnedToast: "Channel pinned",
-    unpinnedToast: "Channel unpinned"
+    unpinnedToast: "Channel unpinned",
+    shortcutsTitle: "Shortcuts",
+    playPause: "Play / Pause",
+    prevChannel: "Previous channel",
+    nextChannel: "Next channel"
   },
   fr: {
     flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
@@ -210,7 +222,11 @@ const LANGS = {
     favChannel: "Favori",
     hideChannel: "Masquer",
     pinnedToast: "Cha\u00EEne \u00E9pingl\u00E9e",
-    unpinnedToast: "Cha\u00EEne d\u00E9s\u00E9pingl\u00E9e"
+    unpinnedToast: "Cha\u00EEne d\u00E9s\u00E9pingl\u00E9e",
+    shortcutsTitle: "Raccourcis",
+    playPause: "Lecture / Pause",
+    prevChannel: "Cha\u00EEne pr\u00E9c\u00E9dente",
+    nextChannel: "Cha\u00EEne suivante"
   },
   de: {
     flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
@@ -263,7 +279,11 @@ const LANGS = {
     favChannel: "Favorit",
     hideChannel: "Ausblenden",
     pinnedToast: "Kanal angeheftet",
-    unpinnedToast: "Kanal losgel\u00F6st"
+    unpinnedToast: "Kanal losgel\u00F6st",
+    shortcutsTitle: "Tastaturk\u00FCrzel",
+    playPause: "Wiedergabe / Pause",
+    prevChannel: "Vorheriger Kanal",
+    nextChannel: "N\u00E4chster Kanal"
   },
   ru: {
     flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
@@ -316,7 +336,11 @@ const LANGS = {
     favChannel: "\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435",
     hideChannel: "\u0421\u043A\u0440\u044B\u0442\u044C",
     pinnedToast: "\u041A\u0430\u043D\u0430\u043B \u0437\u0430\u043A\u0440\u0435\u043F\u043B\u0451\u043D",
-    unpinnedToast: "\u041A\u0430\u043D\u0430\u043B \u043E\u0442\u043A\u0440\u0435\u043F\u043B\u0451\u043D"
+    unpinnedToast: "\u041A\u0430\u043D\u0430\u043B \u043E\u0442\u043A\u0440\u0435\u043F\u043B\u0451\u043D",
+    shortcutsTitle: "\u0413\u043E\u0440\u044F\u0447\u0438\u0435 \u043A\u043B\u0430\u0432\u0438\u0448\u0438",
+    playPause: "\u0412\u043E\u0441\u043F\u0440. / \u041F\u0430\u0443\u0437\u0430",
+    prevChannel: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
+    nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B"
   },
   "en-AU": {
     flag: "\uD83C\uDDE6\uD83C\uDDFA", label: "English (AU)",
@@ -369,7 +393,11 @@ const LANGS = {
     favChannel: "Favourite",
     hideChannel: "Hide",
     pinnedToast: "Channel pinned",
-    unpinnedToast: "Channel unpinned"
+    unpinnedToast: "Channel unpinned",
+    shortcutsTitle: "Shortcuts",
+    playPause: "Play / Pause",
+    prevChannel: "Previous channel",
+    nextChannel: "Next channel"
   },
   "zh-CN": {
     flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
@@ -422,7 +450,11 @@ const LANGS = {
     favChannel: "\u6536\u85CF",
     hideChannel: "\u9690\u85CF",
     pinnedToast: "\u5DF2\u7F6E\u9876\u9891\u9053",
-    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9876"
+    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9876",
+    shortcutsTitle: "\u5FEB\u6377\u952E",
+    playPause: "\u64AD\u653E / \u6682\u505C",
+    prevChannel: "\u4E0A\u4E00\u4E2A\u9891\u9053",
+    nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053"
   },
   "zh-TW": {
     flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
@@ -475,7 +507,11 @@ const LANGS = {
     favChannel: "\u6536\u85CF",
     hideChannel: "\u96B1\u85CF",
     pinnedToast: "\u5DF2\u7F6E\u9802\u983B\u9053",
-    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9802"
+    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9802",
+    shortcutsTitle: "\u5FEB\u6377\u9375",
+    playPause: "\u64AD\u653E / \u66AB\u505C",
+    prevChannel: "\u4E0A\u4E00\u500B\u983B\u9053",
+    nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053"
   },
   ja: {
     flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
@@ -528,7 +564,11 @@ const LANGS = {
     favChannel: "\u304A\u6C17\u306B\u5165\u308A",
     hideChannel: "\u975E\u8868\u793A",
     pinnedToast: "\u30C1\u30E3\u30F3\u30CD\u30EB\u3092\u30D4\u30F3\u7559\u3081\u3057\u307E\u3057\u305F",
-    unpinnedToast: "\u30D4\u30F3\u7559\u3081\u3092\u89E3\u9664\u3057\u307E\u3057\u305F"
+    unpinnedToast: "\u30D4\u30F3\u7559\u3081\u3092\u89E3\u9664\u3057\u307E\u3057\u305F",
+    shortcutsTitle: "\u30B7\u30E7\u30FC\u30C8\u30AB\u30C3\u30C8",
+    playPause: "\u518D\u751F / \u4E00\u6642\u505C\u6B62",
+    prevChannel: "\u524D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
+    nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB"
   },
   ko: {
     flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
@@ -581,7 +621,11 @@ const LANGS = {
     favChannel: "\uC990\uACA8\uCC3E\uAE30",
     hideChannel: "\uC228\uAE30\uAE30",
     pinnedToast: "\uCC44\uB110 \uACE0\uC815\uB428",
-    unpinnedToast: "\uCC44\uB110 \uACE0\uC815 \uD574\uC81C"
+    unpinnedToast: "\uCC44\uB110 \uACE0\uC815 \uD574\uC81C",
+    shortcutsTitle: "\uB2E8\uCD95\uD0A4",
+    playPause: "\uC7AC\uC0DD / \uC77C\uC2DC\uC815\uC9C0",
+    prevChannel: "\uC774\uC804 \uCC44\uB110",
+    nextChannel: "\uB2E4\uC74C \uCC44\uB110"
   },
   es: {
     flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
@@ -634,7 +678,11 @@ const LANGS = {
     favChannel: "Favorito",
     hideChannel: "Ocultar",
     pinnedToast: "Canal fijado",
-    unpinnedToast: "Canal desfijado"
+    unpinnedToast: "Canal desfijado",
+    shortcutsTitle: "Atajos",
+    playPause: "Reproducir / Pausa",
+    prevChannel: "Canal anterior",
+    nextChannel: "Canal siguiente"
   },
   pt: {
     flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
@@ -687,7 +735,11 @@ const LANGS = {
     favChannel: "Favorito",
     hideChannel: "Ocultar",
     pinnedToast: "Canal fixado",
-    unpinnedToast: "Canal desfixado"
+    unpinnedToast: "Canal desfixado",
+    shortcutsTitle: "Atalhos",
+    playPause: "Reproduzir / Pausa",
+    prevChannel: "Canal anterior",
+    nextChannel: "Pr\u00F3ximo canal"
   },
   ar: {
     flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -740,7 +792,11 @@ const LANGS = {
     favChannel: "\u0645\u0641\u0636\u0644\u0629",
     hideChannel: "\u0625\u062E\u0641\u0627\u0621",
     pinnedToast: "\u062A\u0645 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629",
-    unpinnedToast: "\u062A\u0645 \u0625\u0644\u063A\u0627\u0621 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629"
+    unpinnedToast: "\u062A\u0645 \u0625\u0644\u063A\u0627\u0621 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629",
+    shortcutsTitle: "\u0627\u062E\u062A\u0635\u0627\u0631\u0627\u062A",
+    playPause: "\u062A\u0634\u063A\u064A\u0644 / \u0625\u064A\u0642\u0627\u0641",
+    prevChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629",
+    nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629"
   },
   hi: {
     flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
@@ -793,7 +849,11 @@ const LANGS = {
     favChannel: "\u092A\u0938\u0902\u0926\u0940\u0926\u093E",
     hideChannel: "\u091B\u093F\u092A\u093E\u090F\u0902",
     pinnedToast: "\u091A\u0948\u0928\u0932 \u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E",
-    unpinnedToast: "\u091A\u0948\u0928\u0932 \u0905\u0928\u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E"
+    unpinnedToast: "\u091A\u0948\u0928\u0932 \u0905\u0928\u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E",
+    shortcutsTitle: "\u0936\u0949\u0930\u094D\u091F\u0915\u091F",
+    playPause: "\u091A\u0932\u093E\u090F\u0902 / \u0930\u094B\u0915\u0947\u0902",
+    prevChannel: "\u092A\u093F\u091B\u0932\u093E \u091A\u0948\u0928\u0932",
+    nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932"
   },
   th: {
     flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
@@ -846,7 +906,11 @@ const LANGS = {
     favChannel: "\u0E0A\u0E37\u0E48\u0E19\u0E0A\u0E2D\u0E1A",
     hideChannel: "\u0E0B\u0E48\u0E2D\u0E19",
     pinnedToast: "\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E0A\u0E48\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27",
-    unpinnedToast: "\u0E22\u0E01\u0E40\u0E25\u0E34\u0E01\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27"
+    unpinnedToast: "\u0E22\u0E01\u0E40\u0E25\u0E34\u0E01\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27",
+    shortcutsTitle: "\u0E17\u0E32\u0E07\u0E25\u0E31\u0E14",
+    playPause: "\u0E40\u0E25\u0E48\u0E19 / \u0E2B\u0E22\u0E38\u0E14",
+    prevChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32",
+    nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B"
   },
   id: {
     flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
@@ -899,7 +963,11 @@ const LANGS = {
     favChannel: "Favorit",
     hideChannel: "Sembunyikan",
     pinnedToast: "Saluran disematkan",
-    unpinnedToast: "Saluran tidak disematkan"
+    unpinnedToast: "Saluran tidak disematkan",
+    shortcutsTitle: "Pintasan",
+    playPause: "Putar / Jeda",
+    prevChannel: "Saluran sebelumnya",
+    nextChannel: "Saluran berikutnya"
   },
   it: {
     flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
@@ -952,7 +1020,11 @@ const LANGS = {
     favChannel: "Preferito",
     hideChannel: "Nascondi",
     pinnedToast: "Canale fissato",
-    unpinnedToast: "Canale rimosso"
+    unpinnedToast: "Canale rimosso",
+    shortcutsTitle: "Scorciatoie",
+    playPause: "Riproduci / Pausa",
+    prevChannel: "Canale precedente",
+    nextChannel: "Canale successivo"
   },
   tr: {
     flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
@@ -1005,7 +1077,11 @@ const LANGS = {
     favChannel: "Favori",
     hideChannel: "Gizle",
     pinnedToast: "Kanal sabitlendi",
-    unpinnedToast: "Kanal sabitlemesi kald\u0131r\u0131ld\u0131"
+    unpinnedToast: "Kanal sabitlemesi kald\u0131r\u0131ld\u0131",
+    shortcutsTitle: "K\u0131sayollar",
+    playPause: "Oynat / Duraklat",
+    prevChannel: "\u00D6nceki kanal",
+    nextChannel: "Sonraki kanal"
   }
 };
 
@@ -1045,7 +1121,7 @@ let sources      = JSON.parse(localStorage.getItem("sources") || "[]");
 let activeSources = new Set(JSON.parse(localStorage.getItem("activeSources") || "[]"));
 let currentIdx   = -1;
 let currentUrl   = "";
-const hidden     = new Set();
+const hidden     = new Set(JSON.parse(localStorage.getItem("hiddenChannels") || "[]"));
 let pinnedUrl    = localStorage.getItem("pinnedChannel") || "";
 const MAX_RETRIES = 5;
 let retryCount   = 0;
@@ -1053,31 +1129,95 @@ let retryTimer   = null;
 let stallTimer   = null;
 const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
+let hlsLevels = []; // available quality levels
 
 /* ===== EPG (Electronic Program Guide) ===== */
-let epgData = {}; // { tvgId: [ {start, stop, title} ] }
+let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
+let epgChannelMap = {}; // { normalizedName: channelId } - display-name → id map
+let _epgDocs = []; // stored parsed XML DOMs for lazy per-channel extraction
+let _epgLoadedIds = new Set(); // EPG channel IDs whose programmes are already parsed
 const nowProgram = document.getElementById("nowProgram");
 
-function parseXMLTV(xmlText){
+/* Normalize a channel name for fuzzy matching */
+function normalizeChName(s){
+  if(!s) return "";
+  return s
+    .toLowerCase()
+    .replace(/\s*\(\d+p\)\s*/g, "")        // remove (720p), (1080p) etc.
+    .replace(/\s*\[.*?\]\s*/g, "")          // remove [Geo-blocked] etc.
+    .replace(/\s*(f?hd|uhd|sd|4k|h\.?265|hevc|plus)\s*$/i, "") // trailing quality tags
+    .replace(/[^a-z0-9\u00C0-\u024F\u1E00-\u1EFF\u0400-\u04FF\u0600-\u06FF\u0E00-\u0E7F\u0900-\u097F\u3040-\u30FF\u4E00-\u9FFF\uAC00-\uD7AF]+/g, "") // keep alnum + Latin + Cyrillic + Arabic + Thai + Devanagari + CJK + Hangul
+    .trim();
+}
+
+/* Yield to main thread so UI stays responsive */
+function _yieldToMain(){ return new Promise(r => setTimeout(r, 0)); }
+
+/* Phase 1: Parse only <channel> map from XMLTV (fast, lightweight) */
+async function parseXMLTVChannelMap(xmlText){
   const parser = new DOMParser();
   const doc = parser.parseFromString(xmlText, "text/xml");
-  const programmes = doc.querySelectorAll("programme");
-  const data = {};
-  for(const p of programmes){
-    const ch = p.getAttribute("channel");
-    const startStr = p.getAttribute("start");
-    const stopStr = p.getAttribute("stop");
-    const titleEl = p.querySelector("title");
-    if(!ch || !startStr || !titleEl) continue;
-    const start = parseXMLTVDate(startStr);
-    const stop = stopStr ? parseXMLTVDate(stopStr) : null;
-    const title = titleEl.textContent.trim();
-    if(!data[ch]) data[ch] = [];
-    data[ch].push({ start, stop, title });
+
+  const channelMap = {};
+  const channels = doc.querySelectorAll("channel");
+  for(let ci = 0; ci < channels.length; ci++){
+    const ch = channels[ci];
+    const id = ch.getAttribute("id");
+    if(!id) continue;
+    const displayNames = ch.querySelectorAll("display-name");
+    for(const dn of displayNames){
+      const name = dn.textContent.trim();
+      if(name){
+        const norm = normalizeChName(name);
+        if(norm) channelMap[norm] = id;
+        channelMap[name.toLowerCase()] = id;
+      }
+    }
+    channelMap[id.toLowerCase()] = id;
+    const idBase = id.replace(/@(SD|HD|FHD|Plus\d*|\d+)$/i, "").toLowerCase();
+    if(idBase !== id.toLowerCase()) channelMap[idBase] = id;
+    if(ci % 500 === 499) await _yieldToMain();
   }
-  // sort each channel's programs by start time
-  for(const ch in data) data[ch].sort((a,b) => a.start - b.start);
-  return data;
+  return { doc, channelMap, channelCount: channels.length };
+}
+
+/* Phase 2: Lazily extract programmes for a SINGLE EPG channel ID from stored DOMs */
+function _extractProgrammesForId(epgChId){
+  if(_epgLoadedIds.has(epgChId)) return; // already loaded
+  _epgLoadedIds.add(epgChId);
+  const pruneCutoff = Date.now() - 2 * 60 * 60 * 1000;
+  const epgChIdLower = epgChId.toLowerCase();
+  let count = 0;
+  for(const doc of _epgDocs){
+    // Use XPath-like approach: query all programme[channel=id]
+    // querySelectorAll can't do attr value with special chars safely, so iterate
+    const programmes = doc.querySelectorAll('programme[channel="' + CSS.escape(epgChId) + '"]');
+    for(const p of programmes){
+      const startStr = p.getAttribute("start");
+      const titleEl = p.querySelector("title");
+      if(!startStr || !titleEl) continue;
+      const stopStr = p.getAttribute("stop");
+      const stop = stopStr ? parseXMLTVDate(stopStr) : null;
+      if(stop && stop.getTime() < pruneCutoff) continue;
+      const start = parseXMLTVDate(startStr);
+      const title = titleEl.textContent.trim();
+      if(!epgData[epgChId]) epgData[epgChId] = [];
+      epgData[epgChId].push({ start, stop, title });
+      count++;
+    }
+  }
+  if(count > 0){
+    epgData[epgChId].sort((a,b) => a.start - b.start);
+    console.log("[EPG] Lazy-loaded " + count + " programmes for " + epgChId);
+  }
+}
+
+/* Ensure EPG data is available for a given channel (lazy load from stored DOMs) */
+function ensureEpgForChannel(tvgId, channelName){
+  if(_epgDocs.length === 0) return; // no EPG sources loaded
+  const chId = _findEpgChannelIdUncached(tvgId, channelName);
+  if(!chId) return;
+  if(!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
 }
 
 function parseXMLTVDate(s){
@@ -1088,35 +1228,182 @@ function parseXMLTVDate(s){
   return new Date(iso);
 }
 
-async function loadEpgData(urls){
-  epgData = {};
+async function loadEpgData(urls, merge){
+  if(!merge){ epgData = {}; epgChannelMap = {}; _epgDocs = []; _epgLoadedIds.clear(); }
+  // Invalidate lookup cache whenever EPG data changes
+  _epgIdCache = Object.create(null);
+
+  let totalMapChannels = 0;
+  let loadedCount = 0;
   for(const url of urls){
     try {
+      console.log("[EPG] Fetching:", url);
       const resp = await fetch(url);
-      if(!resp.ok) continue;
-      const text = await resp.text();
-      const parsed = parseXMLTV(text);
-      // merge
-      for(const ch in parsed){
-        if(!epgData[ch]) epgData[ch] = [];
-        epgData[ch] = epgData[ch].concat(parsed[ch]);
+      if(!resp.ok){ console.warn("[EPG] HTTP", resp.status, url); continue; }
+
+      // Handle gzip-compressed files
+      let text;
+      if(url.endsWith(".gz") || url.endsWith(".gzip")){
+        try {
+          const ds = new DecompressionStream("gzip");
+          const decompressed = resp.body.pipeThrough(ds);
+          text = await new Response(decompressed).text();
+        } catch(gzErr){
+          console.warn("[EPG] Gzip decompress failed, trying raw:", gzErr);
+          text = await resp.text();
+        }
+      } else {
+        text = await resp.text();
       }
+
+      console.log("[EPG] Parsing channel map from", (text.length/1024).toFixed(0), "KB", url);
+      // Phase 1: Only parse the channel map (fast) — NO programme parsing yet
+      const parsed = await parseXMLTVChannelMap(text);
+
+      // Store the parsed DOM for lazy per-channel programme extraction
+      _epgDocs.push(parsed.doc);
+
+      // Merge channel display-name map
+      Object.assign(epgChannelMap, parsed.channelMap);
+
+      totalMapChannels += parsed.channelCount;
+      loadedCount++;
+      console.log("[EPG] Indexed", parsed.channelCount, "channels from", url, "(programmes loaded on demand)");
     } catch(e){
-      console.warn("EPG load error:", url, e);
+      console.warn("[EPG] Load error:", url, e);
     }
   }
-  // sort merged data
-  for(const ch in epgData) epgData[ch].sort((a,b) => a.start - b.start);
+  // Invalidate cache after merge
+  _epgIdCache = Object.create(null);
+
+  // Eagerly load EPG only for the currently playing channel
+  if(currentIdx >= 0 && currentIdx < allChannels.length){
+    const ch = allChannels[currentIdx];
+    ensureEpgForChannel(ch.tvgId, ch.name);
+  }
+
   // update display if currently playing
   updateEpgDisplay();
+  // Invalidate known IDs cache
+  _knownEpgIds = null;
+  if(totalMapChannels > 0){
+    showToast("EPG: " + totalMapChannels + " channels indexed", 3000);
+  } else if(urls.length > 0){
+    showToast("EPG: no program data found", 3000);
+  }
 }
 
-function getCurrentProgram(tvgId){
-  if(!tvgId || !epgData[tvgId]) return null;
-  const now = new Date();
-  for(const p of epgData[tvgId]){
-    if(p.start <= now && p.stop && p.stop > now) return p;
-    if(p.start <= now && !p.stop) return p; // no stop time
+/* ===== EPG LOOKUP CACHE ===== */
+// Caches findEpgChannelId results so the expensive O(n) fuzzy loops only run once per channel.
+// Invalidated whenever epgData / epgChannelMap changes (see loadEpgData).
+let _epgIdCache = Object.create(null);
+
+/* Find the EPG channel id that best matches a given tvgId / channel name */
+function findEpgChannelId(tvgId, channelName){
+  // Build a stable cache key from the two inputs
+  const cacheKey = (tvgId || "") + "\0" + (channelName || "");
+  if(cacheKey in _epgIdCache) return _epgIdCache[cacheKey];
+
+  const result = _findEpgChannelIdUncached(tvgId, channelName);
+  _epgIdCache[cacheKey] = result;
+  return result;
+}
+
+// Cached set of known EPG channel IDs — rebuilt when epgChannelMap changes
+let _knownEpgIds = null;
+let _knownEpgIdsMapSize = 0;
+function _getKnownEpgIds(){
+  const mapSize = Object.keys(epgChannelMap).length;
+  if(!_knownEpgIds || _knownEpgIdsMapSize !== mapSize){
+    _knownEpgIds = new Set(Object.values(epgChannelMap));
+    _knownEpgIdsMapSize = mapSize;
+  }
+  return _knownEpgIds;
+}
+
+function _findEpgChannelIdUncached(tvgId, channelName){
+  // With lazy EPG loading, we resolve channel IDs using epgChannelMap only
+  // (programmes are NOT pre-loaded into epgData, they're extracted on demand)
+
+  const _knownIds = _getKnownEpgIds();
+
+  // 1. Direct tvg-id match
+  if(tvgId && _knownIds.has(tvgId)) return tvgId;
+
+  // 2. Try tvg-id without @SD/@HD suffix & case-insensitive
+  if(tvgId){
+    const tvgLower = tvgId.toLowerCase();
+    const idBase = tvgId.replace(/@(SD|HD|FHD|Plus\d*|\d+)$/i, "");
+    const idBaseLower = idBase.toLowerCase();
+    // tvg-id in channelMap
+    if(epgChannelMap[tvgLower]) return epgChannelMap[tvgLower];
+    if(epgChannelMap[idBaseLower]) return epgChannelMap[idBaseLower];
+  }
+
+  // 3. Map through epgChannelMap using channel name
+  if(channelName){
+    const norm = normalizeChName(channelName);
+    const nameLower = channelName.toLowerCase().trim();
+
+    // exact display-name match
+    if(epgChannelMap[nameLower]) return epgChannelMap[nameLower];
+    // normalized match
+    if(norm && epgChannelMap[norm]) return epgChannelMap[norm];
+
+    // 3b. Substring / contains matching (e.g. M3U has "VTV3 HD" and EPG has "VTV3")
+    for(const mapKey in epgChannelMap){
+      const shorter = nameLower.length <= mapKey.length ? nameLower : mapKey;
+      const longer  = nameLower.length >  mapKey.length ? nameLower : mapKey;
+      if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+      if(longer.includes(shorter)) return epgChannelMap[mapKey];
+    }
+    if(norm){
+      for(const mapKey in epgChannelMap){
+        const mapNorm = normalizeChName(mapKey);
+        if(!mapNorm) continue;
+        const shorter = norm.length <= mapNorm.length ? norm : mapNorm;
+        const longer  = norm.length >  mapNorm.length ? norm : mapNorm;
+        if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+        if(longer.includes(shorter)) return epgChannelMap[mapKey];
+      }
+    }
+  }
+
+  // 4. Try tvg-id as channel name in the map
+  if(tvgId){
+    const tvgNorm = normalizeChName(tvgId);
+    if(tvgNorm && epgChannelMap[tvgNorm]) return epgChannelMap[tvgNorm];
+    const tvgLower = tvgId.toLowerCase();
+    for(const mapKey in epgChannelMap){
+      const shorter = tvgLower.length <= mapKey.length ? tvgLower : mapKey;
+      const longer  = tvgLower.length >  mapKey.length ? tvgLower : mapKey;
+      if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+      if(longer.includes(shorter)) return epgChannelMap[mapKey];
+    }
+  }
+
+  return null;
+}
+
+function getCurrentProgram(tvgId, channelName){
+  const chId = findEpgChannelId(tvgId, channelName);
+  if(!chId) return null;
+  // Lazy load programmes for this channel if not yet parsed
+  if(!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
+  if(!epgData[chId]) return null;
+  const now = Date.now();
+  const progs = epgData[chId];
+  // Programs are sorted by start. Binary-search-like scan from the end
+  // for the last program whose start <= now.
+  for(let i = progs.length - 1; i >= 0; i--){
+    const p = progs[i];
+    if(p.start.getTime() <= now){
+      if(p.stop && p.stop.getTime() > now) return p;
+      if(!p.stop) return p;
+      // This program already ended and all earlier ones started even earlier,
+      // so none can be "now". Short-circuit.
+      return null;
+    }
   }
   return null;
 }
@@ -1128,10 +1415,10 @@ function updateEpgDisplay(){
     return;
   }
   const ch = allChannels[currentIdx];
-  const prog = getCurrentProgram(ch.tvgId);
+  const prog = getCurrentProgram(ch.tvgId, ch.name);
   if(prog){
     const timeStr = formatTime(prog.start) + (prog.stop ? " - " + formatTime(prog.stop) : "");
-    nowProgram.textContent = "\uD83D\uDCFA " + timeStr + "  " + prog.title;
+    nowProgram.textContent = "\u25B6 " + timeStr + "  " + prog.title;
     nowProgram.style.display = "block";
   } else {
     nowProgram.style.display = "none";
@@ -1143,7 +1430,7 @@ function formatTime(d){
 }
 
 // Refresh EPG display every 60s so it updates when programs change
-setInterval(updateEpgDisplay, 60000);
+let epgIntervalId = null;
 
 /* ===== TOAST ===== */
 let toastTimer = null;
@@ -1199,29 +1486,40 @@ if(btnRetry) btnRetry.addEventListener("click", () => {
 });
 
 /* ===== FAVORITES SCROLL ===== */
-if(favList) favList.addEventListener("wheel", e => { e.preventDefault(); favList.scrollLeft += e.deltaY; });
+if(favList) favList.addEventListener("wheel", e => { e.preventDefault(); favList.scrollLeft += e.deltaY; }, { passive: false });
 
 /* ===== PLAY PREVIEW ===== */
 function isHlsUrl(url){ return /\.m3u8?(\?|$)/i.test(url); }
 
 function destroyHls(){
   if(hls){ hls.destroy(); hls = null; }
+  hlsLevels = [];
+  buildQualityMenu();
 }
 
-function playByIndex(idx){
+function playByIndex(idx, opts){
   if(idx < 0 || idx >= allChannels.length) return;
+  const prevIdx = currentIdx;
   currentIdx = idx;
   const ch = allChannels[idx];
 
-  // highlight
-  document.querySelectorAll(".ch-card").forEach(c => c.classList.remove("active"));
-  const card = document.querySelector('[data-idx="' + idx + '"]');
-  if(card){ card.classList.add("active"); card.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+  // highlight — only touch the old and new cards instead of scanning all .ch-card
+  if(prevIdx >= 0){
+    const prev = grid && grid.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
+    if(prev) prev.classList.remove("active");
+    const prevFav = favList && favList.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
+    if(prevFav) prevFav.classList.remove("active");
+  }
+  const card = grid && grid.querySelector('.ch-card[data-idx="' + idx + '"]');
+  if(card){
+    card.classList.add("active");
+  }
+  const favCard = favList && favList.querySelector('.ch-card[data-idx="' + idx + '"]');
+  if(favCard) favCard.classList.add("active");
 
   // update now-playing
   if(nowName) nowName.textContent = ch.name || t("channelN") + (idx+1);
   if(nowBar) nowBar.classList.add("live");
-  updateEpgDisplay();
   updateMiniButtons();
 
   // cleanup previous
@@ -1235,30 +1533,51 @@ function playByIndex(idx){
   if(typeof Hls !== "undefined" && Hls.isSupported() && isHlsUrl(ch.url)){
     // ---- HLS.js path (most IPTV streams) ----
     hls = new Hls({
-      maxBufferLength: 30,
-      maxMaxBufferLength: 60,
-      maxBufferSize: 20 * 1024 * 1024,    // 20 MB
-      maxBufferHole: 0.5,
+      maxBufferLength: 10,
+      maxMaxBufferLength: 30,
+      maxBufferSize: 15 * 1024 * 1024,
+      maxBufferHole: 1.5,             // tolerate larger gaps in live streams
       lowLatencyMode: false,
       enableWorker: true,
+      startLevel: -1,
+      abrEwmaDefaultEstimate: 5000000, // 5 Mbps — most IPTV is high bitrate, don't start low
+      liveSyncDurationCount: 2,        // play closer to live edge (2 segments behind)
+      liveBackBufferLength: 10,        // keep less past data
       fragLoadingTimeOut: 20000,
       fragLoadingMaxRetry: 6,
-      fragLoadingRetryDelay: 1000,
+      fragLoadingRetryDelay: 500,
+      fragLoadingMaxRetryTimeout: 15000,
       manifestLoadingTimeOut: 15000,
       manifestLoadingMaxRetry: 4,
-      manifestLoadingRetryDelay: 1000,
+      manifestLoadingRetryDelay: 500,
       levelLoadingTimeOut: 15000,
       levelLoadingMaxRetry: 4,
-      levelLoadingRetryDelay: 1000,
-      startFragPrefetch: true
+      levelLoadingRetryDelay: 500,
+      startFragPrefetch: true,
+      xhrSetup: function(xhr, url){
+        xhr.withCredentials = false;
+      },
+      backBufferLength: 10,
+      progressive: true,
+      testBandwidth: true,
+      nudgeMaxRetry: 5,               // retry seeking past gaps before giving up
+      maxFragLookUpTolerance: 0.5      // less strict fragment matching
     });
+
+    let hlsMediaRecoveryAttempts = 0;
 
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
       hls.loadSource(ch.url);
     });
 
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+      hlsLevels = hls.levels || [];
+      buildQualityMenu();
       video.play().catch(() => {});
+    });
+
+    hls.on(Hls.Events.FRAG_LOADED, () => {
+      hlsMediaRecoveryAttempts = 0;
     });
 
     hls.on(Hls.Events.ERROR, (event, data) => {
@@ -1267,11 +1586,24 @@ function playByIndex(idx){
       switch(data.type){
         case Hls.ErrorTypes.NETWORK_ERROR:
           showToast(t("networkError"), 0);
-          hls.startLoad();
+          if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut"){
+            // Retry from scratch after a delay
+            setTimeout(() => { if(hls) hls.loadSource(ch.url); }, 2000);
+          } else {
+            hls.startLoad();
+          }
           break;
         case Hls.ErrorTypes.MEDIA_ERROR:
           showToast(t("mediaError"), 0);
-          hls.recoverMediaError();
+          hlsMediaRecoveryAttempts++;
+          if(hlsMediaRecoveryAttempts <= 2){
+            hls.recoverMediaError();
+          } else {
+            // Swap codec after multiple media errors
+            hls.swapAudioCodec();
+            hls.recoverMediaError();
+            hlsMediaRecoveryAttempts = 0;
+          }
           break;
         default:
           // unrecoverable
@@ -1290,6 +1622,14 @@ function playByIndex(idx){
   }
 
   resetStallTimer();
+
+  // Load EPG for this channel AFTER playback has started (non-blocking)
+  setTimeout(() => {
+    if(currentIdx !== idx) return; // user already switched away
+    ensureEpgForChannel(ch.tvgId, ch.name);
+    updateEpgDisplay();
+    if(typeof renderEpgPanel === "function" && document.getElementById("epgPanel")?.classList.contains("open")) renderEpgPanel();
+  }, 300);
 }
 
 function doRetry(){
@@ -1305,6 +1645,7 @@ function doRetry(){
 }
 
 /* ===== STALL WATCHDOG ===== */
+let _lastStallReset = 0;
 function resetStallTimer(){
   clearTimeout(stallTimer);
   if(currentIdx < 0) return;
@@ -1321,6 +1662,13 @@ function resetStallTimer(){
     playByIndex(currentIdx);
   }, STALL_TIMEOUT);
 }
+/* Throttled version — only resets at most once every 5s from timeupdate */
+function resetStallTimerThrottled(){
+  const now = Date.now();
+  if(now - _lastStallReset < 5000) return;
+  _lastStallReset = now;
+  resetStallTimer();
+}
 
 /* ===== VIDEO EVENTS ===== */
 if(video){
@@ -1330,7 +1678,7 @@ if(video){
     retryCount = 0;
     resetStallTimer();
   });
-  video.addEventListener("timeupdate", () => { resetStallTimer(); });
+  video.addEventListener("timeupdate", resetStallTimerThrottled);
   video.addEventListener("waiting", () => { showToast(t("loading"), 0); });
   video.addEventListener("error", () => {
     if(nowBar) nowBar.classList.remove("live");
@@ -1350,7 +1698,20 @@ function toggleFav(ch){
   if(i === -1) favorites.push(ch); else favorites.splice(i, 1);
   localStorage.setItem("fav", JSON.stringify(favorites));
   renderFavs();
-  renderGrid();
+  // Update just the star icon on this channel's card instead of full grid rebuild
+  if(grid){
+    const cards = grid.querySelectorAll('.ch-card');
+    for(const card of cards){
+      const idx = parseInt(card.dataset.idx);
+      if(isNaN(idx) || idx >= allChannels.length) continue;
+      if(allChannels[idx].url !== ch.url) continue;
+      const star = card.querySelector('.ch-star');
+      if(star){
+        const isFav = favorites.some(f => f.url === ch.url);
+        star.classList.toggle('on', isFav);
+      }
+    }
+  }
 }
 
 /* ===== RENDER CARD ===== */
@@ -1384,14 +1745,15 @@ let dragFavIdx = -1;
 
 function renderFavs(){
   if(!favList) return;
-  favList.innerHTML = "";
   if(favorites.length === 0){
+    favList.innerHTML = "";
     const msg = document.createElement("span");
     msg.className = "fav-empty-msg";
     msg.textContent = t("favEmpty");
     favList.appendChild(msg);
     return;
   }
+  const frag = document.createDocumentFragment();
   favorites.forEach((ch, fi) => {
     const i = allChannels.findIndex(c => c.url === ch.url);
     if(i === -1) return;
@@ -1458,22 +1820,26 @@ function renderFavs(){
     });
 
     div.append(img, name, star);
-    favList.appendChild(div);
+    frag.appendChild(div);
   });
+  favList.innerHTML = "";
+  favList.appendChild(frag);
 }
 
 /* ===== RENDER GRID ===== */
 function renderGrid(){
   if(!grid) return;
   const q = (searchIn ? searchIn.value : "").toLowerCase();
-  grid.innerHTML = "";
+  const frag = document.createDocumentFragment();
   let count = 0;
   allChannels.forEach((ch, i) => {
     if(hidden.has(ch.url)) return;
     if(q && !ch.name.toLowerCase().includes(q)) return;
-    makeCard(ch, i, grid);
+    makeCard(ch, i, frag);
     count++;
   });
+  grid.innerHTML = "";
+  grid.appendChild(frag);
   if(emptyState) emptyState.classList.toggle("show", count === 0 && allChannels.length > 0);
   // re-highlight the currently playing card
   if(currentIdx >= 0){
@@ -1521,6 +1887,7 @@ async function checkAll(){
   if(!btnCheck) return;
   btnCheck.disabled = true;
   hidden.clear();
+  saveHidden();
   renderGrid();
   for(let i = 0; i < allChannels.length; i++){
     const ch = allChannels[i];
@@ -1531,14 +1898,17 @@ async function checkAll(){
     const ok = await probeUrl(ch.url, 8000);
     if(!ok) hidden.add(ch.url);
     if(card) card.classList.remove("checking");
-    renderGrid();
+    // Update individual card visibility instead of full re-render
+    if(!ok && card) card.style.display = "none";
+    saveHidden();
   }
+  renderGrid(); // single re-render at the end
   btnCheck.disabled = false;
   btnCheck.querySelector("span:last-child").textContent = t("checkBtn");
 }
 
 if(btnCheck) btnCheck.onclick = checkAll;
-if(btnReset) btnReset.onclick = () => { hidden.clear(); renderGrid(); };
+if(btnReset) btnReset.onclick = () => { hidden.clear(); saveHidden(); renderGrid(); };
 
 /* ===== SEARCH ===== */
 let searchTimer = null;
@@ -1555,6 +1925,7 @@ function showEmptyState(){
   currentIdx = -1;
   currentUrl = "";
   hidden.clear();
+  saveHidden();
   video.pause();
   destroyHls();
   video.removeAttribute("src");
@@ -1767,13 +2138,19 @@ function parseM3U(text){
     if(line.startsWith("#EXTM3U")){
       const urlTvg = line.match(/url-tvg="([^"]+)"/);
       if(urlTvg) epgUrl = urlTvg[1];
+      // Also try x-tvg-url (common alternative)
+      if(!epgUrl){
+        const xTvg = line.match(/x-tvg-url="([^"]+)"/);
+        if(xTvg) epgUrl = xTvg[1];
+      }
       continue;
     }
     if(line.startsWith("#EXTINF")){
       const logo = line.match(/tvg-logo="([^"]+)"/);
       const tvgId = line.match(/tvg-id="([^"]+)"/);
+      const tvgName = line.match(/tvg-name="([^"]+)"/);
       const nm = line.split(",").pop();
-      cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : "" };
+      cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : (tvgName ? tvgName[1] : "") };
     } else if(line.startsWith("http") && cur){
       cur.url = line;
       channels.push(cur);
@@ -1797,6 +2174,7 @@ async function loadActiveSources(){
   currentIdx = -1;
   currentUrl = "";
   hidden.clear();
+  saveHidden();
   if(grid) grid.innerHTML = "";
 
   if(emptyState) emptyState.classList.add("show");
@@ -1841,15 +2219,20 @@ async function loadActiveSources(){
     if(errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
     else showToast(t("sourceOk").replace("{n}", allChannels.length).replace("{s}", indices.length), 2000);
 
-    // Auto-play pinned channel
+    // Auto-play pinned channel FIRST — before any EPG work
     if(pinnedUrl){
       const pi = allChannels.findIndex(c => c.url === pinnedUrl);
       if(pi >= 0) playByIndex(pi);
     }
   }
 
-  // Load EPG data
-  if(epgUrls.size > 0) loadEpgData([...epgUrls]);
+  // Load EPG data AFTER playback has started — defer so video gets priority
+  if(epgUrls.size > 0){
+    console.log("[EPG] Found EPG URLs in M3U:", [...epgUrls]);
+    setTimeout(() => loadEpgData([...epgUrls]), 3000);
+  } else {
+    console.log("[EPG] No EPG URL found in M3U sources. Use manual EPG URL input in EPG panel.");
+  }
 }
 
 /* ===== INIT ===== */
@@ -1872,9 +2255,16 @@ if(activeSources.size > 0){
 /* ===== SCROLL TO TOP ===== */
 const scrollBtn = document.getElementById("scrollTop");
 if(scrollBtn){
+  let _scrollTicking = false;
   window.addEventListener("scroll", () => {
-    scrollBtn.classList.toggle("show", window.scrollY > 300);
-  });
+    if(!_scrollTicking){
+      _scrollTicking = true;
+      requestAnimationFrame(() => {
+        scrollBtn.classList.toggle("show", window.scrollY > 300);
+        _scrollTicking = false;
+      });
+    }
+  }, { passive: true });
   scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
@@ -1955,6 +2345,7 @@ if(hideBtn){
     const ch = allChannels[currentIdx];
     if(!ch) return;
     hidden.add(ch.url);
+    saveHidden();
     renderGrid();
     updateMiniButtons();
   });
@@ -1974,7 +2365,7 @@ function applyLang(){
   if(nowName && currentIdx < 0) nowName.textContent = t("noChannel");
   if(btnUnmute){
     btnUnmute.querySelector("span:last-child").textContent = t("sound");
-    btnUnmute.title = t("sound");
+    btnUnmute.title = t("sound") + " (M)";
   }
   if(btnPiP){
     btnPiP.querySelector("span:last-child").textContent = t("pip");
@@ -2020,16 +2411,27 @@ function applyLang(){
   if(scrollBtn) scrollBtn.title = t("scrollTop");
 
   // Cinema & mini buttons (icon-only, tooltips only)
-  if(cinemaBtn) cinemaBtn.title = t("cinemaMode");
+  if(cinemaBtn) cinemaBtn.title = t("cinemaMode") + " (F)";
   if(pinBtn) pinBtn.title = t("pinChannelTip");
   if(favBtn) favBtn.title = t("favChannel");
   if(hideBtn) hideBtn.title = t("hideChannel");
+
+  // Prev/Next channel buttons
+  const _prevBtn = document.getElementById("prevChBtn");
+  const _nextBtn = document.getElementById("nextChBtn");
+  if(_prevBtn) _prevBtn.title = t("prevChannel") + " (\u2191)";
+  if(_nextBtn) _nextBtn.title = t("nextChannel") + " (\u2193)";
+
+  // Shortcuts button
+  const _scBtn = document.getElementById("shortcutsBtn");
+  if(_scBtn) _scBtn.title = t("shortcutsTitle");
 
   // Re-render dynamic content
   renderSources();
   renderFavs();
 
-  // Build lang menu
+  // Build lang menu & shortcuts
+  buildShortcutsPanel();
   buildLangMenu();
 }
 
@@ -2062,3 +2464,312 @@ if(langBtn){
 }
 
 applyLang();
+
+/* ===== PREV / NEXT CHANNEL BUTTONS ===== */
+const prevChBtn = document.getElementById("prevChBtn");
+const nextChBtn = document.getElementById("nextChBtn");
+
+if(prevChBtn) prevChBtn.addEventListener("click", () => {
+  if(allChannels.length === 0) return;
+  if(currentIdx <= 0) playByIndex(allChannels.length - 1, { noScroll: true });
+  else playByIndex(currentIdx - 1, { noScroll: true });
+});
+
+if(nextChBtn) nextChBtn.addEventListener("click", () => {
+  if(allChannels.length === 0) return;
+  if(currentIdx >= allChannels.length - 1) playByIndex(0, { noScroll: true });
+  else playByIndex(currentIdx + 1, { noScroll: true });
+});
+
+/* ===== EPG PANEL ===== */
+const epgBtn       = document.getElementById("epgBtn");
+const epgPanel     = document.getElementById("epgPanel");
+const epgListEl    = document.getElementById("epgList");
+const epgPanelTitle = document.getElementById("epgPanelTitle");
+const epgCloseBtn  = document.getElementById("epgCloseBtn");
+
+function openEpgPanel(){
+  if(!epgPanel) return;
+  epgPanel.classList.add("open");
+  if(epgBtn) epgBtn.classList.add("active");
+  renderEpgPanel();
+}
+
+function closeEpgPanel(){
+  if(epgPanel) epgPanel.classList.remove("open");
+  if(epgBtn) epgBtn.classList.remove("active");
+}
+
+function renderEpgPanel(){
+  if(!epgListEl) return;
+  epgListEl.innerHTML = "";
+
+  if(currentIdx < 0 || currentIdx >= allChannels.length){
+    if(epgPanelTitle) epgPanelTitle.textContent = "Program Guide";
+    epgListEl.innerHTML = '<div class="epg-empty">No channel selected</div>';
+    return;
+  }
+
+  const ch = allChannels[currentIdx];
+  if(epgPanelTitle) epgPanelTitle.textContent = ch.name || "Program Guide";
+
+  // Find programs using the unified matching function
+  const epgChId = findEpgChannelId(ch.tvgId, ch.name);
+  const programs = epgChId ? epgData[epgChId] : null;
+
+  if(!programs || programs.length === 0){
+    const epgKeys = Object.keys(epgData).length;
+    const hint = epgKeys === 0
+      ? "No EPG data loaded. Enter an EPG URL above."
+      : "No program data for \"" + ch.name + "\" (tvg-id: " + (ch.tvgId || "none") + "). EPG has " + epgKeys + " channels.";
+    epgListEl.innerHTML = '<div class="epg-empty">' + hint + '</div>';
+    return;
+  }
+
+  const now = new Date();
+
+  // Show today's programs (past 2 hours + future)
+  const cutoff = new Date(now.getTime() - 2 * 60 * 60 * 1000);
+  const todayEnd = new Date(now);
+  todayEnd.setHours(23, 59, 59, 999);
+
+  let hasItems = false;
+  for(const p of programs){
+    // Skip programs that ended before cutoff
+    if(p.stop && p.stop < cutoff) continue;
+    // Stop after tomorrow
+    if(p.start > todayEnd) {
+      // Show up to a few hours into tomorrow
+      const tomorrowCut = new Date(todayEnd.getTime() + 6 * 60 * 60 * 1000);
+      if(p.start > tomorrowCut) break;
+    }
+
+    const isNow = p.start <= now && p.stop && p.stop > now;
+    const div = document.createElement("div");
+    div.className = "epg-item" + (isNow ? " now" : "");
+
+    const timeEl = document.createElement("span");
+    timeEl.className = "epg-time";
+    timeEl.textContent = formatTime(p.start) + (p.stop ? " - " + formatTime(p.stop) : "");
+
+    const titleEl = document.createElement("span");
+    titleEl.className = "epg-prog-title";
+    titleEl.textContent = (isNow ? "\u25B6 " : "") + p.title;
+
+    div.append(timeEl, titleEl);
+    epgListEl.appendChild(div);
+    hasItems = true;
+  }
+
+  if(!hasItems){
+    epgListEl.innerHTML = '<div class="epg-empty">No upcoming programs</div>';
+  }
+
+  // Scroll the "now" item into view
+  const nowItem = epgListEl.querySelector(".epg-item.now");
+  if(nowItem) nowItem.scrollIntoView({ block: "center", behavior: "instant" });
+}
+
+if(epgBtn) epgBtn.addEventListener("click", () => {
+  if(epgPanel && epgPanel.classList.contains("open")) closeEpgPanel();
+  else openEpgPanel();
+});
+
+if(epgCloseBtn) epgCloseBtn.addEventListener("click", closeEpgPanel);
+
+// Manual EPG URL loading
+const epgUrlInput = document.getElementById("epgUrlInput");
+const epgUrlBtn   = document.getElementById("epgUrlBtn");
+
+// Restore saved EPG URL
+const savedEpgUrl = localStorage.getItem("customEpgUrl") || "";
+if(epgUrlInput && savedEpgUrl) epgUrlInput.value = savedEpgUrl;
+
+if(epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
+  if(!epgUrlInput) return;
+  const rawUrl = epgUrlInput.value.trim();
+  if(!rawUrl) return;
+
+  // Support multiple URLs separated by comma or newline
+  const urls = rawUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u);
+  for(const u of urls){
+    if(!u.startsWith("http://") && !u.startsWith("https://")){ showToast("URL must start with http:// or https://", 2500); return; }
+  }
+
+  epgUrlBtn.disabled = true;
+  epgUrlBtn.textContent = "Loading...";
+  try {
+    await loadEpgData(urls, true);
+    localStorage.setItem("customEpgUrl", rawUrl);
+    renderEpgPanel();
+  } catch(e){
+    showToast("Failed to load EPG: " + e.message, 3000);
+  }
+  epgUrlBtn.disabled = false;
+  epgUrlBtn.textContent = "Load";
+});
+if(epgUrlInput) epgUrlInput.addEventListener("keydown", (e) => { if(e.key === "Enter" && epgUrlBtn) epgUrlBtn.click(); });
+
+// Auto-load saved EPG URL on startup — delay to let channels render first
+if(savedEpgUrl){
+  const urls = savedEpgUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u && u.startsWith("http"));
+  if(urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
+}
+
+// Unified EPG refresh — runs every 60s
+function _epgPeriodicRefresh(){
+  updateEpgDisplay();
+  if(epgPanel && epgPanel.classList.contains("open")) renderEpgPanel();
+}
+epgIntervalId = setInterval(_epgPeriodicRefresh, 60000);
+
+/* ===== PERSIST HIDDEN ===== */
+function saveHidden(){
+  localStorage.setItem("hiddenChannels", JSON.stringify([...hidden]));
+}
+
+/* ===== HLS QUALITY SELECTOR ===== */
+const qualityBtn  = document.getElementById("qualityBtn");
+const qualityMenu = document.getElementById("qualityMenu");
+
+function buildQualityMenu(){
+  if(!qualityMenu) return;
+  qualityMenu.innerHTML = "";
+  if(hlsLevels.length <= 1){
+    if(qualityBtn) qualityBtn.style.display = "none";
+    return;
+  }
+  if(qualityBtn) qualityBtn.style.display = "";
+
+  // Auto option
+  const autoBtn = document.createElement("button");
+  autoBtn.className = "quality-option" + ((!hls || hls.currentLevel === -1) ? " active" : "");
+  autoBtn.textContent = "Auto";
+  autoBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if(hls) hls.currentLevel = -1;
+    qualityMenu.classList.remove("open");
+    updateQualityMenu();
+  });
+  qualityMenu.appendChild(autoBtn);
+
+  // Each level (sorted by height descending)
+  [...hlsLevels]
+    .map((lvl, i) => ({ idx: i, height: lvl.height, bitrate: lvl.bitrate }))
+    .sort((a, b) => b.height - a.height)
+    .forEach(({ idx, height, bitrate }) => {
+      const btn = document.createElement("button");
+      const label = height ? height + "p" : Math.round(bitrate / 1000) + "k";
+      btn.className = "quality-option" + ((hls && hls.currentLevel === idx) ? " active" : "");
+      btn.textContent = label;
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if(hls) hls.currentLevel = idx;
+        qualityMenu.classList.remove("open");
+        updateQualityMenu();
+      });
+      qualityMenu.appendChild(btn);
+    });
+}
+
+function updateQualityMenu(){
+  if(!qualityMenu) return;
+  const opts = qualityMenu.querySelectorAll(".quality-option");
+  const sorted = [...hlsLevels]
+    .map((lvl, i) => i)
+    .sort((a, b) => (hlsLevels[b]?.height || 0) - (hlsLevels[a]?.height || 0));
+  opts.forEach((opt, oi) => {
+    if(oi === 0) opt.classList.toggle("active", !hls || hls.currentLevel === -1);
+    else opt.classList.toggle("active", hls && hls.currentLevel === sorted[oi - 1]);
+  });
+  if(qualityBtn){
+    const span = qualityBtn.querySelector(".quality-label");
+    if(span){
+      if(!hls || hls.currentLevel === -1) span.textContent = "Auto";
+      else {
+        const lvl = hlsLevels[hls.currentLevel];
+        span.textContent = lvl && lvl.height ? lvl.height + "p" : "Auto";
+      }
+    }
+  }
+}
+
+if(qualityBtn){
+  qualityBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if(qualityMenu) qualityMenu.classList.toggle("open");
+  });
+  document.addEventListener("click", () => {
+    if(qualityMenu) qualityMenu.classList.remove("open");
+  });
+}
+
+/* ===== KEYBOARD SHORTCUTS ===== */
+document.addEventListener("keydown", (e) => {
+  // Don't trigger shortcuts when typing in inputs
+  const tag = e.target.tagName;
+  if(tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
+
+  switch(e.key){
+    case " ": // Space = play/pause
+      e.preventDefault();
+      if(video.paused) video.play().catch(() => {});
+      else video.pause();
+      break;
+    case "m": // M = mute toggle
+    case "M":
+      e.preventDefault();
+      if(btnUnmute) btnUnmute.click();
+      break;
+    case "ArrowUp": // Previous channel
+      e.preventDefault();
+      if(allChannels.length === 0) break;
+      if(currentIdx <= 0) playByIndex(allChannels.length - 1, { noScroll: true });
+      else playByIndex(currentIdx - 1, { noScroll: true });
+      break;
+    case "ArrowDown": // Next channel
+      e.preventDefault();
+      if(allChannels.length === 0) break;
+      if(currentIdx >= allChannels.length - 1) playByIndex(0, { noScroll: true });
+      else playByIndex(currentIdx + 1, { noScroll: true });
+      break;
+    case "f": // F = cinema mode
+    case "F":
+      e.preventDefault();
+      if(cinemaBtn) cinemaBtn.click();
+      break;
+  }
+});
+
+/* ===== SHORTCUTS PANEL ===== */
+const shortcutsBtn = document.getElementById("shortcutsBtn");
+const shortcutsPanel = document.getElementById("shortcutsPanel");
+
+function buildShortcutsPanel(){
+  const panel = document.getElementById("shortcutsPanel");
+  if(!panel) return;
+  const shortcuts = [
+    { key: "Space", desc: t("playPause") },
+    { key: "M", desc: t("sound") },
+    { key: "\u2191", desc: t("prevChannel") },
+    { key: "\u2193", desc: t("nextChannel") },
+    { key: "F", desc: t("cinemaMode") }
+  ];
+  panel.innerHTML = '<div class="sc-title">\u2328 ' + t("shortcutsTitle") + '</div>' +
+    shortcuts.map(function(s){ return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
+}
+
+if(shortcutsBtn){
+  shortcutsBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    if(shortcutsPanel) shortcutsPanel.classList.toggle("open");
+  });
+}
+if(shortcutsPanel){
+  shortcutsPanel.addEventListener("click", function(e){ e.stopPropagation(); });
+}
+document.addEventListener("click", function(){
+  if(shortcutsPanel) shortcutsPanel.classList.remove("open");
+});
+
+buildShortcutsPanel();
