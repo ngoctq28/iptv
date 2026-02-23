@@ -18,4 +18,4 @@ Sidebar Player is a lightweight browser extension that allows users to stream IP
 6. Select the extracted folder.
 
 ## Version
-v1.0.0
+v2.0.0
