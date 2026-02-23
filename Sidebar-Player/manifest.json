@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Sidebar Player",
+  "version": "2.0.0",
+  "description": "Sidebar-Player is a browser extension that lets users stream IPTV channels directly from a sidebar without leaving the current page.",
+  "action": {
+    "default_title": "Sidebar Player",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "side_panel": {
+    "default_path": "panel.html"
+  },
+  "permissions": [
+    "sidePanel",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*/",
+    "http://*/"
+  ]
+}
