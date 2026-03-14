@@ -1088,7 +1088,9 @@ const LANGS = {
 let currentLang = localStorage.getItem("lang") || "en";
 function t(key){ return (LANGS[currentLang] || LANGS.vi)[key] || (LANGS.vi)[key] || key; }
 
-const DEFAULT_SOURCES = [];
+const DEFAULT_SOURCES = [
+  { name: "VietNam IPTV (Default)", url: "https://raw.githubusercontent.com/giangnam0201/All-In-One-IPTV/refs/heads/main/channels.m3u", default: true }
+];
 
 /* ===== DOM ===== */
 const video      = document.getElementById("player");
@@ -1118,7 +1120,7 @@ const hideBtn        = document.getElementById("hideBtn");
 let allChannels  = [];
 let favorites    = JSON.parse(localStorage.getItem("fav") || "[]");
 let sources      = JSON.parse(localStorage.getItem("sources") || "[]");
-let activeSources = new Set(JSON.parse(localStorage.getItem("activeSources") || "[]"));
+let activeSources = new Set(JSON.parse(localStorage.getItem("activeSources") || "[0]"));
 let currentIdx   = -1;
 let currentUrl   = "";
 const hidden     = new Set(JSON.parse(localStorage.getItem("hiddenChannels") || "[]"));
@@ -1240,11 +1242,14 @@ async function loadEpgData(urls, merge){
       console.log("[EPG] Fetching:", url);
       let resp;
       let proxies = [
-        "",
         "https://api.codetabs.com/v1/proxy?quest=" + url,
         "https://corsproxy.io/?" + encodeURIComponent(url),
         "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
       ];
+      // Skip direct fetch when opened from local file system to avoid red CORS errors in console
+      if (window.location.protocol !== "file:") {
+        proxies.unshift(""); 
+      }
       
       for(let p of proxies) {
         try {
@@ -1258,13 +1263,19 @@ async function loadEpgData(urls, merge){
       // Handle gzip-compressed files
       let text;
       if(url.endsWith(".gz") || url.endsWith(".gzip")){
+        let buffer;
         try {
+          buffer = await resp.arrayBuffer();
           const ds = new DecompressionStream("gzip");
-          const decompressed = resp.body.pipeThrough(ds);
+          const decompressed = new Response(buffer).body.pipeThrough(ds);
           text = await new Response(decompressed).text();
         } catch(gzErr){
           console.warn("[EPG] Gzip decompress failed, trying raw:", gzErr);
-          text = await resp.text();
+          if (buffer) {
+            text = new TextDecoder().decode(buffer);
+          } else {
+            text = await resp.text();
+          }
         }
       } else {
         text = await resp.text();
@@ -2270,11 +2281,13 @@ async function loadActiveSources(){
       } else {
         let resp;
         let proxies = [
-          "",
           "https://api.codetabs.com/v1/proxy?quest=" + src.url,
           "https://corsproxy.io/?" + encodeURIComponent(src.url),
           "https://api.allorigins.win/raw?url=" + encodeURIComponent(src.url)
         ];
+        if (window.location.protocol !== "file:") {
+          proxies.unshift("");
+        }
         
         for(let p of proxies) {
           try {

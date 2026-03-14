@@ -61,8 +61,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 .tool-btn .icon{font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center}
 .tool-btn .icon svg,.action-btn .icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .action-btn .icon{display:flex;align-items:center;justify-content:center}
-#cinemaBtn .cinema-icon{font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
-#cinemaBtn .cinema-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#cinemaBtn .cinema-icon{font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center}
+#cinemaBtn .cinema-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
 /* STATUS TOAST */
 #statusToast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;z-index:50;pointer-events:none;opacity:0;transition:opacity .25s;max-width:90%;text-align:center}
@@ -148,7 +148,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 
 /* LANGUAGE SELECTOR */
 #langSection{display:flex;align-items:center;justify-content:flex-end;padding:4px 12px;border-bottom:1px solid var(--border);gap:6px;flex-wrap:wrap}
-#langBtn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s;position:relative;font-size:16px;line-height:1}
+#langBtn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s;position:relative;font-size:20px;line-height:1}
 #langBtn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 #langMenu{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;z-index:60;min-width:140px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
 #langMenu.open{display:block}
@@ -161,7 +161,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 #cinemaBtn,.mini-btn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s}
 #cinemaBtn:hover,.mini-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 #cinemaBtn.active,.mini-btn.active{border-color:var(--accent);color:var(--accent)}
-.mini-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.mini-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .mini-btn.active svg{fill:currentColor;stroke:currentColor}
 #cinemaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:25;cursor:pointer}
 #cinemaOverlay.show{display:block}
@@ -178,7 +178,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 .nav-btn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s}
 .nav-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 .nav-btn:active{background:var(--surface-active)}
-.nav-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.nav-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .nav-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
 
 /* EPG PANEL */
@@ -203,11 +203,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 #epgUrlBtn{padding:5px 10px;border:1px solid var(--accent);border-radius:var(--r);background:transparent;color:var(--accent);font-family:var(--font);font-size:11px;cursor:pointer;white-space:nowrap;transition:background .12s}
 #epgUrlBtn:hover{background:rgba(96,165,250,.15)}
 #epgUrlBtn:disabled{opacity:.5;cursor:not-allowed}
-
-/* CREDIT */
-#credit{text-align:center;padding:12px 0 16px;font-size:11px;color:var(--text-sec)}
-#credit a{color:var(--text-sec);text-decoration:none;transition:color .15s}
-#credit a:hover{color:var(--accent)}
 
 /* QUALITY SELECTOR */
 #qualityBtn{display:none;position:relative}
@@ -238,7 +233,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   #sourceSection{padding:10px 16px}
   #toolbar .tool-btn{padding:10px 6px}
   #scrollTop{display:none!important}
-  #credit{padding:16px 0 20px}
 }
 
 /* ---- Tablet (601-1024px): wider grid ---- */
@@ -273,8 +267,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   #addSourceRow{flex-wrap:wrap}
   #statusToast{font-size:11px;padding:5px 12px}
   .mini-btn,.nav-btn,#cinemaBtn,#langBtn{padding:5px}
-  .mini-btn svg,.nav-btn svg{width:14px;height:14px}
-  #cinemaBtn .cinema-icon svg{width:14px;height:14px}
+  .mini-btn svg,.nav-btn svg{width:18px;height:18px}
+  #cinemaBtn .cinema-icon svg{width:18px;height:18px}
+  #langBtn{font-size:18px}
 }
 </style>
 </head>
@@ -351,8 +346,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   </button>
 </div>
 
-</div>
-
 <div id="epgPanel">
   <div id="epgPanelHeader">
     <span class="epg-title" id="epgPanelTitle">Program Guide</span>
@@ -410,8 +403,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   <div class="icon">&#128225;</div>
   <div>Loading...</div>
 </div>
-
-<div id="credit"><a href="https://github.com/vuviett47" target="_blank">Made by vuviett47</a></div>
 
 <button id="scrollTop" title="Top"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3"/><path d="M3 7l5-5 5 5"/></svg></button>
 </div><!-- end rightPane -->
