@@ -1,21 +1,17 @@
-# Sidebar Player
+# IPTV Player
 
-Sidebar Player is a lightweight browser extension that allows users to stream IPTV channels directly from a sidebar without leaving the current page.
+A lightweight, responsive web application that allows users to stream IPTV channels directly in their browser.
 
 ## Features
-- Stream IPTV channels inside a sidebar panel
-- HLS (m3u8) support
-- Simple and lightweight interface
-- Browse and watch at the same time
+- Full responsive design (Mobile, Tablet, Desktop)
+- Stream IPTV channels via M3U playlists
+- HLS (m3u8) format support
+- EPG (Electronic Program Guide) support
+- Favorites, search, and channel pinning
+- Simple and intuitive interface
 
-## Installation
-
-1. Download this repository as a ZIP file.
-2. Extract the ZIP file.
-3. Open `chrome://extensions/` in your browser.
-4. Enable **Developer Mode**.
-5. Click **Load unpacked**.
-6. Select the extracted folder.
+## How to Use
+Simply open `index.html` in any modern web browser to start using the app. No installation required.
 
 ## Version
 v2.0.0

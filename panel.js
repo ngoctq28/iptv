@@ -1238,8 +1238,22 @@ async function loadEpgData(urls, merge){
   for(const url of urls){
     try {
       console.log("[EPG] Fetching:", url);
-      const resp = await fetch(url);
-      if(!resp.ok){ console.warn("[EPG] HTTP", resp.status, url); continue; }
+      let resp;
+      let proxies = [
+        "",
+        "https://api.codetabs.com/v1/proxy?quest=" + url,
+        "https://corsproxy.io/?" + encodeURIComponent(url),
+        "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
+      ];
+      
+      for(let p of proxies) {
+        try {
+          resp = await fetch(p ? p : url);
+          if (resp.ok) break;
+        } catch (err) {}
+      }
+      
+      if(!resp || !resp.ok){ console.warn("[EPG] HTTP failed on all proxies", url); continue; }
 
       // Handle gzip-compressed files
       let text;
@@ -1475,7 +1489,7 @@ if(video){
 /* ===== FULLSCREEN (open stream in new tab) ===== */
 if(btnFull) btnFull.addEventListener("click", () => {
   if(currentIdx < 0 || !currentUrl) return;
-  chrome.tabs.create({ url: currentUrl, active: true });
+  window.open(currentUrl, "_blank");
 });
 
 /* ===== RETRY ===== */
@@ -1496,6 +1510,42 @@ function destroyHls(){
   hlsLevels = [];
   buildQualityMenu();
 }
+
+let _wasAutoMuted = false;
+function safePlay() {
+  const p = video.play();
+  if (p !== undefined) {
+    p.catch(err => {
+      // Browser blocked autoplay with sound
+      if (err.name === 'NotAllowedError') {
+        video.muted = true;
+        _wasAutoMuted = true;
+        if(btnUnmute) {
+          btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+          btnUnmute.classList.remove("active");
+        }
+        video.play().catch(()=>{});
+      }
+    });
+  }
+}
+
+// Automatically unmute on first user interaction if the browser forced it muted
+function autoUnmuteHandler() {
+  if (_wasAutoMuted && video && video.muted) {
+    video.muted = false;
+    _wasAutoMuted = false;
+    if(btnUnmute) {
+      btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+      btnUnmute.classList.add("active");
+    }
+  }
+  // Remove listener after first interaction
+  document.removeEventListener('click', autoUnmuteHandler);
+  document.removeEventListener('keydown', autoUnmuteHandler);
+}
+document.addEventListener('click', autoUnmuteHandler);
+document.addEventListener('keydown', autoUnmuteHandler);
 
 function playByIndex(idx, opts){
   if(idx < 0 || idx >= allChannels.length) return;
@@ -1565,15 +1615,25 @@ function playByIndex(idx, opts){
     });
 
     let hlsMediaRecoveryAttempts = 0;
+    
+    // Fallback proxy list
+    const proxies = [
+      "", 
+      "https://api.codetabs.com/v1/proxy?quest=",
+      "https://corsproxy.io/?",
+      "https://api.allorigins.win/raw?url="
+    ];
+    let proxyIdx = 0;
+    let streamUrl = ch.url;
 
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      hls.loadSource(ch.url);
+      hls.loadSource(streamUrl);
     });
 
     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
       hlsLevels = hls.levels || [];
       buildQualityMenu();
-      video.play().catch(() => {});
+      safePlay();
     });
 
     hls.on(Hls.Events.FRAG_LOADED, () => {
@@ -1585,10 +1645,26 @@ function playByIndex(idx, opts){
       console.warn("HLS fatal error:", data.type, data.details);
       switch(data.type){
         case Hls.ErrorTypes.NETWORK_ERROR:
-          showToast(t("networkError"), 0);
           if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut"){
-            // Retry from scratch after a delay
-            setTimeout(() => { if(hls) hls.loadSource(ch.url); }, 2000);
+            // If manifest failed (CORS, 403, 404, etc), try next proxy
+            proxyIdx++;
+            if (proxyIdx < proxies.length) {
+              console.warn(`Manifest load failed. Trying proxy ${proxyIdx}/${proxies.length - 1}...`);
+              
+              if (proxies[proxyIdx].includes("corsproxy.io") || proxies[proxyIdx].includes("allorigins")) {
+                streamUrl = proxies[proxyIdx] + encodeURIComponent(ch.url);
+              } else {
+                streamUrl = proxies[proxyIdx] + ch.url;
+              }
+              
+              setTimeout(() => { if(hls) hls.loadSource(streamUrl); }, 1000);
+            } else {
+              showToast(t("networkError"), 0);
+              // Out of proxies, retry native URL after a longer delay
+              proxyIdx = 0;
+              streamUrl = ch.url;
+              setTimeout(() => { if(hls) hls.loadSource(streamUrl); }, 4000);
+            }
           } else {
             hls.startLoad();
           }
@@ -1618,7 +1694,7 @@ function playByIndex(idx, opts){
     // ---- Native path (direct .ts / .mp4 / Safari HLS) ----
     video.src = ch.url;
     video.load();
-    video.play().catch(() => {});
+    safePlay();
   }
 
   resetStallTimer();
@@ -2192,8 +2268,22 @@ async function loadActiveSources(){
       if(src.local && src.content){
         result = parseM3U(src.content);
       } else {
-        const resp = await fetch(src.url);
-        if(!resp.ok) throw new Error("HTTP " + resp.status);
+        let resp;
+        let proxies = [
+          "",
+          "https://api.codetabs.com/v1/proxy?quest=" + src.url,
+          "https://corsproxy.io/?" + encodeURIComponent(src.url),
+          "https://api.allorigins.win/raw?url=" + encodeURIComponent(src.url)
+        ];
+        
+        for(let p of proxies) {
+          try {
+            resp = await fetch(p ? p : src.url);
+            if (resp.ok) break;
+          } catch (err) {}
+        }
+        
+        if(!resp || !resp.ok) throw new Error("HTTP Fetch failed completely");
         const text = await resp.text();
         result = parseM3U(text);
       }
@@ -2223,6 +2313,9 @@ async function loadActiveSources(){
     if(pinnedUrl){
       const pi = allChannels.findIndex(c => c.url === pinnedUrl);
       if(pi >= 0) playByIndex(pi);
+    } else if (allChannels.length > 0) {
+      // Play first channel by default if no pinned channel
+      playByIndex(0);
     }
   }
 
@@ -2433,6 +2526,12 @@ function applyLang(){
   // Build lang menu & shortcuts
   buildShortcutsPanel();
   buildLangMenu();
+  
+  // Sync mute button with video state
+  if (video && btnUnmute) {
+    btnUnmute.querySelector("#muteIcon").innerHTML = video.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+    btnUnmute.classList.toggle("active", !video.muted);
+  }
 }
 
 function buildLangMenu(){

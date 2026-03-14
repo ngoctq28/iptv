@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Stream IPTV channels directly in your browser. Add M3U sources, browse channels, and watch live TV with EPG support." />
+<meta name="theme-color" content="#202020" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<title>IPTV Player — Stream Live TV</title>
+<style>
+:root {
+  --bg: #202020;
+  --surface: #2d2d2d;
+  --surface-hover: #383838;
+  --surface-active: #444;
+  --accent: #60a5fa;
+  --border: #3d3d3d;
+  --text: #f5f5f5;
+  --text-sec: #a0a0a0;
+  --danger: #f87171;
+  --success: #4ade80;
+  --yellow: #facc15;
+  --r: 8px;
+  --font: 'Inter','Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;font-size:13px;-webkit-font-smoothing:antialiased;min-height:100vh}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#555;border-radius:4px}
+
+#rightPane::-webkit-scrollbar{width:10px}
+#rightPane::-webkit-scrollbar-track{background:transparent}
+#rightPane::-webkit-scrollbar-thumb{background:#555;border-radius:6px;border:2px solid var(--bg)}
+#rightPane::-webkit-scrollbar-thumb:hover{background:#777}
+
+/* PLAYER */
+#playerSection{position:sticky;top:0;z-index:30;background:#000}
+#player{width:100%;aspect-ratio:16/9;max-height:50vh;background:#000;display:block}
+#playerSection:fullscreen{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:#000}
+#playerSection:fullscreen #player{width:100%;height:100%;max-height:100vh}
+
+/* NOW PLAYING */
+#nowPlaying{background:var(--surface);padding:6px 12px;font-size:12px;color:var(--text-sec);display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--danger);flex-shrink:0}
+#nowPlaying.live .dot{background:var(--success)}
+#nowPlayingName{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-weight:500}
+#nowProgram{width:100%;font-size:11px;color:var(--text-sec);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;padding-left:12px}
+
+/* TOOLBAR */
+#toolbar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:4px 8px;gap:2px}
+.tool-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:none;background:transparent;color:var(--text-sec);font-family:var(--font);font-size:10px;cursor:pointer;border-radius:var(--r);transition:background .12s,color .12s;user-select:none}
+.tool-btn:hover{background:var(--surface-hover);color:var(--text)}
+.tool-btn:active{background:var(--surface-active)}
+.tool-btn.active{color:var(--accent)}
+.tool-btn[disabled]{opacity:.4;cursor:not-allowed}
+.tool-btn[disabled]:hover{background:transparent;color:var(--text-sec)}
+.tool-btn .icon{font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center}
+.tool-btn .icon svg,.action-btn .icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.action-btn .icon{display:flex;align-items:center;justify-content:center}
+#cinemaBtn .cinema-icon{font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
+#cinemaBtn .cinema-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* STATUS TOAST */
+#statusToast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.85);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;z-index:50;pointer-events:none;opacity:0;transition:opacity .25s;max-width:90%;text-align:center}
+#statusToast.show{opacity:1;pointer-events:auto;cursor:pointer}
+
+/* FAVORITES */
+#favSection{background:var(--bg);border-bottom:1px solid var(--border);padding:8px 12px}
+#favHeader{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
+#favHeader svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+#favList{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.fav-empty-msg{color:var(--text-sec);font-size:11px;font-style:italic;padding:4px 0;white-space:nowrap}
+#favList .ch-card{flex:0 0 auto;width:80px}
+#favList .ch-card.drag-over-left{border-left:2px solid var(--accent);padding-left:4px}
+#favList .ch-card.drag-over-right{border-right:2px solid var(--accent);padding-right:4px}
+#favList .ch-card.dragging{opacity:.4}
+
+/* SEARCH & CONTROLS */
+#controlsSection{padding:8px 12px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+#searchInput{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color .15s}
+#searchInput:focus{border-color:var(--accent)}
+#searchInput::placeholder{color:var(--text-sec)}
+#actionRow{display:flex;gap:8px}
+.action-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:var(--font);font-size:12px;cursor:pointer;transition:background .12s,border-color .12s}
+.action-btn:hover{background:var(--surface-hover);border-color:var(--accent)}
+.action-btn:active{background:var(--surface-active)}
+.action-btn[disabled]{opacity:.5;cursor:not-allowed}
+.action-btn[disabled]:hover{background:var(--surface);border-color:var(--border)}
+.action-btn .icon{font-size:14px}
+
+/* CHANNEL GRID */
+#channelGrid{padding:10px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+
+/* CHANNEL CARD */
+.ch-card{position:relative;background:var(--surface);border-radius:var(--r);padding:10px 8px 8px;cursor:pointer;border:2px solid transparent;transition:border-color .12s,box-shadow .12s,background .12s;text-align:center;contain:content}
+.ch-card:hover{background:var(--surface-hover)}
+.ch-card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 2px 8px rgba(0,0,0,.35)}
+.ch-card.checking{opacity:.5}
+.ch-card img{width:100%;height:60px;object-fit:contain;pointer-events:none}
+.ch-card .ch-name{font-size:12px;color:var(--text-sec);margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch-star{position:absolute;top:2px;right:4px;font-size:12px;cursor:pointer;color:var(--yellow);opacity:.3;transition:opacity .12s}
+.ch-star:hover{opacity:1}
+.ch-star.on{opacity:1}
+
+/* EMPTY STATE */
+#emptyState{text-align:center;padding:40px 20px;color:var(--text-sec);display:none}
+#emptyState.show{display:block}
+#emptyState .icon{font-size:36px;margin-bottom:8px}
+
+/* SCROLL TO TOP */
+#scrollTop{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) scale(0);width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text-sec);font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35);transition:transform .2s,opacity .2s;opacity:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:0}
+#scrollTop.show{transform:translateX(-50%) scale(1);opacity:1}
+#scrollTop:hover{background:var(--surface-hover);color:var(--text);border-color:#555}
+#scrollTop:active{transform:translateX(-50%) scale(.92);background:var(--surface-active)}
+
+/* SOURCE MANAGER */
+#sourceSection{border-bottom:1px solid var(--border);padding:8px 12px}
+#sourceToggle{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;user-select:none}
+#sourceToggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+#sourceToggle .arrow{transition:transform .2s;font-size:10px}
+#sourceToggle.open .arrow{transform:rotate(90deg)}
+#sourceBody{display:none;margin-top:8px}
+#sourceBody.open{display:block}
+#sourceList{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;max-height:120px;overflow-y:auto}
+.source-item{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--surface);border-radius:var(--r);font-size:11px;border:1px solid var(--border)}
+.source-item.active{border-color:var(--accent)}
+.source-item .src-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.source-item .src-default{color:var(--text-sec);font-size:10px;flex-shrink:0}
+.source-item .src-del{background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px;padding:0 2px;flex-shrink:0;opacity:.6;transition:opacity .12s}
+.source-item .src-del:hover{opacity:1}
+.source-item .src-rename{background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:11px;padding:0 2px;flex-shrink:0;opacity:.5;transition:opacity .12s}
+.source-item .src-rename:hover{opacity:1;color:var(--accent)}
+.src-name-input{flex:1;padding:2px 6px;border:1px solid var(--accent);border-radius:4px;background:var(--bg);color:var(--text);font-family:var(--font);font-size:11px;outline:none;min-width:0}
+#addSourceRow{display:flex;gap:6px}
+#addSourceInput{flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:var(--font);font-size:12px;outline:none}
+#addSourceInput:focus{border-color:var(--accent)}
+#addSourceInput::placeholder{color:var(--text-sec)}
+#addSourceBtn{padding:6px 12px;border:1px solid var(--accent);border-radius:var(--r);background:transparent;color:var(--accent);font-family:var(--font);font-size:12px;cursor:pointer;white-space:nowrap;transition:background .12s}
+#addSourceBtn:hover{background:rgba(96,165,250,.15)}
+#fileSourceLabel{padding:6px 12px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);font-family:var(--font);font-size:12px;cursor:pointer;white-space:nowrap;transition:background .12s,border-color .12s;display:flex;align-items:center;gap:4px}
+#fileSourceLabel svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+#fileSourceLabel:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+#fileSourceInput{display:none}
+
+/* LANGUAGE SELECTOR */
+#langSection{display:flex;align-items:center;justify-content:flex-end;padding:4px 12px;border-bottom:1px solid var(--border);gap:6px;flex-wrap:wrap}
+#langBtn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s;position:relative;font-size:16px;line-height:1}
+#langBtn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+#langMenu{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;z-index:60;min-width:140px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+#langMenu.open{display:block}
+.lang-option{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:12px;cursor:pointer;color:var(--text);transition:background .1s;border:none;background:none;width:100%;font-family:var(--font)}
+.lang-option:hover{background:var(--surface-hover)}
+.lang-option.active{color:var(--accent);font-weight:600}
+.lang-option .lang-flag{font-size:16px}
+
+/* CINEMA MODE & MINI BUTTONS */
+#cinemaBtn,.mini-btn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s}
+#cinemaBtn:hover,.mini-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+#cinemaBtn.active,.mini-btn.active{border-color:var(--accent);color:var(--accent)}
+.mini-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.mini-btn.active svg{fill:currentColor;stroke:currentColor}
+#cinemaOverlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:25;cursor:pointer}
+#cinemaOverlay.show{display:block}
+
+/* SHORTCUTS PANEL */
+#shortcutsBtn{position:relative}
+#shortcutsPanel{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;z-index:60;min-width:200px;box-shadow:0 4px 16px rgba(0,0,0,.4);font-size:12px;white-space:nowrap}
+#shortcutsPanel.open{display:block}
+.sc-title{font-weight:600;margin-bottom:8px;color:var(--text);font-size:12px}
+.sc-row{display:flex;align-items:center;gap:10px;padding:3px 0;color:var(--text-sec)}
+.sc-key{display:inline-flex;align-items:center;justify-content:center;min-width:28px;padding:2px 6px;background:var(--bg);border:1px solid var(--border);border-radius:4px;font-size:11px;font-weight:600;color:var(--text);font-family:var(--font)}
+
+/* PREV/NEXT CHANNEL BUTTONS */
+.nav-btn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s}
+.nav-btn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
+.nav-btn:active{background:var(--surface-active)}
+.nav-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.nav-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
+
+/* EPG PANEL */
+#epgPanel{display:none;background:var(--bg);border-bottom:1px solid var(--border);max-height:320px;overflow-y:auto}
+#epgPanel.open{display:block}
+#epgPanelHeader{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:2}
+#epgPanelHeader .epg-title{flex:1;font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#epgCloseBtn{background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:18px;padding:2px 6px;border-radius:4px;transition:background .12s,color .12s}
+#epgCloseBtn:hover{background:var(--surface-hover);color:var(--text)}
+.epg-list{padding:4px 0}
+.epg-item{display:flex;gap:8px;padding:6px 12px;font-size:12px;color:var(--text-sec);transition:background .1s}
+.epg-item:hover{background:var(--surface)}
+.epg-item.now{background:var(--surface);color:var(--text);border-left:3px solid var(--accent)}
+.epg-item .epg-time{flex-shrink:0;width:90px;color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+.epg-item.now .epg-time{color:var(--success)}
+.epg-item .epg-prog-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.epg-empty{padding:16px 12px;text-align:center;color:var(--text-sec);font-size:12px;font-style:italic}
+#epgUrlRow{display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid var(--border)}
+#epgUrlInput{flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:var(--font);font-size:11px;outline:none}
+#epgUrlInput:focus{border-color:var(--accent)}
+#epgUrlInput::placeholder{color:var(--text-sec)}
+#epgUrlBtn{padding:5px 10px;border:1px solid var(--accent);border-radius:var(--r);background:transparent;color:var(--accent);font-family:var(--font);font-size:11px;cursor:pointer;white-space:nowrap;transition:background .12s}
+#epgUrlBtn:hover{background:rgba(96,165,250,.15)}
+#epgUrlBtn:disabled{opacity:.5;cursor:not-allowed}
+
+/* CREDIT */
+#credit{text-align:center;padding:12px 0 16px;font-size:11px;color:var(--text-sec)}
+#credit a{color:var(--text-sec);text-decoration:none;transition:color .15s}
+#credit a:hover{color:var(--accent)}
+
+/* QUALITY SELECTOR */
+#qualityBtn{display:none;position:relative}
+#qualityBtn .quality-label{font-size:10px;font-weight:600;line-height:1}
+#qualityMenu{display:none;position:absolute;bottom:100%;right:0;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;z-index:60;min-width:80px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+#qualityMenu.open{display:block}
+.quality-option{display:block;width:100%;padding:7px 14px;font-size:12px;cursor:pointer;color:var(--text);border:none;background:none;text-align:left;font-family:var(--font);transition:background .1s}
+.quality-option:hover{background:var(--surface-hover)}
+.quality-option.active{color:var(--accent);font-weight:600}
+
+/* ========== RESPONSIVE ========== */
+
+/* ---- Desktop (> 1024px): horizontal split ---- */
+@media (min-width: 1025px) {
+  html{background:#111;overflow:hidden}
+  body{display:flex;flex-direction:row;height:100vh;max-width:1600px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,.8);position:relative}
+  #leftPane{width:66.666%;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;height:100vh;overflow-y:auto;border-right:1px solid var(--border)}
+  #rightPane{flex:1;display:flex;flex-direction:column;height:100vh;overflow-y:auto}
+  #playerSection{position:relative;top:auto;z-index:auto}
+  #player{max-height:none}
+  #channelGrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px;padding:16px}
+  .ch-card{padding:12px 10px 10px}
+  .ch-card img{height:70px}
+  .ch-card .ch-name{font-size:13px;margin-top:8px}
+  #controlsSection{padding:10px 16px}
+  #searchInput{padding:10px 14px;font-size:14px}
+  #favSection{padding:10px 16px}
+  #sourceSection{padding:10px 16px}
+  #toolbar .tool-btn{padding:10px 6px}
+  #scrollTop{display:none!important}
+  #credit{padding:16px 0 20px}
+}
+
+/* ---- Tablet (601-1024px): wider grid ---- */
+@media (min-width: 601px) and (max-width: 1024px) {
+  #channelGrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;padding:14px 16px}
+  .ch-card img{height:60px}
+  .ch-card .ch-name{font-size:12px}
+  #controlsSection{padding:10px 16px}
+  #searchInput{padding:10px 14px;font-size:14px}
+  #langSection{padding:6px 16px}
+  #favSection{padding:10px 16px}
+  #sourceSection{padding:10px 16px}
+}
+
+/* ---- Mobile (≤ 600px) ---- */
+@media (max-width: 600px) {
+  #channelGrid{grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;padding:10px 12px}
+  .ch-card{padding:10px 6px 6px}
+  .ch-card img{height:50px}
+  .ch-card .ch-name{font-size:11px}
+  #toolbar{padding:2px 4px;gap:1px}
+  .tool-btn{padding:6px 2px;font-size:9px}
+  .tool-btn .icon svg,.action-btn .icon svg{width:16px;height:16px}
+  #langSection{padding:4px 8px;gap:4px}
+  #nowPlaying{padding:4px 8px;font-size:11px}
+  #controlsSection{padding:6px 8px;gap:6px}
+  #searchInput{padding:7px 10px;font-size:12px}
+  .action-btn{font-size:11px;padding:6px 8px}
+  #favSection{padding:6px 8px}
+  #favList .ch-card{width:68px}
+  #sourceSection{padding:6px 8px}
+  #addSourceRow{flex-wrap:wrap}
+  #statusToast{font-size:11px;padding:5px 12px}
+  .mini-btn,.nav-btn,#cinemaBtn,#langBtn{padding:5px}
+  .mini-btn svg,.nav-btn svg{width:14px;height:14px}
+  #cinemaBtn .cinema-icon svg{width:14px;height:14px}
+}
+</style>
+</head>
+<body>
+
+<div id="leftPane">
+  <div id="playerSection">
+    <video id="player" autoplay playsinline controls></video>
+    <div id="statusToast"></div>
+  </div>
+  
+  <div id="cinemaOverlay"></div>
+
+  <div id="langSection">
+  <button id="prevChBtn" class="nav-btn" title="Previous channel">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button id="nextChBtn" class="nav-btn" title="Next channel">
+    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <span class="nav-sep"></span>
+  <button id="cinemaBtn" title="Cinema mode">
+    <span class="cinema-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/><line x1="6" y1="4" x2="6" y2="8"/><line x1="18" y1="4" x2="18" y2="8"/><line x1="6" y1="16" x2="6" y2="20"/><line x1="18" y1="16" x2="18" y2="20"/></svg></span>
+  </button>
+  <button id="pinBtn" class="mini-btn" title="Pin channel (auto-play on startup)">
+    <svg viewBox="0 0 24 24"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
+  </button>
+  <button id="favBtn" class="mini-btn" title="Toggle favorite">
+    <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+  </button>
+  <button id="hideBtn" class="mini-btn" title="Hide channel">
+    <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+  </button>
+  <button id="epgBtn" class="mini-btn" title="Program Guide">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="16" y2="18"/></svg>
+  </button>
+  <button id="shortcutsBtn" class="mini-btn" title="Keyboard shortcuts">
+    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="10" x2="7" y2="10"/><line x1="11" y1="10" x2="13" y2="10"/><line x1="17" y1="10" x2="18" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
+    <div id="shortcutsPanel"></div>
+  </button>
+  <button id="langBtn">
+    <span id="langFlag">&#127482;&#127480;</span>
+    <div id="langMenu"></div>
+  </button>
+</div>
+
+<div id="nowPlaying">
+  <span class="dot"></span>
+  <span id="nowPlayingName">No channel selected</span>
+  <div id="nowProgram" style="display:none"></div>
+</div>
+
+<div id="toolbar">
+  <button id="btnUnmute" class="tool-btn" title="Sound">
+    <span class="icon" id="muteIcon"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg></span>
+    <span>Sound</span>
+  </button>
+  <button id="btnPiP" class="tool-btn" title="Mini">
+    <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="12" y="9" width="8" height="6" rx="1"/></svg></span>
+    <span>Mini</span>
+  </button>
+  <button id="btnFullscreen" class="tool-btn" title="New tab">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+    <span>New tab</span>
+  </button>
+  <button id="btnRetry" class="tool-btn" title="Reload">
+    <span class="icon"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
+    <span>Reload</span>
+  </button>
+  <button id="qualityBtn" class="tool-btn" title="Quality" style="display:none">
+    <span class="icon"><svg viewBox="0 0 24 24"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4A2 2 0 0 1 2 16.76V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.79 0z"/><polyline points="2.32 6.16 12 11 21.68 6.16"/><line x1="12" y1="22.76" x2="12" y2="11"/></svg></span>
+    <span class="quality-label">Auto</span>
+    <div id="qualityMenu"></div>
+  </button>
+</div>
+
+</div>
+
+<div id="epgPanel">
+  <div id="epgPanelHeader">
+    <span class="epg-title" id="epgPanelTitle">Program Guide</span>
+    <button id="epgCloseBtn">&times;</button>
+  </div>
+  <div id="epgUrlRow">
+    <input id="epgUrlInput" placeholder="EPG/XMLTV URL (.xml or .xml.gz) — comma-separate multiple" />
+    <button id="epgUrlBtn">Load</button>
+  </div>
+  <div class="epg-list" id="epgList"></div>
+</div>
+
+</div><!-- end leftPane -->
+
+<div id="rightPane">
+<div id="favSection">
+  <div id="favHeader"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> <span>Favorites</span></div>
+  <div id="favList"></div>
+</div>
+
+<div id="sourceSection">
+  <div id="sourceToggle">
+    <span class="arrow">&#9654;</span>
+    <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> <span>Sources</span>
+  </div>
+  <div id="sourceBody">
+    <div id="sourceList"></div>
+    <div id="addSourceRow">
+      <input id="addSourceInput" placeholder="Paste M3U link here..." />
+      <button id="addSourceBtn">+ Add</button>
+      <label id="fileSourceLabel" title="Choose M3U file from device"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> <span>File</span>
+        <input id="fileSourceInput" type="file" accept=".m3u,.m3u8,.txt" />
+      </label>
+    </div>
+  </div>
+</div>
+
+<div id="controlsSection">
+  <input id="searchInput" placeholder="Search channels..." />
+  <div id="actionRow">
+    <button id="btnCheck" class="action-btn" title="Check which channels are working">
+      <span class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <span>Check channels</span>
+    </button>
+    <button id="btnReset" class="action-btn" title="Show all hidden channels">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      <span>Show all</span>
+    </button>
+  </div>
+</div>
+
+<div id="channelGrid"></div>
+
+<div id="emptyState">
+  <div class="icon">&#128225;</div>
+  <div>Loading...</div>
+</div>
+
+<div id="credit"><a href="https://github.com/vuviett47" target="_blank">Made by vuviett47</a></div>
+
+<button id="scrollTop" title="Top"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3"/><path d="M3 7l5-5 5 5"/></svg></button>
+</div><!-- end rightPane -->
+
+<script src="hls.light.min.js"></script>
+<script src="panel.js"></script>
+</body>
+</html>
