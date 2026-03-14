@@ -1132,6 +1132,7 @@ let stallTimer   = null;
 const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
+let currentCategory = "tv"; // 'tv' or 'radio'
 
 /* ===== EPG (Electronic Program Guide) ===== */
 let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
@@ -1300,8 +1301,6 @@ async function loadEpgData(urls, merge){
   _knownEpgIds = null;
   if(totalMapChannels > 0){
     showToast("EPG: " + totalMapChannels + " channels indexed", 3000);
-  } else if(urls.length > 0){
-    showToast("EPG: no program data found", 3000);
   }
 }
 
@@ -1768,7 +1767,9 @@ function makeCard(ch, idx, container){
   div.dataset.idx = idx;
 
   const img = document.createElement("img");
-  img.src = ch.logo || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><rect width='120' height='60' rx='8' fill='%23334155'/><text x='60' y='36' text-anchor='middle' fill='%2394a3b8' font-size='11'>TV</text></svg>";
+  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
+  img.src = ch.logo || fallbackImg;
+  img.onerror = function() { this.onerror = null; this.src = fallbackImg; };
   img.alt = ch.name;
   img.loading = "lazy";
 
@@ -1811,7 +1812,9 @@ function renderFavs(){
     div.draggable = true;
 
     const img = document.createElement("img");
-    img.src = ch.logo || "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='60'><rect width='120' height='60' rx='8' fill='%23334155'/><text x='60' y='36' text-anchor='middle' fill='%2394a3b8' font-size='11'>TV</text></svg>";
+    const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
+    img.src = ch.logo || fallbackImg;
+    img.onerror = function() { this.onerror = null; this.src = fallbackImg; };
     img.alt = ch.name;
     img.loading = "lazy";
 
@@ -1878,9 +1881,14 @@ function renderGrid(){
   if(!grid) return;
   const q = (searchIn ? searchIn.value : "").toLowerCase();
   const frag = document.createDocumentFragment();
+  const isRadioCat = currentCategory === "radio";
   let count = 0;
+  let tvCount = 0;
+  let radioCount = 0;
   allChannels.forEach((ch, i) => {
     if(hidden.has(ch.url)) return;
+    if(ch.isRadio) radioCount++; else tvCount++;
+    if(!!ch.isRadio !== isRadioCat) return; // filter by category
     if(q && !ch.name.toLowerCase().includes(q)) return;
     makeCard(ch, i, frag);
     count++;
@@ -1893,6 +1901,12 @@ function renderGrid(){
     const active = grid.querySelector('[data-idx="' + currentIdx + '"]');
     if(active) active.classList.add("active");
   }
+
+  // Update badges
+  const tvBadge = document.querySelector('.cat-tab[data-cat="tv"] .badge');
+  const radioBadge = document.querySelector('.cat-tab[data-cat="radio"] .badge');
+  if(tvBadge) tvBadge.textContent = tvCount;
+  if(radioBadge) radioBadge.textContent = radioCount;
 }
 
 /* ===== CHANNEL CHECK ===== */
@@ -1957,12 +1971,24 @@ async function checkAll(){
 if(btnCheck) btnCheck.onclick = checkAll;
 if(btnReset) btnReset.onclick = () => { hidden.clear(); saveHidden(); renderGrid(); };
 
-/* ===== SEARCH ===== */
+/* ===== SEARCH & TABS ===== */
 let searchTimer = null;
 if(searchIn) searchIn.addEventListener("input", () => {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(renderGrid, 200);
 });
+
+const catTabs = document.querySelectorAll(".cat-tab");
+if(catTabs.length > 0){
+  catTabs.forEach(btn => {
+    btn.addEventListener("click", () => {
+      catTabs.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentCategory = btn.dataset.cat;
+      renderGrid();
+    });
+  });
+}
 
 /* ===== SOURCES ===== */
 function getAllSources(){ return [...DEFAULT_SOURCES, ...sources]; }
@@ -2196,10 +2222,18 @@ function parseM3U(text){
       const logo = line.match(/tvg-logo="([^"]+)"/);
       const tvgId = line.match(/tvg-id="([^"]+)"/);
       const tvgName = line.match(/tvg-name="([^"]+)"/);
+      const lineLower = line.toLowerCase();
+      const isRadio = lineLower.includes('radio="true"') || lineLower.includes('radio=true') || lineLower.includes('group-title="radio"') || lineLower.includes('radio') || lineLower.includes('vov') || lineLower.includes('audio');
       const nm = line.split(",").pop();
-      cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : (tvgName ? tvgName[1] : "") };
+      cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : (tvgName ? tvgName[1] : ""), isRadio: isRadio };
     } else if(line.startsWith("http") && cur){
       cur.url = line;
+      if(!cur.isRadio){
+        const lowerUrl = line.toLowerCase();
+        if(lowerUrl.includes("radio") || lowerUrl.includes("vov") || lowerUrl.includes("audio")){
+          cur.isRadio = true;
+        }
+      }
       channels.push(cur);
       cur = null;
     }
