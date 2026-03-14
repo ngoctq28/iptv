@@ -2342,19 +2342,25 @@ if(activeSources.size > 0){
 
 /* ===== SCROLL TO TOP ===== */
 const scrollBtn = document.getElementById("scrollTop");
+const rightPane = document.getElementById("rightPane");
 if(scrollBtn){
   let _scrollTicking = false;
-  window.addEventListener("scroll", () => {
+  const onScroll = () => {
     if(!_scrollTicking){
       _scrollTicking = true;
       requestAnimationFrame(() => {
-        scrollBtn.classList.toggle("show", window.scrollY > 300);
+        const top = Math.max(window.scrollY, rightPane ? rightPane.scrollTop : 0);
+        scrollBtn.classList.toggle("show", top > 300);
         _scrollTicking = false;
       });
     }
-  }, { passive: true });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  if(rightPane) rightPane.addEventListener("scroll", onScroll, { passive: true });
+
   scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if(rightPane) rightPane.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 

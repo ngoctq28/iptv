@@ -235,12 +235,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   .ch-card{padding:12px 10px 10px}
   .ch-card img{height:70px}
   .ch-card .ch-name{font-size:13px;margin-top:8px}
-  #controlsSection{padding:10px 16px}
+  #controlsSection{padding:10px 16px;position:sticky;top:0;z-index:20;background:var(--bg)}
   #searchInput{padding:10px 14px;font-size:14px}
   #favSection{padding:10px 16px}
   #sourceSection{padding:10px 16px}
   #toolbar .tool-btn{padding:10px 6px}
-  #scrollTop{display:none!important}
+  #scrollTop{left:auto;right:30px;transform:scale(0)}
+  #scrollTop.show{transform:scale(1)}
+  #scrollTop:active{transform:scale(.92)}
 }
 
 /* ---- Tablet (601-1024px): wider grid ---- */
@@ -339,7 +341,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
     <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="12" y="9" width="8" height="6" rx="1"/></svg></span>
     <span>Mini</span>
   </button>
-  <button id="btnFullscreen" class="tool-btn" title="New tab">
+  <button id="btnFullscreen" class="tool-btn" title="New tab" style="display:none">
     <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
     <span>New tab</span>
   </button>
@@ -399,10 +401,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   <input id="searchInput" placeholder="Search channels..." />
   <div id="actionRow">
     <button id="btnCheck" class="action-btn" title="Check which channels are working">
-      <span class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
       <span>Check channels</span>
     </button>
-    <button id="btnReset" class="action-btn" title="Show all hidden channels">
+    <button id="btnReset" class="action-btn" title="Show all hidden channels" style="display:none">
       <span class="icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
       <span>Show all</span>
     </button>
