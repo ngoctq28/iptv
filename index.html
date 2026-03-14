@@ -38,20 +38,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 #rightPane::-webkit-scrollbar-thumb:hover{background:#777}
 
 /* PLAYER */
-#playerSection{position:sticky;top:0;z-index:30;background:#000}
+#playerSection{position:sticky;top:0;z-index:30;background:#000;flex-shrink:0}
 #player{width:100%;aspect-ratio:16/9;max-height:50vh;background:#000;display:block}
 #playerSection:fullscreen{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:#000}
 #playerSection:fullscreen #player{width:100%;height:100%;max-height:100vh}
 
 /* NOW PLAYING */
-#nowPlaying{background:var(--surface);padding:6px 12px;font-size:12px;color:var(--text-sec);display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+#nowPlaying{background:var(--surface);padding:6px 12px;font-size:12px;color:var(--text-sec);display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);flex-wrap:wrap;flex-shrink:0}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--danger);flex-shrink:0}
 #nowPlaying.live .dot{background:var(--success)}
 #nowPlayingName{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);font-weight:500}
 #nowProgram{width:100%;font-size:11px;color:var(--text-sec);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px;padding-left:12px}
 
 /* TOOLBAR */
-#toolbar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:4px 8px;gap:2px}
+#toolbar{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:4px 8px;gap:2px;flex-shrink:0}
 .tool-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:none;background:transparent;color:var(--text-sec);font-family:var(--font);font-size:10px;cursor:pointer;border-radius:var(--r);transition:background .12s,color .12s;user-select:none}
 .tool-btn:hover{background:var(--surface-hover);color:var(--text)}
 .tool-btn:active{background:var(--surface-active)}
@@ -155,7 +155,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 #fileSourceInput{display:none}
 
 /* LANGUAGE SELECTOR */
-#langSection{display:flex;align-items:center;justify-content:flex-end;padding:4px 12px;border-bottom:1px solid var(--border);gap:6px;flex-wrap:wrap}
+#langSection{display:flex;align-items:center;justify-content:flex-end;padding:4px 12px;border-bottom:1px solid var(--border);gap:6px;flex-wrap:wrap;flex-shrink:0}
 #langBtn{display:flex;align-items:center;justify-content:center;padding:6px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text-sec);cursor:pointer;transition:background .12s,border-color .12s;position:relative;font-size:20px;line-height:1}
 #langBtn:hover{background:var(--surface-hover);border-color:var(--accent);color:var(--text)}
 #langMenu{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;z-index:60;min-width:140px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
@@ -190,21 +190,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 .nav-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;margin:0 2px}
 
 /* EPG PANEL */
-#epgPanel{display:none;background:var(--bg);border-bottom:1px solid var(--border);max-height:320px;overflow-y:auto}
-#epgPanel.open{display:block}
-#epgPanelHeader{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:2}
-#epgPanelHeader .epg-title{flex:1;font-size:13px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#epgCloseBtn{background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:18px;padding:2px 6px;border-radius:4px;transition:background .12s,color .12s}
+#epgPanel{display:none;flex-direction:column;background:var(--bg);border-top:1px solid var(--border);flex:1;min-height:0;overflow:hidden}
+#epgPanel.open{display:flex}
+#epgPanelHeader{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--surface),var(--bg));flex-shrink:0}
+#epgPanelHeader .epg-icon{font-size:16px;flex-shrink:0}
+#epgPanelHeader .epg-title{flex:1;font-size:14px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.01em}
+#epgCloseBtn{background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:18px;padding:2px 8px;border-radius:6px;transition:background .12s,color .12s;line-height:1}
 #epgCloseBtn:hover{background:var(--surface-hover);color:var(--text)}
-.epg-list{padding:4px 0}
-.epg-item{display:flex;gap:8px;padding:6px 12px;font-size:12px;color:var(--text-sec);transition:background .1s}
-.epg-item:hover{background:var(--surface)}
-.epg-item.now{background:var(--surface);color:var(--text);border-left:3px solid var(--accent)}
-.epg-item .epg-time{flex-shrink:0;width:90px;color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
+.epg-list{padding:6px 0;overflow-y:auto;flex:1;min-height:0}
+.epg-item{display:flex;align-items:flex-start;flex-direction:column;gap:4px;padding:10px 14px;font-size:13px;color:var(--text-sec);transition:background .12s;border-left:3px solid transparent;cursor:default;position:relative}
+.epg-item:hover{background:var(--surface);color:var(--text)}
+.epg-item.now{background:rgba(96,165,250,.07);color:var(--text);border-left-color:var(--accent)}
+.epg-item-row{display:flex;align-items:center;gap:10px;width:100%}
+.epg-item .epg-time{flex-shrink:0;min-width:110px;color:var(--accent);font-weight:600;font-size:12px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
 .epg-item.now .epg-time{color:var(--success)}
-.epg-item .epg-prog-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.epg-empty{padding:16px 12px;text-align:center;color:var(--text-sec);font-size:12px;font-style:italic}
-#epgUrlRow{display:flex;gap:6px;padding:6px 12px;border-bottom:1px solid var(--border)}
+.epg-item .epg-prog-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:500}
+.epg-item.now .epg-prog-title{font-weight:600;color:var(--text)}
+.epg-now-badge{display:inline-flex;align-items:center;gap:3px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:10px;letter-spacing:.05em;flex-shrink:0}
+.epg-progress-wrap{width:100%;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:2px}
+.epg-progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--success));border-radius:2px;transition:width .5s}
+.epg-empty{padding:24px 14px;text-align:center;color:var(--text-sec);font-size:13px;font-style:italic;display:flex;flex-direction:column;align-items:center;gap:8px}
+.epg-empty::before{content:'📺';font-size:32px;font-style:normal}
+#epgUrlRow{display:none}
 #epgUrlInput{flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);color:var(--text);font-family:var(--font);font-size:11px;outline:none}
 #epgUrlInput:focus{border-color:var(--accent)}
 #epgUrlInput::placeholder{color:var(--text-sec)}
@@ -227,7 +234,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 @media (min-width: 1025px) {
   html{background:#111;overflow:hidden}
   body{display:flex;flex-direction:row;height:100vh;max-width:1600px;margin:0 auto;box-shadow:0 0 30px rgba(0,0,0,.8);position:relative}
-  #leftPane{width:66.666%;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;height:100vh;overflow-y:auto;border-right:1px solid var(--border)}
+  #leftPane{width:66.666%;flex-shrink:0;display:flex;flex-direction:column;height:100vh;overflow-y:hidden;border-right:1px solid var(--border)}
   #rightPane{flex:1;display:flex;flex-direction:column;height:100vh;overflow-y:auto}
   #playerSection{position:relative;top:auto;z-index:30}
   #player{max-height:none}
@@ -310,7 +317,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   <button id="favBtn" class="mini-btn" title="Toggle favorite">
     <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
   </button>
-  <button id="hideBtn" class="mini-btn" title="Hide channel">
+  <button id="hideBtn" class="mini-btn" title="Hide channel" style="display:none">
     <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
   </button>
   <button id="epgBtn" class="mini-btn" title="Program Guide">
@@ -356,8 +363,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
   </button>
 </div>
 
-<div id="epgPanel">
+<div id="epgPanel" class="open">
   <div id="epgPanelHeader">
+    <span class="epg-icon">📺</span>
     <span class="epg-title" id="epgPanelTitle">Program Guide</span>
     <button id="epgCloseBtn">&times;</button>
   </div>
@@ -422,6 +430,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 </div><!-- end rightPane -->
 
 <script src="hls.light.min.js"></script>
+<script src="/env.js"></script>
 <script src="panel.js"></script>
 </body>
 </html>

@@ -1,0 +1,19 @@
+# Version control
+.git
+.gitignore
+
+# Node deps (re-installed inside the container)
+node_modules
+
+# Docker files themselves
+Dockerfile
+.dockerignore
+
+# Docs / misc
+README.md
+*.md
+
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+.env*

@@ -1,0 +1,39 @@
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+
+# ── Environment / secrets ─────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── OS artefacts ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor / IDE ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Logs & runtime ───────────────────────────────────────────────────────────
+logs/
+*.log
+pids/
+*.pid
+*.pid.lock
+
+# ── Docker (local dev only; Dockerfile is intentionally tracked) ──────────────
+# Uncomment if you don't want to commit these:
+# Dockerfile
+# .dockerignore

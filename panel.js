@@ -1,3 +1,9 @@
+/* ===== Production: silence console.log / console.warn ===== */
+if (window.__PROD__) {
+  console.log  = () => {};
+  console.warn = () => {};
+}
+
 /* ===== i18n ===== */
 const LANGS = {
   vi: {
@@ -1137,7 +1143,7 @@ let currentCategory = "tv"; // 'tv' or 'radio'
 /* ===== EPG (Electronic Program Guide) ===== */
 let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
 let epgChannelMap = {}; // { normalizedName: channelId } - display-name → id map
-let _epgDocs = []; // stored parsed XML DOMs for lazy per-channel extraction
+let _epgUrlsConfigured = []; // Configured EPG URLs for lazy fetch via proxy
 let _epgLoadedIds = new Set(); // EPG channel IDs whose programmes are already parsed
 const nowProgram = document.getElementById("nowProgram");
 
@@ -1156,83 +1162,61 @@ function normalizeChName(s){
 /* Yield to main thread so UI stays responsive */
 function _yieldToMain(){ return new Promise(r => setTimeout(r, 0)); }
 
-/* Phase 1: Parse only <channel> map from XMLTV (fast, lightweight) */
-async function parseXMLTVChannelMap(xmlText){
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(xmlText, "text/xml");
-
-  const channelMap = {};
-  const channels = doc.querySelectorAll("channel");
-  for(let ci = 0; ci < channels.length; ci++){
-    const ch = channels[ci];
-    const id = ch.getAttribute("id");
-    if(!id) continue;
-    const displayNames = ch.querySelectorAll("display-name");
-    for(const dn of displayNames){
-      const name = dn.textContent.trim();
-      if(name){
-        const norm = normalizeChName(name);
-        if(norm) channelMap[norm] = id;
-        channelMap[name.toLowerCase()] = id;
-      }
-    }
-    channelMap[id.toLowerCase()] = id;
-    const idBase = id.replace(/@(SD|HD|FHD|Plus\d*|\d+)$/i, "").toLowerCase();
-    if(idBase !== id.toLowerCase()) channelMap[idBase] = id;
-    if(ci % 500 === 499) await _yieldToMain();
-  }
-  return { doc, channelMap, channelCount: channels.length };
-}
-
-/* Phase 2: Lazily extract programmes for a SINGLE EPG channel ID from stored DOMs */
-function _extractProgrammesForId(epgChId){
+async function _extractProgrammesForId(epgChId){
   if(_epgLoadedIds.has(epgChId)) return; // already loaded
   _epgLoadedIds.add(epgChId);
   const pruneCutoff = Date.now() - 2 * 60 * 60 * 1000;
-  const epgChIdLower = epgChId.toLowerCase();
-  let count = 0;
-  for(const doc of _epgDocs){
-    // Use XPath-like approach: query all programme[channel=id]
-    // querySelectorAll can't do attr value with special chars safely, so iterate
-    const programmes = doc.querySelectorAll('programme[channel="' + CSS.escape(epgChId) + '"]');
-    for(const p of programmes){
-      const startStr = p.getAttribute("start");
-      const titleEl = p.querySelector("title");
-      if(!startStr || !titleEl) continue;
-      const stopStr = p.getAttribute("stop");
-      const stop = stopStr ? parseXMLTVDate(stopStr) : null;
-      if(stop && stop.getTime() < pruneCutoff) continue;
-      const start = parseXMLTVDate(startStr);
-      const title = titleEl.textContent.trim();
-      if(!epgData[epgChId]) epgData[epgChId] = [];
-      epgData[epgChId].push({ start, stop, title });
+  
+  try {
+    const resp = await fetch("/api/epg/programmes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ urls: _epgUrlsConfigured, id: epgChId })
+    });
+    if(!resp.ok) return;
+    const data = await resp.json();
+    
+    let count = 0;
+    if(!epgData[epgChId]) epgData[epgChId] = [];
+    
+    for(const p of data.programmes){
+      if(p.stop && p.stop < pruneCutoff) continue;
+      epgData[epgChId].push({ start: new Date(p.start), stop: new Date(p.stop), title: p.title });
       count++;
     }
-  }
-  if(count > 0){
-    epgData[epgChId].sort((a,b) => a.start - b.start);
-    console.log("[EPG] Lazy-loaded " + count + " programmes for " + epgChId);
+    
+    if(count > 0){
+      epgData[epgChId].sort((a,b) => a.start - b.start);
+      console.log("[EPG] Lazy-loaded " + count + " programmes for " + epgChId);
+      if(currentIdx >= 0 && allChannels[currentIdx]){
+         const chIdCheck = findEpgChannelId(allChannels[currentIdx].tvgId, allChannels[currentIdx].name);
+         if(chIdCheck === epgChId) updateEpgDisplay();
+      }
+      if(typeof renderEpgPanel === "function" && document.getElementById("epgPanel")?.classList.contains("open")) {
+        renderEpgPanel();
+      }
+    }
+  } catch(err){
+    console.warn("[EPG] Fetch programmes error:", err);
   }
 }
 
 /* Ensure EPG data is available for a given channel (lazy load from stored DOMs) */
 function ensureEpgForChannel(tvgId, channelName){
-  if(_epgDocs.length === 0) return; // no EPG sources loaded
+  if(_epgUrlsConfigured.length === 0) return; // no EPG sources loaded
   const chId = _findEpgChannelIdUncached(tvgId, channelName);
   if(!chId) return;
   if(!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
 }
 
-function parseXMLTVDate(s){
-  // Format: 20240101120000 +0700 or 20240101120000
-  const m = s.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([+-]\d{4})?/);
-  if(!m) return new Date(s);
-  const iso = m[1]+"-"+m[2]+"-"+m[3]+"T"+m[4]+":"+m[5]+":"+m[6]+(m[7] ? m[7].replace(/(\d{2})(\d{2})/, "$1:$2") : "");
-  return new Date(iso);
-}
-
 async function loadEpgData(urls, merge){
-  if(!merge){ epgData = {}; epgChannelMap = {}; _epgDocs = []; _epgLoadedIds.clear(); }
+  if(!merge){ epgData = {}; epgChannelMap = {}; _epgUrlsConfigured = []; _epgLoadedIds.clear(); }
+  
+  // Update configured URLs list
+  for(const u of urls) {
+      if(!_epgUrlsConfigured.includes(u)) _epgUrlsConfigured.push(u);
+  }
+
   // Invalidate lookup cache whenever EPG data changes
   _epgIdCache = Object.create(null);
 
@@ -1240,50 +1224,19 @@ async function loadEpgData(urls, merge){
   let loadedCount = 0;
   for(const url of urls){
     try {
-      console.log("[EPG] Fetching:", url);
-      let resp;
-      try {
-        resp = await fetch(url);
-      } catch (err) {}
-      
-      if(!resp || !resp.ok){ console.warn("[EPG] HTTP failed", url); continue; }
+      console.log("[EPG] Fetching channel map via proxy:", url);
+      const resp = await fetch("/api/epg/channels?url=" + encodeURIComponent(url));
+      if(!resp.ok){ console.warn("[EPG] HTTP proxy failed", url); continue; }
 
-      // Handle gzip-compressed files
-      let text;
-      if(url.endsWith(".gz") || url.endsWith(".gzip")){
-        let buffer;
-        try {
-          buffer = await resp.arrayBuffer();
-          const ds = new DecompressionStream("gzip");
-          const decompressed = new Response(buffer).body.pipeThrough(ds);
-          text = await new Response(decompressed).text();
-        } catch(gzErr){
-          console.warn("[EPG] Gzip decompress failed, trying raw:", gzErr);
-          if (buffer) {
-            text = new TextDecoder().decode(buffer);
-          } else {
-            text = await resp.text();
-          }
-        }
-      } else {
-        text = await resp.text();
-      }
+      const data = await resp.json();
 
-      console.log("[EPG] Parsing channel map from", (text.length/1024).toFixed(0), "KB", url);
-      // Phase 1: Only parse the channel map (fast) — NO programme parsing yet
-      const parsed = await parseXMLTVChannelMap(text);
+      Object.assign(epgChannelMap, data.channelMap);
 
-      // Store the parsed DOM for lazy per-channel programme extraction
-      _epgDocs.push(parsed.doc);
-
-      // Merge channel display-name map
-      Object.assign(epgChannelMap, parsed.channelMap);
-
-      totalMapChannels += parsed.channelCount;
+      totalMapChannels += data.channelCount || Object.keys(data.channelMap).length;
       loadedCount++;
-      console.log("[EPG] Indexed", parsed.channelCount, "channels from", url, "(programmes loaded on demand)");
+      console.log("[EPG] Indexed", data.channelCount || Object.keys(data.channelMap).length, "channels from proxy (programmes loaded on demand)");
     } catch(e){
-      console.warn("[EPG] Load error:", url, e);
+      console.warn("[EPG] Proxy load error:", url, e);
     }
   }
   // Invalidate cache after merge
@@ -1300,7 +1253,7 @@ async function loadEpgData(urls, merge){
   // Invalidate known IDs cache
   _knownEpgIds = null;
   if(totalMapChannels > 0){
-    showToast("EPG: " + totalMapChannels + " channels indexed", 3000);
+    showToast("EPG: " + totalMapChannels + " channels indexed via proxy", 3000);
   }
 }
 
@@ -1579,86 +1532,100 @@ function playByIndex(idx, opts){
 
   if(typeof Hls !== "undefined" && Hls.isSupported() && isHlsUrl(ch.url)){
     // ---- HLS.js path (most IPTV streams) ----
-    hls = new Hls({
-      maxBufferLength: 10,
-      maxMaxBufferLength: 30,
-      maxBufferSize: 15 * 1024 * 1024,
-      maxBufferHole: 1.5,             // tolerate larger gaps in live streams
-      lowLatencyMode: false,
-      enableWorker: true,
-      startLevel: -1,
-      abrEwmaDefaultEstimate: 5000000, // 5 Mbps — most IPTV is high bitrate, don't start low
-      liveSyncDurationCount: 2,        // play closer to live edge (2 segments behind)
-      liveBackBufferLength: 10,        // keep less past data
-      fragLoadingTimeOut: 20000,
-      fragLoadingMaxRetry: 6,
-      fragLoadingRetryDelay: 500,
-      fragLoadingMaxRetryTimeout: 15000,
-      manifestLoadingTimeOut: 15000,
-      manifestLoadingMaxRetry: 4,
-      manifestLoadingRetryDelay: 500,
-      levelLoadingTimeOut: 15000,
-      levelLoadingMaxRetry: 4,
-      levelLoadingRetryDelay: 500,
-      startFragPrefetch: true,
-      xhrSetup: function(xhr, url){
-        xhr.withCredentials = false;
-      },
-      backBufferLength: 10,
-      progressive: true,
-      testBandwidth: true,
-      nudgeMaxRetry: 5,               // retry seeking past gaps before giving up
-      maxFragLookUpTolerance: 0.5      // less strict fragment matching
-    });
+    let _hlsProxyRetried = false; // guard: only escalate to proxy once per channel
 
-    let hlsMediaRecoveryAttempts = 0;
-    
-    hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      hls.loadSource(ch.url);
-    });
+    function buildHlsInstance(sourceUrl, useProxy){
+      if(hls){ hls.destroy(); hls = null; }
 
-    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      hlsLevels = hls.levels || [];
-      buildQualityMenu();
-      safePlay();
-    });
+      hls = new Hls({
+        maxBufferLength: 10,
+        maxMaxBufferLength: 30,
+        maxBufferSize: 15 * 1024 * 1024,
+        maxBufferHole: 1.5,
+        lowLatencyMode: false,
+        enableWorker: true,
+        startLevel: -1,
+        abrEwmaDefaultEstimate: 5000000,
+        liveSyncDurationCount: 2,
+        liveBackBufferLength: 10,
+        fragLoadingTimeOut: 20000,
+        fragLoadingMaxRetry: 6,
+        fragLoadingRetryDelay: 500,
+        fragLoadingMaxRetryTimeout: 15000,
+        manifestLoadingTimeOut: 15000,
+        manifestLoadingMaxRetry: 4,
+        manifestLoadingRetryDelay: 500,
+        levelLoadingTimeOut: 15000,
+        levelLoadingMaxRetry: 4,
+        levelLoadingRetryDelay: 500,
+        startFragPrefetch: true,
+        xhrSetup: function(xhr, url){ xhr.withCredentials = false; },
+        backBufferLength: 10,
+        progressive: true,
+        testBandwidth: true,
+        nudgeMaxRetry: 5,
+        maxFragLookUpTolerance: 0.5
+      });
 
-    hls.on(Hls.Events.FRAG_LOADED, () => {
-      hlsMediaRecoveryAttempts = 0;
-    });
+      let hlsMediaRecoveryAttempts = 0;
 
-    hls.on(Hls.Events.ERROR, (event, data) => {
-      if(!data.fatal) return;
-      console.warn("HLS fatal error:", data.type, data.details);
-      switch(data.type){
-        case Hls.ErrorTypes.NETWORK_ERROR:
-          if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError"){
-            showToast(t("networkError"), 0);
-            setTimeout(() => { if(hls) hls.loadSource(ch.url); }, 4000);
-          } else {
-            hls.startLoad();
-          }
-          break;
-        case Hls.ErrorTypes.MEDIA_ERROR:
-          showToast(t("mediaError"), 0);
-          hlsMediaRecoveryAttempts++;
-          if(hlsMediaRecoveryAttempts <= 2){
-            hls.recoverMediaError();
-          } else {
-            // Swap codec after multiple media errors
-            hls.swapAudioCodec();
-            hls.recoverMediaError();
-            hlsMediaRecoveryAttempts = 0;
-          }
-          break;
-        default:
-          // unrecoverable
-          destroyHls();
-          doRetry();
-          break;
-      }
-    });
+      hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+        hls.loadSource(sourceUrl);
+      });
 
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        hlsLevels = hls.levels || [];
+        buildQualityMenu();
+        safePlay();
+        if(useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
+      });
+
+      hls.on(Hls.Events.FRAG_LOADED, () => {
+        hlsMediaRecoveryAttempts = 0;
+      });
+
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        if(!data.fatal) return;
+        console.warn("HLS fatal error:", data.type, data.details);
+        switch(data.type){
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError"){
+              // First failure on a direct URL → escalate to HLS proxy (handles CORS)
+              if(!_hlsProxyRetried && !useProxy){
+                _hlsProxyRetried = true;
+                showToast("CORS \u2014 retrying via proxy\u2026", 0);
+                console.warn("[HLS] Switching to HLS proxy for:", ch.url);
+                const proxiedUrl = "/api/hls?url=" + encodeURIComponent(ch.url);
+                buildHlsInstance(proxiedUrl, true);
+                hls.attachMedia(video);
+              } else {
+                showToast(t("networkError"), 0);
+                setTimeout(() => { if(hls) hls.loadSource(sourceUrl); }, 4000);
+              }
+            } else {
+              hls.startLoad();
+            }
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            showToast(t("mediaError"), 0);
+            hlsMediaRecoveryAttempts++;
+            if(hlsMediaRecoveryAttempts <= 2){
+              hls.recoverMediaError();
+            } else {
+              hls.swapAudioCodec();
+              hls.recoverMediaError();
+              hlsMediaRecoveryAttempts = 0;
+            }
+            break;
+          default:
+            destroyHls();
+            doRetry();
+            break;
+        }
+      });
+    }
+
+    buildHlsInstance(ch.url, false);
     hls.attachMedia(video);
   } else {
     // ---- Native path (direct .ts / .mp4 / Safari HLS) ----
@@ -2224,7 +2191,11 @@ function parseM3U(text){
       const tvgName = line.match(/tvg-name="([^"]+)"/);
       const lineLower = line.toLowerCase();
       const isRadio = lineLower.includes('radio="true"') || lineLower.includes('radio=true') || lineLower.includes('group-title="radio"') || lineLower.includes('radio') || lineLower.includes('vov') || lineLower.includes('audio');
-      const nm = line.split(",").pop();
+      const rawNm = line.split(",").pop();
+      const nm = rawNm
+        .replace(/\s*This m3u file[^-]*-\s*/i, '') // strip watermark
+        .replace(/^\s*\([^)]*\)\s*/, '')             // strip leading (anytext)
+        .trim() || rawNm.trim();
       cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : (tvgName ? tvgName[1] : ""), isRadio: isRadio };
     } else if(line.startsWith("http") && cur){
       cur.url = line;
@@ -2273,13 +2244,31 @@ async function loadActiveSources(){
       if(src.local && src.content){
         result = parseM3U(src.content);
       } else {
-        let resp;
+        let text = null;
+
+        // 1st attempt: direct fetch
         try {
-          resp = await fetch(src.url);
-        } catch(err) {}
-        
-        if(!resp || !resp.ok) throw new Error("HTTP Fetch failed completely");
-        const text = await resp.text();
+          const resp = await fetch(src.url);
+          if(resp && resp.ok) text = await resp.text();
+        } catch(err) {
+          console.warn("[Source] Direct fetch failed, will try proxy:", err.message);
+        }
+
+        // 2nd attempt: route through local proxy server as fallback
+        if(text === null){
+          try {
+            showToast("Retrying via proxy…", 0);
+            const proxyResp = await fetch("/api/proxy?url=" + encodeURIComponent(src.url));
+            if(proxyResp && proxyResp.ok){
+              text = await proxyResp.text();
+              console.log("[Source] Loaded via proxy:", src.url);
+            }
+          } catch(proxyErr){
+            console.warn("[Source] Proxy fetch also failed:", proxyErr.message);
+          }
+        }
+
+        if(text === null) throw new Error("All fetch attempts failed (direct + proxy)");
         result = parseM3U(text);
       }
       allChannels = allChannels.concat(result.channels);
@@ -2648,15 +2637,43 @@ function renderEpgPanel(){
     const div = document.createElement("div");
     div.className = "epg-item" + (isNow ? " now" : "");
 
+    // Main row: time + title + badge
+    const row = document.createElement("div");
+    row.className = "epg-item-row";
+
     const timeEl = document.createElement("span");
     timeEl.className = "epg-time";
-    timeEl.textContent = formatTime(p.start) + (p.stop ? " - " + formatTime(p.stop) : "");
+    timeEl.textContent = formatTime(p.start) + (p.stop ? " \u2013 " + formatTime(p.stop) : "");
 
     const titleEl = document.createElement("span");
     titleEl.className = "epg-prog-title";
-    titleEl.textContent = (isNow ? "\u25B6 " : "") + p.title;
+    titleEl.textContent = p.title;
 
-    div.append(timeEl, titleEl);
+    row.append(timeEl, titleEl);
+
+    if(isNow){
+      const badge = document.createElement("span");
+      badge.className = "epg-now-badge";
+      badge.textContent = "\u25CF LIVE";
+      row.appendChild(badge);
+    }
+
+    div.appendChild(row);
+
+    // Progress bar for current program
+    if(isNow && p.stop){
+      const total = p.stop - p.start;
+      const elapsed = now - p.start;
+      const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
+      const wrap = document.createElement("div");
+      wrap.className = "epg-progress-wrap";
+      const bar = document.createElement("div");
+      bar.className = "epg-progress-bar";
+      bar.style.width = pct.toFixed(1) + "%";
+      wrap.appendChild(bar);
+      div.appendChild(wrap);
+    }
+
     epgListEl.appendChild(div);
     hasItems = true;
   }
@@ -2667,7 +2684,7 @@ function renderEpgPanel(){
 
   // Scroll the "now" item into view
   const nowItem = epgListEl.querySelector(".epg-item.now");
-  if(nowItem) nowItem.scrollIntoView({ block: "center", behavior: "instant" });
+  if(nowItem) nowItem.scrollIntoView({ block: "nearest", behavior: "instant" });
 }
 
 if(epgBtn) epgBtn.addEventListener("click", () => {
@@ -2715,6 +2732,9 @@ if(savedEpgUrl){
   const urls = savedEpgUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u && u.startsWith("http"));
   if(urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
 }
+
+// EPG panel is open by default — mark button active
+if(epgBtn) epgBtn.classList.add("active");
 
 // Unified EPG refresh — runs every 60s
 function _epgPeriodicRefresh(){
