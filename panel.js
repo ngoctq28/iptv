@@ -1241,24 +1241,11 @@ async function loadEpgData(urls, merge){
     try {
       console.log("[EPG] Fetching:", url);
       let resp;
-      let proxies = [
-        "https://api.codetabs.com/v1/proxy?quest=" + url,
-        "https://corsproxy.io/?" + encodeURIComponent(url),
-        "https://api.allorigins.win/raw?url=" + encodeURIComponent(url)
-      ];
-      // Skip direct fetch when opened from local file system to avoid red CORS errors in console
-      if (window.location.protocol !== "file:") {
-        proxies.unshift(""); 
-      }
+      try {
+        resp = await fetch(url);
+      } catch (err) {}
       
-      for(let p of proxies) {
-        try {
-          resp = await fetch(p ? p : url);
-          if (resp.ok) break;
-        } catch (err) {}
-      }
-      
-      if(!resp || !resp.ok){ console.warn("[EPG] HTTP failed on all proxies", url); continue; }
+      if(!resp || !resp.ok){ console.warn("[EPG] HTTP failed", url); continue; }
 
       // Handle gzip-compressed files
       let text;
@@ -1627,18 +1614,8 @@ function playByIndex(idx, opts){
 
     let hlsMediaRecoveryAttempts = 0;
     
-    // Fallback proxy list
-    const proxies = [
-      "", 
-      "https://api.codetabs.com/v1/proxy?quest=",
-      "https://corsproxy.io/?",
-      "https://api.allorigins.win/raw?url="
-    ];
-    let proxyIdx = 0;
-    let streamUrl = ch.url;
-
     hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      hls.loadSource(streamUrl);
+      hls.loadSource(ch.url);
     });
 
     hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
@@ -1656,26 +1633,9 @@ function playByIndex(idx, opts){
       console.warn("HLS fatal error:", data.type, data.details);
       switch(data.type){
         case Hls.ErrorTypes.NETWORK_ERROR:
-          if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut"){
-            // If manifest failed (CORS, 403, 404, etc), try next proxy
-            proxyIdx++;
-            if (proxyIdx < proxies.length) {
-              console.warn(`Manifest load failed. Trying proxy ${proxyIdx}/${proxies.length - 1}...`);
-              
-              if (proxies[proxyIdx].includes("corsproxy.io") || proxies[proxyIdx].includes("allorigins")) {
-                streamUrl = proxies[proxyIdx] + encodeURIComponent(ch.url);
-              } else {
-                streamUrl = proxies[proxyIdx] + ch.url;
-              }
-              
-              setTimeout(() => { if(hls) hls.loadSource(streamUrl); }, 1000);
-            } else {
-              showToast(t("networkError"), 0);
-              // Out of proxies, retry native URL after a longer delay
-              proxyIdx = 0;
-              streamUrl = ch.url;
-              setTimeout(() => { if(hls) hls.loadSource(streamUrl); }, 4000);
-            }
+          if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError"){
+            showToast(t("networkError"), 0);
+            setTimeout(() => { if(hls) hls.loadSource(ch.url); }, 4000);
           } else {
             hls.startLoad();
           }
@@ -2280,21 +2240,9 @@ async function loadActiveSources(){
         result = parseM3U(src.content);
       } else {
         let resp;
-        let proxies = [
-          "https://api.codetabs.com/v1/proxy?quest=" + src.url,
-          "https://corsproxy.io/?" + encodeURIComponent(src.url),
-          "https://api.allorigins.win/raw?url=" + encodeURIComponent(src.url)
-        ];
-        if (window.location.protocol !== "file:") {
-          proxies.unshift("");
-        }
-        
-        for(let p of proxies) {
-          try {
-            resp = await fetch(p ? p : src.url);
-            if (resp.ok) break;
-          } catch (err) {}
-        }
+        try {
+          resp = await fetch(src.url);
+        } catch(err) {}
         
         if(!resp || !resp.ok) throw new Error("HTTP Fetch failed completely");
         const text = await resp.text();
