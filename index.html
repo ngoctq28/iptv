@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Stream IPTV channels directly in your browser. Add M3U sources, browse channels, and watch live TV with EPG support." />
 <meta name="theme-color" content="#202020" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="apple-touch-icon" href="/icon-192.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -43,7 +47,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);width:100%;f
 video::-webkit-media-controls-fullscreen-button{display:none}
 #playerSection:fullscreen{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:#000;position:relative}
 #playerSection:fullscreen #player{width:100%;height:100%;max-height:100vh}
-#playerSection:fullscreen #quickSwitchBtn{opacity:.8;position:absolute;top:10px;right:10px;z-index:2147483647}
+#playerSection:fullscreen #quickSwitchBtn{opacity:.8;position:absolute;top:14px;right:14px;z-index:2147483647}
 #playerSection:fullscreen #quickSwitchModal{z-index:2147483647}
 #playerSection:fullscreen #statusToast{z-index:2147483647}
 
@@ -173,7 +177,7 @@ body.cinema #player{max-height:none;aspect-ratio:16/9}
 @keyframes cinemaIn{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
 /* QUICK SWITCH */
-#quickSwitchBtn{position:absolute;top:10px;right:10px;z-index:2147483647;background:rgba(0,0,0,.55);border:none;border-radius:8px;padding:8px;cursor:pointer;color:#fff;opacity:0;pointer-events:auto;transition:opacity .2s;display:flex;align-items:center;justify-content:center}
+#quickSwitchBtn{position:absolute;top:14px;right:14px;z-index:2147483647;background:rgba(0,0,0,.6);border:none;border-radius:10px;padding:12px;cursor:pointer;color:#fff;opacity:0;pointer-events:auto;transition:opacity .2s;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 #playerSection:hover #quickSwitchBtn,#player:hover ~ #quickSwitchBtn{opacity:.8}
 #playerSection:fullscreen #quickSwitchBtn,#playerSection:-webkit-full-screen #quickSwitchBtn{opacity:.8}
 #quickSwitchBtn:hover{opacity:1!important;background:rgba(0,0,0,.75)}
@@ -327,7 +331,7 @@ body.cinema #player{max-height:none;aspect-ratio:16/9}
   <div id="playerSection">
     <video id="player" autoplay playsinline controls></video>
     <button id="quickSwitchBtn" title="Quick switch channel">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
     </button>
     <div id="quickSwitchModal">
       <div id="quickSwitchOverlay"></div>
@@ -487,5 +491,10 @@ body.cinema #player{max-height:none;aspect-ratio:16/9}
 <script src="hls.light.min.js"></script>
 <script src="/env.js"></script>
 <script src="panel.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+</script>
 </body>
 </html>

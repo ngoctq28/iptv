@@ -1,0 +1,28 @@
+{
+  "name": "IPTV Player — Stream Live TV",
+  "short_name": "IPTV Player",
+  "description": "Stream IPTV channels directly in your browser. Add M3U sources, browse channels, and watch live TV with EPG support.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#202020",
+  "background_color": "#202020",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
