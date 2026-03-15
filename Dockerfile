@@ -32,6 +32,13 @@ COPY index.html       ./
 COPY panel.js         ./
 COPY hls.light.min.js ./
 
+# Copy PWA assets (manifest, service worker, icons)
+COPY manifest.json    ./
+COPY sw.js            ./
+COPY icon.svg         ./
+COPY icon-192.png     ./
+COPY icon-512.png     ./
+
 # Use the non-root user
 USER appuser
 
