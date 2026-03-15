@@ -61,7 +61,8 @@ const LANGS = {
     shortcutsTitle: "Ph\u00EDm t\u1EAFt",
     playPause: "Ph\u00E1t / T\u1EA1m d\u1EEBng",
     prevChannel: "K\u00EAnh tr\u01B0\u1EDBc",
-    nextChannel: "K\u00EAnh ti\u1EBFp"
+    nextChannel: "K\u00EAnh ti\u1EBFp",
+    fullscreen: "To\u00E0n m\u00E0n h\u00ECnh"
   },
   en: {
     flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "English (US)",
@@ -118,7 +119,8 @@ const LANGS = {
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
-    nextChannel: "Next channel"
+    nextChannel: "Next channel",
+    fullscreen: "Fullscreen"
   },
   "en-GB": {
     flag: "\uD83C\uDDEC\uD83C\uDDE7", label: "English (UK)",
@@ -175,7 +177,8 @@ const LANGS = {
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
-    nextChannel: "Next channel"
+    nextChannel: "Next channel",
+    fullscreen: "Fullscreen"
   },
   fr: {
     flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
@@ -232,7 +235,8 @@ const LANGS = {
     shortcutsTitle: "Raccourcis",
     playPause: "Lecture / Pause",
     prevChannel: "Cha\u00EEne pr\u00E9c\u00E9dente",
-    nextChannel: "Cha\u00EEne suivante"
+    nextChannel: "Cha\u00EEne suivante",
+    fullscreen: "Plein \u00E9cran"
   },
   de: {
     flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
@@ -289,7 +293,8 @@ const LANGS = {
     shortcutsTitle: "Tastaturk\u00FCrzel",
     playPause: "Wiedergabe / Pause",
     prevChannel: "Vorheriger Kanal",
-    nextChannel: "N\u00E4chster Kanal"
+    nextChannel: "N\u00E4chster Kanal",
+    fullscreen: "Vollbild"
   },
   ru: {
     flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
@@ -346,7 +351,8 @@ const LANGS = {
     shortcutsTitle: "\u0413\u043E\u0440\u044F\u0447\u0438\u0435 \u043A\u043B\u0430\u0432\u0438\u0448\u0438",
     playPause: "\u0412\u043E\u0441\u043F\u0440. / \u041F\u0430\u0443\u0437\u0430",
     prevChannel: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
-    nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B"
+    nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
+    fullscreen: "\u041F\u043E\u043B\u043D\u044B\u0439 \u044D\u043A\u0440\u0430\u043D"
   },
   "en-AU": {
     flag: "\uD83C\uDDE6\uD83C\uDDFA", label: "English (AU)",
@@ -403,7 +409,8 @@ const LANGS = {
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
-    nextChannel: "Next channel"
+    nextChannel: "Next channel",
+    fullscreen: "Fullscreen"
   },
   "zh-CN": {
     flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
@@ -460,7 +467,8 @@ const LANGS = {
     shortcutsTitle: "\u5FEB\u6377\u952E",
     playPause: "\u64AD\u653E / \u6682\u505C",
     prevChannel: "\u4E0A\u4E00\u4E2A\u9891\u9053",
-    nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053"
+    nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053",
+    fullscreen: "\u5168\u5C4F"
   },
   "zh-TW": {
     flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
@@ -517,7 +525,8 @@ const LANGS = {
     shortcutsTitle: "\u5FEB\u6377\u9375",
     playPause: "\u64AD\u653E / \u66AB\u505C",
     prevChannel: "\u4E0A\u4E00\u500B\u983B\u9053",
-    nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053"
+    nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053",
+    fullscreen: "\u5168\u753B\u9762"
   },
   ja: {
     flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
@@ -574,7 +583,8 @@ const LANGS = {
     shortcutsTitle: "\u30B7\u30E7\u30FC\u30C8\u30AB\u30C3\u30C8",
     playPause: "\u518D\u751F / \u4E00\u6642\u505C\u6B62",
     prevChannel: "\u524D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
-    nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB"
+    nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
+    fullscreen: "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3"
   },
   ko: {
     flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
@@ -631,7 +641,8 @@ const LANGS = {
     shortcutsTitle: "\uB2E8\uCD95\uD0A4",
     playPause: "\uC7AC\uC0DD / \uC77C\uC2DC\uC815\uC9C0",
     prevChannel: "\uC774\uC804 \uCC44\uB110",
-    nextChannel: "\uB2E4\uC74C \uCC44\uB110"
+    nextChannel: "\uB2E4\uC74C \uCC44\uB110",
+    fullscreen: "\uC804\uCCB4 \uD654\uBA74"
   },
   es: {
     flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
@@ -688,7 +699,8 @@ const LANGS = {
     shortcutsTitle: "Atajos",
     playPause: "Reproducir / Pausa",
     prevChannel: "Canal anterior",
-    nextChannel: "Canal siguiente"
+    nextChannel: "Canal siguiente",
+    fullscreen: "Pantalla completa"
   },
   pt: {
     flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
@@ -745,7 +757,8 @@ const LANGS = {
     shortcutsTitle: "Atalhos",
     playPause: "Reproduzir / Pausa",
     prevChannel: "Canal anterior",
-    nextChannel: "Pr\u00F3ximo canal"
+    nextChannel: "Pr\u00F3ximo canal",
+    fullscreen: "Tela cheia"
   },
   ar: {
     flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -802,7 +815,8 @@ const LANGS = {
     shortcutsTitle: "\u0627\u062E\u062A\u0635\u0627\u0631\u0627\u062A",
     playPause: "\u062A\u0634\u063A\u064A\u0644 / \u0625\u064A\u0642\u0627\u0641",
     prevChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629",
-    nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629"
+    nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629",
+    fullscreen: "\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629"
   },
   hi: {
     flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
@@ -859,7 +873,8 @@ const LANGS = {
     shortcutsTitle: "\u0936\u0949\u0930\u094D\u091F\u0915\u091F",
     playPause: "\u091A\u0932\u093E\u090F\u0902 / \u0930\u094B\u0915\u0947\u0902",
     prevChannel: "\u092A\u093F\u091B\u0932\u093E \u091A\u0948\u0928\u0932",
-    nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932"
+    nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932",
+    fullscreen: "\u092A\u0942\u0930\u094D\u0923 \u0938\u094D\u0915\u094D\u0930\u0940\u0928"
   },
   th: {
     flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
@@ -916,7 +931,8 @@ const LANGS = {
     shortcutsTitle: "\u0E17\u0E32\u0E07\u0E25\u0E31\u0E14",
     playPause: "\u0E40\u0E25\u0E48\u0E19 / \u0E2B\u0E22\u0E38\u0E14",
     prevChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32",
-    nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B"
+    nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B",
+    fullscreen: "\u0E40\u0E15\u0E47\u0E21\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D"
   },
   id: {
     flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
@@ -973,7 +989,8 @@ const LANGS = {
     shortcutsTitle: "Pintasan",
     playPause: "Putar / Jeda",
     prevChannel: "Saluran sebelumnya",
-    nextChannel: "Saluran berikutnya"
+    nextChannel: "Saluran berikutnya",
+    fullscreen: "Layar penuh"
   },
   it: {
     flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
@@ -1030,7 +1047,8 @@ const LANGS = {
     shortcutsTitle: "Scorciatoie",
     playPause: "Riproduci / Pausa",
     prevChannel: "Canale precedente",
-    nextChannel: "Canale successivo"
+    nextChannel: "Canale successivo",
+    fullscreen: "Schermo intero"
   },
   tr: {
     flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
@@ -1087,7 +1105,8 @@ const LANGS = {
     shortcutsTitle: "K\u0131sayollar",
     playPause: "Oynat / Duraklat",
     prevChannel: "\u00D6nceki kanal",
-    nextChannel: "Sonraki kanal"
+    nextChannel: "Sonraki kanal",
+    fullscreen: "Tam ekran"
   }
 };
 
@@ -1105,9 +1124,9 @@ const nowBar     = document.getElementById("nowPlaying");
 const btnUnmute  = document.getElementById("btnUnmute");
 const btnPiP     = document.getElementById("btnPiP");
 const btnFull    = document.getElementById("btnFullscreen");
+const btnPlayerFs = document.getElementById("btnPlayerFullscreen");
 const btnRetry   = document.getElementById("btnRetry");
 const toast      = document.getElementById("statusToast");
-const favList    = document.getElementById("favList");
 const searchIn   = document.getElementById("searchInput");
 const btnCheck   = document.getElementById("btnCheck");
 const btnReset   = document.getElementById("btnReset");
@@ -1138,7 +1157,7 @@ let stallTimer   = null;
 const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
-let currentCategory = "tv"; // 'tv' or 'radio'
+let currentCategory = "tv"; // 'tv', 'radio' or 'fav'
 
 /* ===== EPG (Electronic Program Guide) ===== */
 let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
@@ -1419,9 +1438,9 @@ if(btnPiP) btnPiP.addEventListener("click", async () => {
   try {
     if(document.pictureInPictureElement){
       await document.exitPictureInPicture();
-    } else {
-      await video.requestPictureInPicture();
+      return;
     }
+    await video.requestPictureInPicture();
   } catch(e){ console.warn("PiP error:", e); showToast(t("pipNotSupported"), 2000); }
 });
 
@@ -1442,15 +1461,25 @@ if(btnFull) btnFull.addEventListener("click", () => {
   window.open(currentUrl, "_blank");
 });
 
+/* ===== PLAYER FULLSCREEN ===== */
+if(btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
+  const ps = document.getElementById("playerSection");
+  if(document.fullscreenElement){
+    document.exitFullscreen();
+  } else if(ps){
+    ps.requestFullscreen();
+  }
+});
+document.addEventListener("fullscreenchange", () => {
+  if(btnPlayerFs) btnPlayerFs.classList.toggle("active", !!document.fullscreenElement);
+});
+
 /* ===== RETRY ===== */
 if(btnRetry) btnRetry.addEventListener("click", () => {
   if(currentIdx < 0) return;
   playByIndex(currentIdx);
   showToast(t("reloading"), 1500);
 });
-
-/* ===== FAVORITES SCROLL ===== */
-if(favList) favList.addEventListener("wheel", e => { e.preventDefault(); favList.scrollLeft += e.deltaY; }, { passive: false });
 
 /* ===== PLAY PREVIEW ===== */
 function isHlsUrl(url){ return /\.m3u8?(\?|$)/i.test(url); }
@@ -1507,15 +1536,11 @@ function playByIndex(idx, opts){
   if(prevIdx >= 0){
     const prev = grid && grid.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
     if(prev) prev.classList.remove("active");
-    const prevFav = favList && favList.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
-    if(prevFav) prevFav.classList.remove("active");
   }
   const card = grid && grid.querySelector('.ch-card[data-idx="' + idx + '"]');
   if(card){
     card.classList.add("active");
   }
-  const favCard = favList && favList.querySelector('.ch-card[data-idx="' + idx + '"]');
-  if(favCard) favCard.classList.add("active");
 
   // update now-playing
   if(nowName) nowName.textContent = ch.name || t("channelN") + (idx+1);
@@ -1710,21 +1735,8 @@ function toggleFav(ch){
   const i = favorites.findIndex(f => f.url === ch.url);
   if(i === -1) favorites.push(ch); else favorites.splice(i, 1);
   localStorage.setItem("fav", JSON.stringify(favorites));
-  renderFavs();
-  // Update just the star icon on this channel's card instead of full grid rebuild
-  if(grid){
-    const cards = grid.querySelectorAll('.ch-card');
-    for(const card of cards){
-      const idx = parseInt(card.dataset.idx);
-      if(isNaN(idx) || idx >= allChannels.length) continue;
-      if(allChannels[idx].url !== ch.url) continue;
-      const star = card.querySelector('.ch-star');
-      if(star){
-        const isFav = favorites.some(f => f.url === ch.url);
-        star.classList.toggle('on', isFav);
-      }
-    }
-  }
+  renderGrid();
+  updateMiniButtons();
 }
 
 /* ===== RENDER CARD ===== */
@@ -1755,107 +1767,27 @@ function makeCard(ch, idx, container){
   container.appendChild(div);
 }
 
-/* ===== RENDER FAVORITES ===== */
-let dragFavIdx = -1;
-
-function renderFavs(){
-  if(!favList) return;
-  if(favorites.length === 0){
-    favList.innerHTML = "";
-    const msg = document.createElement("span");
-    msg.className = "fav-empty-msg";
-    msg.textContent = t("favEmpty");
-    favList.appendChild(msg);
-    return;
-  }
-  const frag = document.createDocumentFragment();
-  favorites.forEach((ch, fi) => {
-    const i = allChannels.findIndex(c => c.url === ch.url);
-    if(i === -1) return;
-    const div = document.createElement("div");
-    div.className = "ch-card";
-    div.dataset.idx = i;
-    div.dataset.favIdx = fi;
-    div.draggable = true;
-
-    const img = document.createElement("img");
-    const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
-    img.src = ch.logo || fallbackImg;
-    img.onerror = function() { this.onerror = null; this.src = fallbackImg; };
-    img.alt = ch.name;
-    img.loading = "lazy";
-
-    const name = document.createElement("div");
-    name.className = "ch-name";
-    name.textContent = ch.name;
-
-    const star = document.createElement("div");
-    star.className = "ch-star on";
-    star.textContent = "\u2605";
-    star.onclick = (e) => { e.stopPropagation(); toggleFav(ch); };
-
-    div.onclick = () => playByIndex(i);
-
-    // Drag events
-    div.addEventListener("dragstart", (e) => {
-      dragFavIdx = fi;
-      div.classList.add("dragging");
-      e.dataTransfer.effectAllowed = "move";
-    });
-    div.addEventListener("dragend", () => {
-      div.classList.remove("dragging");
-      dragFavIdx = -1;
-      favList.querySelectorAll(".ch-card").forEach(c => {
-        c.classList.remove("drag-over-left", "drag-over-right");
-      });
-    });
-    div.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
-      if(dragFavIdx === fi) return;
-      const rect = div.getBoundingClientRect();
-      const mid = rect.left + rect.width / 2;
-      div.classList.toggle("drag-over-left", e.clientX < mid);
-      div.classList.toggle("drag-over-right", e.clientX >= mid);
-    });
-    div.addEventListener("dragleave", () => {
-      div.classList.remove("drag-over-left", "drag-over-right");
-    });
-    div.addEventListener("drop", (e) => {
-      e.preventDefault();
-      if(dragFavIdx < 0 || dragFavIdx === fi) return;
-      const rect = div.getBoundingClientRect();
-      const mid = rect.left + rect.width / 2;
-      let targetIdx = e.clientX < mid ? fi : fi + 1;
-      // Move the dragged item
-      const [moved] = favorites.splice(dragFavIdx, 1);
-      if(targetIdx > dragFavIdx) targetIdx--;
-      favorites.splice(targetIdx, 0, moved);
-      localStorage.setItem("fav", JSON.stringify(favorites));
-      dragFavIdx = -1;
-      renderFavs();
-    });
-
-    div.append(img, name, star);
-    frag.appendChild(div);
-  });
-  favList.innerHTML = "";
-  favList.appendChild(frag);
-}
-
 /* ===== RENDER GRID ===== */
 function renderGrid(){
   if(!grid) return;
   const q = (searchIn ? searchIn.value : "").toLowerCase();
   const frag = document.createDocumentFragment();
+  const isFavCat = currentCategory === "fav";
   const isRadioCat = currentCategory === "radio";
   let count = 0;
   let tvCount = 0;
   let radioCount = 0;
+  let favCount = 0;
   allChannels.forEach((ch, i) => {
     if(hidden.has(ch.url)) return;
+    const isFav = favorites.some(f => f.url === ch.url);
+    if(isFav) favCount++;
     if(ch.isRadio) radioCount++; else tvCount++;
-    if(!!ch.isRadio !== isRadioCat) return; // filter by category
+    if(isFavCat){
+      if(!isFav) return;
+    } else {
+      if(!!ch.isRadio !== isRadioCat) return;
+    }
     if(q && !ch.name.toLowerCase().includes(q)) return;
     makeCard(ch, i, frag);
     count++;
@@ -1863,15 +1795,16 @@ function renderGrid(){
   grid.innerHTML = "";
   grid.appendChild(frag);
   if(emptyState) emptyState.classList.toggle("show", count === 0 && allChannels.length > 0);
-  // re-highlight the currently playing card
   if(currentIdx >= 0){
     const active = grid.querySelector('[data-idx="' + currentIdx + '"]');
     if(active) active.classList.add("active");
   }
 
   // Update badges
+  const favBadge = document.querySelector('.cat-tab[data-cat="fav"] .badge');
   const tvBadge = document.querySelector('.cat-tab[data-cat="tv"] .badge');
   const radioBadge = document.querySelector('.cat-tab[data-cat="radio"] .badge');
+  if(favBadge) favBadge.textContent = favCount;
   if(tvBadge) tvBadge.textContent = tvCount;
   if(radioBadge) radioBadge.textContent = radioCount;
 }
@@ -1975,7 +1908,7 @@ function showEmptyState(){
   if(grid) grid.innerHTML = "";
   if(nowName) nowName.textContent = t("noChannel");
   if(nowBar) nowBar.classList.remove("live");
-  renderFavs();
+  renderGrid();
   if(emptyState){
     emptyState.classList.add("show");
     emptyState.querySelector(".icon").textContent = "\uD83D\uDCFA";
@@ -2279,7 +2212,6 @@ async function loadActiveSources(){
     }
   }
 
-  renderFavs();
   renderGrid();
 
   if(allChannels.length === 0){
@@ -2321,7 +2253,7 @@ if(activeSources.size > 0){
   loadActiveSources();
 } else {
   // First boot: show empty, user must pick a source
-  renderFavs();
+  renderGrid();
   if(emptyState){
     emptyState.classList.add("show");
     emptyState.querySelector(".icon").textContent = "\uD83D\uDCFA";
@@ -2332,26 +2264,116 @@ if(activeSources.size > 0){
 /* ===== SCROLL TO TOP ===== */
 const scrollBtn = document.getElementById("scrollTop");
 const rightPane = document.getElementById("rightPane");
+const gridEl    = document.getElementById("channelGrid");
 if(scrollBtn){
   let _scrollTicking = false;
   const onScroll = () => {
     if(!_scrollTicking){
       _scrollTicking = true;
       requestAnimationFrame(() => {
-        const top = Math.max(window.scrollY, rightPane ? rightPane.scrollTop : 0);
+        const top = Math.max(window.scrollY, gridEl ? gridEl.scrollTop : 0, rightPane ? rightPane.scrollTop : 0);
         scrollBtn.classList.toggle("show", top > 300);
         _scrollTicking = false;
       });
     }
   };
   window.addEventListener("scroll", onScroll, { passive: true });
+  if(gridEl) gridEl.addEventListener("scroll", onScroll, { passive: true });
   if(rightPane) rightPane.addEventListener("scroll", onScroll, { passive: true });
 
   scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if(gridEl) gridEl.scrollTo({ top: 0, behavior: "smooth" });
     if(rightPane) rightPane.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
+
+/* ===== QUICK SWITCH MODAL ===== */
+const quickSwitchBtn = document.getElementById("quickSwitchBtn");
+const quickSwitchModal = document.getElementById("quickSwitchModal");
+const quickSwitchOverlay = document.getElementById("quickSwitchOverlay");
+const quickSwitchClose = document.getElementById("quickSwitchClose");
+const quickSwitchSearch = document.getElementById("quickSwitchSearch");
+const quickSwitchGrid = document.getElementById("quickSwitchGrid");
+let qsCat = "tv";
+
+function openQuickSwitch(){
+  if(!quickSwitchModal) return;
+  qsCat = currentCategory;
+  quickSwitchModal.classList.add("open");
+  if(quickSwitchSearch){ quickSwitchSearch.value = ""; quickSwitchSearch.focus(); }
+  updateQsTabs();
+  renderQuickSwitch();
+}
+
+function closeQuickSwitch(){
+  if(quickSwitchModal) quickSwitchModal.classList.remove("open");
+}
+
+function renderQuickSwitch(filter){
+  if(!quickSwitchGrid) return;
+  const q = (filter || "").toLowerCase();
+  const isFavCat = qsCat === "fav";
+  const isRadioCat = qsCat === "radio";
+  const frag = document.createDocumentFragment();
+  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
+  allChannels.forEach((ch, i) => {
+    if(hidden.has(ch.url)) return;
+    const isFav = favorites.some(f => f.url === ch.url);
+    if(isFavCat){ if(!isFav) return; }
+    else { if(!!ch.isRadio !== isRadioCat) return; }
+    if(q && !ch.name.toLowerCase().includes(q)) return;
+    const div = document.createElement("div");
+    div.className = "qs-card" + (i === currentIdx ? " active" : "");
+    const img = document.createElement("img");
+    img.src = ch.logo || fallbackImg;
+    img.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
+    img.alt = ch.name;
+    img.loading = "lazy";
+    const name = document.createElement("div");
+    name.className = "qs-name";
+    name.textContent = ch.name;
+    div.append(img, name);
+    div.onclick = () => { playByIndex(i); closeQuickSwitch(); };
+    frag.appendChild(div);
+  });
+  quickSwitchGrid.innerHTML = "";
+  quickSwitchGrid.appendChild(frag);
+}
+
+if(quickSwitchBtn) quickSwitchBtn.addEventListener("click", openQuickSwitch);
+if(quickSwitchClose) quickSwitchClose.addEventListener("click", closeQuickSwitch);
+if(quickSwitchOverlay) quickSwitchOverlay.addEventListener("click", closeQuickSwitch);
+if(quickSwitchSearch) quickSwitchSearch.addEventListener("input", () => renderQuickSwitch(quickSwitchSearch.value));
+
+function updateQsTabs(){
+  const tabs = document.querySelectorAll(".qs-tab");
+  tabs.forEach(t => t.classList.toggle("active", t.dataset.cat === qsCat));
+  // Update badges
+  let tvCount = 0, radioCount = 0, favCount = 0;
+  allChannels.forEach(ch => {
+    if(hidden.has(ch.url)) return;
+    if(ch.isRadio) radioCount++; else tvCount++;
+    if(favorites.some(f => f.url === ch.url)) favCount++;
+  });
+  const tvBadge = document.querySelector('.qs-tab[data-cat="tv"] .qs-badge');
+  const radioBadge = document.querySelector('.qs-tab[data-cat="radio"] .qs-badge');
+  const favBadge = document.querySelector('.qs-tab[data-cat="fav"] .qs-badge');
+  if(tvBadge) tvBadge.textContent = tvCount;
+  if(radioBadge) radioBadge.textContent = radioCount;
+  if(favBadge) favBadge.textContent = favCount;
+}
+document.querySelectorAll(".qs-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    qsCat = tab.dataset.cat;
+    updateQsTabs();
+    renderQuickSwitch(quickSwitchSearch ? quickSwitchSearch.value : "");
+  });
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape" && quickSwitchModal && quickSwitchModal.classList.contains("open")) closeQuickSwitch();
+});
 
 /* ===== CINEMA MODE ===== */
 const cinemaBtn = document.getElementById("cinemaBtn");
@@ -2361,6 +2383,7 @@ let cinemaMode = false;
 function applyCinemaMode(){
   if(cinemaOverlay) cinemaOverlay.classList.toggle("show", cinemaMode);
   if(cinemaBtn) cinemaBtn.classList.toggle("active", cinemaMode);
+  document.body.classList.toggle("cinema", cinemaMode);
 }
 
 if(cinemaBtn){
@@ -2458,15 +2481,13 @@ function applyLang(){
     btnFull.querySelector("span:last-child").textContent = t("newTab");
     btnFull.title = t("newTab");
   }
+  if(btnPlayerFs){
+    btnPlayerFs.querySelector("span:last-child").textContent = t("fullscreen");
+    btnPlayerFs.title = t("fullscreen");
+  }
   if(btnRetry){
     btnRetry.querySelector("span:last-child").textContent = t("reload");
     btnRetry.title = t("reload");
-  }
-
-  const favHeader = document.getElementById("favHeader");
-  if(favHeader){
-    const favSpan = favHeader.querySelector("span");
-    if(favSpan) favSpan.textContent = t("favHeader").replace(/^[\u2B50\s]+/, "");
   }
 
   const srcToggleLabel = sourceToggle ? sourceToggle.querySelector("span:last-child") : null;
@@ -2483,6 +2504,7 @@ function applyLang(){
   }
 
   if(searchIn) searchIn.placeholder = t("searchPlaceholder");
+  if(quickSwitchSearch) quickSwitchSearch.placeholder = t("searchPlaceholder");
   if(btnCheck){
     btnCheck.querySelector("span:last-child").textContent = t("checkBtn");
     btnCheck.title = t("checkTitle");
@@ -2511,7 +2533,7 @@ function applyLang(){
 
   // Re-render dynamic content
   renderSources();
-  renderFavs();
+  renderGrid();
 
   // Build lang menu & shortcuts
   buildShortcutsPanel();
@@ -2572,6 +2594,7 @@ if(nextChBtn) nextChBtn.addEventListener("click", () => {
 
 /* ===== EPG PANEL ===== */
 const epgBtn       = document.getElementById("epgBtn");
+const listBtn      = document.getElementById("listBtn");
 const epgPanel     = document.getElementById("epgPanel");
 const epgListEl    = document.getElementById("epgList");
 const epgPanelTitle = document.getElementById("epgPanelTitle");
@@ -2587,6 +2610,16 @@ function openEpgPanel(){
 function closeEpgPanel(){
   if(epgPanel) epgPanel.classList.remove("open");
   if(epgBtn) epgBtn.classList.remove("active");
+}
+
+function openList(){
+  document.body.classList.add("list-open");
+  if(listBtn) listBtn.classList.add("active");
+}
+
+function closeList(){
+  document.body.classList.remove("list-open");
+  if(listBtn) listBtn.classList.remove("active");
 }
 
 function renderEpgPanel(){
@@ -2692,7 +2725,15 @@ if(epgBtn) epgBtn.addEventListener("click", () => {
   else openEpgPanel();
 });
 
+if(listBtn) listBtn.addEventListener("click", () => {
+  if(document.body.classList.contains("list-open")) closeList();
+  else openList();
+});
+
 if(epgCloseBtn) epgCloseBtn.addEventListener("click", closeEpgPanel);
+
+// Auto-open EPG panel and channel list on desktop only
+if(window.innerWidth >= 1025){ openEpgPanel(); openList(); }
 
 // Manual EPG URL loading
 const epgUrlInput = document.getElementById("epgUrlInput");
@@ -2733,8 +2774,9 @@ if(savedEpgUrl){
   if(urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
 }
 
-// EPG panel is open by default — mark button active
-if(epgBtn) epgBtn.classList.add("active");
+// Channel list is open by default on desktop — mark button active
+if(listBtn && window.innerWidth >= 1025) listBtn.classList.add("active");
+if(epgBtn && window.innerWidth >= 1025) epgBtn.classList.add("active");
 
 // Unified EPG refresh — runs every 60s
 function _epgPeriodicRefresh(){
