@@ -1,4 +1,4 @@
-# IPTV Player
+# Live TV
 
 A lightweight, responsive web application that allows users to stream IPTV channels directly in their browser.
 

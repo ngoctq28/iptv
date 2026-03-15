@@ -1,19 +1,39 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# Stage 1: install production dependencies only
+# Stage 1: install ALL dependencies and build frontend with webpack
+# ─────────────────────────────────────────────────────────────────────────────
+FROM node:22-alpine AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+
+# Copy source files needed for the webpack build
+COPY webpack.config.js ./
+COPY src/              ./src/
+COPY index.html        ./
+COPY panel.js          ./
+COPY hls.light.min.js  ./
+COPY sw.js             ./
+COPY manifest.json     ./
+COPY icon.svg          ./
+COPY icon-192.png      ./
+COPY icon-512.png      ./
+
+RUN npm run build
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 2: install production dependencies only
 # ─────────────────────────────────────────────────────────────────────────────
 FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# Copy manifest files only — Docker cache-layer trick:
-# re-runs npm ci only when package*.json changes, not on every source change.
 COPY package.json package-lock.json ./
-
-# Install *only* production deps (no devDependencies, no postinstall scripts)
 RUN npm ci --omit=dev --ignore-scripts
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Stage 2: final image — copy app source + pre-built node_modules
+# Stage 3: final image — copy server + built frontend + prod node_modules
 # ─────────────────────────────────────────────────────────────────────────────
 FROM node:22-alpine AS final
 
@@ -25,19 +45,12 @@ WORKDIR /app
 # Copy production node_modules from the deps stage
 COPY --from=deps /app/node_modules ./node_modules
 
-# Copy application source files
-COPY package.json     ./
-COPY server.js        ./
-COPY index.html       ./
-COPY panel.js         ./
-COPY hls.light.min.js ./
+# Copy server
+COPY package.json ./
+COPY server.js    ./
 
-# Copy PWA assets (manifest, service worker, icons)
-COPY manifest.json    ./
-COPY sw.js            ./
-COPY icon.svg         ./
-COPY icon-192.png     ./
-COPY icon-512.png     ./
+# Copy webpack build output
+COPY --from=build /app/dist ./dist
 
 # Use the non-root user
 USER appuser

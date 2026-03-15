@@ -1,9 +1,7 @@
-const CACHE_NAME = 'iptv-player-v1';
+const CACHE_NAME = 'iptv-player-v2';
 const SHELL_ASSETS = [
   '/',
   '/index.html',
-  '/panel.js',
-  '/hls.light.min.js',
   '/manifest.json',
   '/icon.svg'
 ];

@@ -1471,7 +1471,12 @@ if(btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
   }
 });
 document.addEventListener("fullscreenchange", () => {
-  if(btnPlayerFs) btnPlayerFs.classList.toggle("active", !!document.fullscreenElement);
+  if(btnPlayerFs) {
+    btnPlayerFs.classList.toggle("active", !!document.fullscreenElement);
+    btnPlayerFs.innerHTML = document.fullscreenElement
+      ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
+      : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+  }
 });
 
 /* ===== RETRY ===== */
@@ -2470,11 +2475,9 @@ function applyLang(){
   // Static HTML elements
   if(nowName && currentIdx < 0) nowName.textContent = t("noChannel");
   if(btnUnmute){
-    btnUnmute.querySelector("span:last-child").textContent = t("sound");
     btnUnmute.title = t("sound") + " (M)";
   }
   if(btnPiP){
-    btnPiP.querySelector("span:last-child").textContent = t("pip");
     btnPiP.title = t("pip");
   }
   if(btnFull){
@@ -2482,11 +2485,9 @@ function applyLang(){
     btnFull.title = t("newTab");
   }
   if(btnPlayerFs){
-    btnPlayerFs.querySelector("span:last-child").textContent = t("fullscreen");
     btnPlayerFs.title = t("fullscreen");
   }
   if(btnRetry){
-    btnRetry.querySelector("span:last-child").textContent = t("reload");
     btnRetry.title = t("reload");
   }
 
@@ -2621,6 +2622,10 @@ function closeList(){
   document.body.classList.remove("list-open");
   if(listBtn) listBtn.classList.remove("active");
 }
+
+// Right pane close button (mobile overlay)
+const rightPaneCloseBtn = document.getElementById("rightPaneCloseBtn");
+if(rightPaneCloseBtn) rightPaneCloseBtn.addEventListener("click", closeList);
 
 function renderEpgPanel(){
   if(!epgListEl) return;

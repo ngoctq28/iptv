@@ -1,0 +1,59 @@
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+module.exports = {
+  mode: 'production',
+  entry: './src/app.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].[contenthash:8].js',
+    clean: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css',
+    }),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        minifyCSS: true,
+      },
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'sw.js', to: 'sw.js' },
+        { from: 'manifest.json', to: 'manifest.json' },
+        { from: 'icon.svg', to: 'icon.svg' },
+        { from: 'icon-192.png', to: 'icon-192.png' },
+        { from: 'icon-512.png', to: 'icon-512.png' },
+      ],
+    }),
+  ],
+  optimization: {
+    minimizer: [
+      new TerserPlugin({ extractComments: false }),
+      new CssMinimizerPlugin(),
+    ],
+  },
+  performance: {
+    hints: false,
+  },
+};

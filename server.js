@@ -16,8 +16,9 @@ if (IS_PROD) {
 app.use(cors());
 app.use(express.json());
 
-// Serve the frontend (index.html, panel.js, etc.) as static files
-app.use(express.static(__dirname));
+// Serve the frontend from dist/ (webpack build) in production, or project root in dev
+const staticDir = IS_PROD ? require('path').join(__dirname, 'dist') : __dirname;
+app.use(express.static(staticDir));
 
 // Expose build environment to the browser so panel.js can silence itself
 app.get('/env.js', (_req, res) => {
@@ -27,7 +28,7 @@ app.get('/env.js', (_req, res) => {
 });
 
 // Explicit root route — always serves index.html
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/', (req, res) => res.sendFile(path.join(staticDir, 'index.html')));
 
 // In-memory cache for EPG XML data
 const epgCache = {}; // { url: { timestamp, channelMap, programMap } }

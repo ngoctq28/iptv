@@ -1,6 +1,6 @@
 {
-  "name": "IPTV Player — Stream Live TV",
-  "short_name": "IPTV Player",
+  "name": "Live TV",
+  "short_name": "Live TV",
   "description": "Stream IPTV channels directly in your browser. Add M3U sources, browse channels, and watch live TV with EPG support.",
   "start_url": "/",
   "display": "standalone",
