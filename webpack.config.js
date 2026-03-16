@@ -53,6 +53,17 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  devServer: {
+    port: 3000,
+    hot: true,
+    open: true,
+    proxy: [
+      {
+        context: ['/api', '/env.js'],
+        target: 'http://localhost:3001',
+      },
+    ],
+  },
   performance: {
     hints: false,
   },

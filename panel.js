@@ -62,7 +62,14 @@ const LANGS = {
     playPause: "Ph\u00E1t / T\u1EA1m d\u1EEBng",
     prevChannel: "K\u00EAnh tr\u01B0\u1EDBc",
     nextChannel: "K\u00EAnh ti\u1EBFp",
-    fullscreen: "To\u00E0n m\u00E0n h\u00ECnh"
+    fullscreen: "To\u00E0n m\u00E0n h\u00ECnh",
+    epgLoaded: "\u0110\u00E3 t\u1EA3i EPG",
+    retryProxy: "\u0110ang th\u1EED l\u1EA1i qua proxy\u2026",
+    epgLoadFailed: "Kh\u00F4ng t\u1EA3i \u0111\u01B0\u1EE3c EPG",
+    epgTitle: "L\u1ECBch ph\u00E1t s\u00F3ng",
+    epgNoData: "Ch\u01B0a c\u00F3 d\u1EEF li\u1EC7u EPG",
+    epgNoProgram: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh",
+    epgNoUpcoming: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh s\u1EAFp t\u1EDBi"
   },
   en: {
     flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "English (US)",
@@ -120,7 +127,14 @@ const LANGS = {
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
-    fullscreen: "Fullscreen"
+    fullscreen: "Fullscreen",
+    epgLoaded: "EPG loaded",
+    retryProxy: "Retrying via proxy…",
+    epgLoadFailed: "Failed to load EPG",
+    epgTitle: "Program Guide",
+    epgNoData: "No EPG data loaded",
+    epgNoProgram: "No program data",
+    epgNoUpcoming: "No upcoming programs",
   },
   "en-GB": {
     flag: "\uD83C\uDDEC\uD83C\uDDE7", label: "English (UK)",
@@ -178,7 +192,14 @@ const LANGS = {
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
-    fullscreen: "Fullscreen"
+    fullscreen: "Fullscreen",
+    epgLoaded: "EPG loaded",
+    retryProxy: "Retrying via proxy…",
+    epgLoadFailed: "Failed to load EPG",
+    epgTitle: "Programme Guide",
+    epgNoData: "No EPG data loaded",
+    epgNoProgram: "No programme data",
+    epgNoUpcoming: "No upcoming programmes",
   },
   fr: {
     flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
@@ -236,7 +257,14 @@ const LANGS = {
     playPause: "Lecture / Pause",
     prevChannel: "Cha\u00EEne pr\u00E9c\u00E9dente",
     nextChannel: "Cha\u00EEne suivante",
-    fullscreen: "Plein \u00E9cran"
+    fullscreen: "Plein \u00E9cran",
+    epgLoaded: "EPG charg\u00E9",
+    retryProxy: "Nouvelle tentative via proxy\u2026",
+    epgLoadFailed: "\u00C9chec du chargement EPG",
+    epgTitle: "Guide des programmes",
+    epgNoData: "Aucune donn\u00E9e EPG charg\u00E9e",
+    epgNoProgram: "Aucune donn\u00E9e de programme",
+    epgNoUpcoming: "Aucun programme \u00E0 venir"
   },
   de: {
     flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
@@ -294,7 +322,14 @@ const LANGS = {
     playPause: "Wiedergabe / Pause",
     prevChannel: "Vorheriger Kanal",
     nextChannel: "N\u00E4chster Kanal",
-    fullscreen: "Vollbild"
+    fullscreen: "Vollbild",
+    epgLoaded: "EPG geladen",
+    retryProxy: "Erneuter Versuch über Proxy…",
+    epgLoadFailed: "EPG konnte nicht geladen werden",
+    epgTitle: "Programmf\u00FChrer",
+    epgNoData: "Keine EPG-Daten geladen",
+    epgNoProgram: "Keine Programmdaten",
+    epgNoUpcoming: "Keine kommenden Programme"
   },
   ru: {
     flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
@@ -352,7 +387,14 @@ const LANGS = {
     playPause: "\u0412\u043E\u0441\u043F\u0440. / \u041F\u0430\u0443\u0437\u0430",
     prevChannel: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
     nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
-    fullscreen: "\u041F\u043E\u043B\u043D\u044B\u0439 \u044D\u043A\u0440\u0430\u043D"
+    fullscreen: "\u041F\u043E\u043B\u043D\u044B\u0439 \u044D\u043A\u0440\u0430\u043D",
+    epgLoaded: "EPG \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043D",
+    retryProxy: "\u041F\u043E\u0432\u0442\u043E\u0440 \u0447\u0435\u0440\u0435\u0437 \u043F\u0440\u043E\u043A\u0441\u0438\u2026",
+    epgLoadFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C EPG",
+    epgTitle: "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043F\u0435\u0440\u0435\u0434\u0430\u0447",
+    epgNoData: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 EPG",
+    epgNoProgram: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 \u043E \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0435",
+    epgNoUpcoming: "\u041D\u0435\u0442 \u043F\u0440\u0435\u0434\u0441\u0442\u043E\u044F\u0449\u0438\u0445 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C"
   },
   "en-AU": {
     flag: "\uD83C\uDDE6\uD83C\uDDFA", label: "English (AU)",
@@ -410,7 +452,14 @@ const LANGS = {
     playPause: "Play / Pause",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
-    fullscreen: "Fullscreen"
+    fullscreen: "Fullscreen",
+    epgLoaded: "EPG loaded",
+    retryProxy: "Retrying via proxy…",
+    epgLoadFailed: "Failed to load EPG",
+    epgTitle: "Programme Guide",
+    epgNoData: "No EPG data loaded",
+    epgNoProgram: "No programme data",
+    epgNoUpcoming: "No upcoming programmes",
   },
   "zh-CN": {
     flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
@@ -468,7 +517,14 @@ const LANGS = {
     playPause: "\u64AD\u653E / \u6682\u505C",
     prevChannel: "\u4E0A\u4E00\u4E2A\u9891\u9053",
     nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053",
-    fullscreen: "\u5168\u5C4F"
+    fullscreen: "\u5168\u5C4F",
+    epgLoaded: "EPG \u5DF2\u52A0\u8F7D",
+    retryProxy: "\u6B63\u5728\u901A\u8FC7\u4EE3\u7406\u91CD\u8BD5\u2026",
+    epgLoadFailed: "EPG \u52A0\u8F7D\u5931\u8D25",
+    epgTitle: "\u8282\u76EE\u6307\u5357",
+    epgNoData: "\u672A\u52A0\u8F7D EPG \u6570\u636E",
+    epgNoProgram: "\u6CA1\u6709\u8282\u76EE\u6570\u636E",
+    epgNoUpcoming: "\u6CA1\u6709\u5373\u5C06\u64AD\u51FA\u7684\u8282\u76EE"
   },
   "zh-TW": {
     flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
@@ -526,7 +582,14 @@ const LANGS = {
     playPause: "\u64AD\u653E / \u66AB\u505C",
     prevChannel: "\u4E0A\u4E00\u500B\u983B\u9053",
     nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053",
-    fullscreen: "\u5168\u753B\u9762"
+    fullscreen: "\u5168\u753B\u9762",
+    epgLoaded: "EPG \u5DF2\u8F09\u5165",
+    retryProxy: "\u6B63\u5728\u900F\u904E\u4EE3\u7406\u91CD\u8A66\u2026",
+    epgLoadFailed: "EPG \u8F09\u5165\u5931\u6557",
+    epgTitle: "\u7BC0\u76EE\u6307\u5357",
+    epgNoData: "\u672A\u8F09\u5165 EPG \u8CC7\u6599",
+    epgNoProgram: "\u6C92\u6709\u7BC0\u76EE\u8CC7\u6599",
+    epgNoUpcoming: "\u6C92\u6709\u5373\u5C07\u64AD\u51FA\u7684\u7BC0\u76EE"
   },
   ja: {
     flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
@@ -584,7 +647,14 @@ const LANGS = {
     playPause: "\u518D\u751F / \u4E00\u6642\u505C\u6B62",
     prevChannel: "\u524D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
     nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
-    fullscreen: "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3"
+    fullscreen: "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3",
+    epgLoaded: "EPG \u8AAD\u8FBC\u5B8C\u4E86",
+    retryProxy: "\u30D7\u30ED\u30AD\u30B7\u7D4C\u7531\u3067\u30EA\u30C8\u30E9\u30A4\u4E2D\u2026",
+    epgLoadFailed: "EPG \u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557",
+    epgTitle: "\u756A\u7D44\u8868",
+    epgNoData: "EPG \u30C7\u30FC\u30BF\u306A\u3057",
+    epgNoProgram: "\u756A\u7D44\u30C7\u30FC\u30BF\u306A\u3057",
+    epgNoUpcoming: "\u4ECA\u5F8C\u306E\u756A\u7D44\u306A\u3057"
   },
   ko: {
     flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
@@ -642,7 +712,14 @@ const LANGS = {
     playPause: "\uC7AC\uC0DD / \uC77C\uC2DC\uC815\uC9C0",
     prevChannel: "\uC774\uC804 \uCC44\uB110",
     nextChannel: "\uB2E4\uC74C \uCC44\uB110",
-    fullscreen: "\uC804\uCCB4 \uD654\uBA74"
+    fullscreen: "\uC804\uCCB4 \uD654\uBA74",
+    epgLoaded: "EPG \uB85C\uB4DC\uB428",
+    retryProxy: "\uD504\uB85D\uC2DC\uB97C \uD1B5\uD574 \uC7AC\uC2DC\uB3C4 \uC911\u2026",
+    epgLoadFailed: "EPG \uB85C\uB4DC \uC2E4\uD328",
+    epgTitle: "\uD504\uB85C\uADF8\uB7A8 \uAC00\uC774\uB4DC",
+    epgNoData: "EPG \uB370\uC774\uD130 \uC5C6\uC74C",
+    epgNoProgram: "\uD504\uB85C\uADF8\uB7A8 \uB370\uC774\uD130 \uC5C6\uC74C",
+    epgNoUpcoming: "\uC608\uC815\uB41C \uD504\uB85C\uADF8\uB7A8 \uC5C6\uC74C"
   },
   es: {
     flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
@@ -700,7 +777,14 @@ const LANGS = {
     playPause: "Reproducir / Pausa",
     prevChannel: "Canal anterior",
     nextChannel: "Canal siguiente",
-    fullscreen: "Pantalla completa"
+    fullscreen: "Pantalla completa",
+    epgLoaded: "EPG cargado",
+    retryProxy: "Reintentando vía proxy…",
+    epgLoadFailed: "Error al cargar EPG",
+    epgTitle: "Gu\u00EDa de programas",
+    epgNoData: "No hay datos EPG cargados",
+    epgNoProgram: "Sin datos de programa",
+    epgNoUpcoming: "No hay programas pr\u00F3ximos"
   },
   pt: {
     flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
@@ -758,7 +842,14 @@ const LANGS = {
     playPause: "Reproduzir / Pausa",
     prevChannel: "Canal anterior",
     nextChannel: "Pr\u00F3ximo canal",
-    fullscreen: "Tela cheia"
+    fullscreen: "Tela cheia",
+    epgLoaded: "EPG carregado",
+    retryProxy: "Tentando novamente via proxy…",
+    epgLoadFailed: "Falha ao carregar EPG",
+    epgTitle: "Guia de programas",
+    epgNoData: "Nenhum dado EPG carregado",
+    epgNoProgram: "Sem dados de programa",
+    epgNoUpcoming: "Nenhum programa pr\u00F3ximo"
   },
   ar: {
     flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -816,7 +907,14 @@ const LANGS = {
     playPause: "\u062A\u0634\u063A\u064A\u0644 / \u0625\u064A\u0642\u0627\u0641",
     prevChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629",
     nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629",
-    fullscreen: "\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629"
+    fullscreen: "\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629",
+    epgLoaded: "\u062A\u0645 \u062A\u062D\u0645\u064A\u0644 EPG",
+    retryProxy: "\u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0645\u062D\u0627\u0648\u0644\u0629 \u0639\u0628\u0631 \u0627\u0644\u0648\u0643\u064A\u0644\u2026",
+    epgLoadFailed: "\u0641\u0634\u0644 \u062A\u062D\u0645\u064A\u0644 EPG",
+    epgTitle: "\u062F\u0644\u064A\u0644 \u0627\u0644\u0628\u0631\u0627\u0645\u062C",
+    epgNoData: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A EPG",
+    epgNoProgram: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A \u0628\u0631\u0646\u0627\u0645\u062C",
+    epgNoUpcoming: "\u0644\u0627 \u0628\u0631\u0627\u0645\u062C \u0642\u0627\u062F\u0645\u0629"
   },
   hi: {
     flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
@@ -874,7 +972,14 @@ const LANGS = {
     playPause: "\u091A\u0932\u093E\u090F\u0902 / \u0930\u094B\u0915\u0947\u0902",
     prevChannel: "\u092A\u093F\u091B\u0932\u093E \u091A\u0948\u0928\u0932",
     nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932",
-    fullscreen: "\u092A\u0942\u0930\u094D\u0923 \u0938\u094D\u0915\u094D\u0930\u0940\u0928"
+    fullscreen: "\u092A\u0942\u0930\u094D\u0923 \u0938\u094D\u0915\u094D\u0930\u0940\u0928",
+    epgLoaded: "EPG \u0932\u094B\u0921 \u0939\u094B \u0917\u092F\u093E",
+    retryProxy: "\u092A\u094D\u0930\u0949\u0915\u094D\u0938\u0940 \u0915\u0947 \u092E\u093E\u0927\u094D\u092F\u092E \u0938\u0947 \u092A\u0941\u0928\u0903 \u092A\u094D\u0930\u092F\u093E\u0938\u2026",
+    epgLoadFailed: "EPG \u0932\u094B\u0921 \u0915\u0930\u0928\u0947 \u092E\u0947\u0902 \u0935\u093F\u092B\u0932",
+    epgTitle: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0917\u093E\u0907\u0921",
+    epgNoData: "EPG \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
+    epgNoProgram: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
+    epgNoUpcoming: "\u0906\u0917\u093E\u092E\u0940 \u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0928\u0939\u0940\u0902"
   },
   th: {
     flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
@@ -932,7 +1037,14 @@ const LANGS = {
     playPause: "\u0E40\u0E25\u0E48\u0E19 / \u0E2B\u0E22\u0E38\u0E14",
     prevChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32",
     nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B",
-    fullscreen: "\u0E40\u0E15\u0E47\u0E21\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D"
+    fullscreen: "\u0E40\u0E15\u0E47\u0E21\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D",
+    epgLoaded: "\u0E42\u0E2B\u0E25\u0E14 EPG \u0E41\u0E25\u0E49\u0E27",
+    retryProxy: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E25\u0E2D\u0E07\u0E43\u0E2B\u0E21\u0E48\u0E1C\u0E48\u0E32\u0E19\u0E1E\u0E23\u0E47\u0E2D\u0E01\u0E0B\u0E35\u2026",
+    epgLoadFailed: "\u0E42\u0E2B\u0E25\u0E14 EPG \u0E44\u0E21\u0E48\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08",
+    epgTitle: "\u0E1C\u0E31\u0E07\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
+    epgNoData: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 EPG",
+    epgNoProgram: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
+    epgNoUpcoming: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E16\u0E31\u0E14\u0E44\u0E1B"
   },
   id: {
     flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
@@ -990,7 +1102,14 @@ const LANGS = {
     playPause: "Putar / Jeda",
     prevChannel: "Saluran sebelumnya",
     nextChannel: "Saluran berikutnya",
-    fullscreen: "Layar penuh"
+    fullscreen: "Layar penuh",
+    epgLoaded: "EPG dimuat",
+    retryProxy: "Mencoba ulang via proxy…",
+    epgLoadFailed: "Gagal memuat EPG",
+    epgTitle: "Panduan Program",
+    epgNoData: "Tidak ada data EPG",
+    epgNoProgram: "Tidak ada data program",
+    epgNoUpcoming: "Tidak ada program mendatang"
   },
   it: {
     flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
@@ -1048,7 +1167,14 @@ const LANGS = {
     playPause: "Riproduci / Pausa",
     prevChannel: "Canale precedente",
     nextChannel: "Canale successivo",
-    fullscreen: "Schermo intero"
+    fullscreen: "Schermo intero",
+    epgLoaded: "EPG caricato",
+    retryProxy: "Nuovo tentativo via proxy…",
+    epgLoadFailed: "Impossibile caricare EPG",
+    epgTitle: "Guida programmi",
+    epgNoData: "Nessun dato EPG caricato",
+    epgNoProgram: "Nessun dato di programma",
+    epgNoUpcoming: "Nessun programma in arrivo"
   },
   tr: {
     flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
@@ -1106,7 +1232,14 @@ const LANGS = {
     playPause: "Oynat / Duraklat",
     prevChannel: "\u00D6nceki kanal",
     nextChannel: "Sonraki kanal",
-    fullscreen: "Tam ekran"
+    fullscreen: "Tam ekran",
+    epgLoaded: "EPG yüklendi",
+    retryProxy: "Proxy üzerinden yeniden deneniyor…",
+    epgLoadFailed: "EPG yüklenemedi",
+    epgTitle: "Program rehberi",
+    epgNoData: "EPG verisi yüklenmedi",
+    epgNoProgram: "Program verisi yok",
+    epgNoUpcoming: "Gelecek program yok"
   }
 };
 
@@ -1272,9 +1405,7 @@ async function loadEpgData(urls, merge){
   updateEpgDisplay();
   // Invalidate known IDs cache
   _knownEpgIds = null;
-  if(totalMapChannels > 0){
-    showToast("EPG: " + totalMapChannels + " channels indexed via proxy", 3000);
-  }
+
 }
 
 /* ===== EPG LOOKUP CACHE ===== */
@@ -1645,7 +1776,7 @@ function playByIndex(idx, opts){
               // First failure on a direct URL → escalate to HLS proxy (handles CORS)
               if(!_hlsProxyRetried && !useProxy){
                 _hlsProxyRetried = true;
-                showToast("CORS \u2014 retrying via proxy\u2026", 0);
+                showToast(t("retryProxy"), 0);
                 console.warn("[HLS] Switching to HLS proxy for:", ch.url);
                 const proxiedUrl = "/api/hls?url=" + encodeURIComponent(ch.url);
                 buildHlsInstance(proxiedUrl, true);
@@ -1702,7 +1833,7 @@ function doRetry(){
   retryCount++;
   if(retryCount <= MAX_RETRIES){
     const delay = Math.min(retryCount * 1500, 5000);
-    showToast(t("playErrorRetry") + " (" + retryCount + "/" + MAX_RETRIES + ")...", 0);
+    showToast(t("playErrorRetry"), 0);
     retryTimer = setTimeout(() => playByIndex(currentIdx), delay);
   } else {
     showToast(t("playErrorFinal"), 0);
@@ -2086,7 +2217,7 @@ function addSource(){
   addSourceInput.value = "";
   renderSources();
   loadActiveSources();
-  showToast(t("addedSource") + name, 2000);
+  showToast(t("addedSource"), 2000);
 }
 
 // Toggle source panel
@@ -2120,7 +2251,7 @@ if(fileInput) fileInput.addEventListener("change", () => {
     saveSources();
     renderSources();
     loadActiveSources();
-    showToast(t("addedFile") + name + " (" + result.channels.length + t("channelUnit") + ")", 2500);
+    showToast(t("addedFile"), 2500);
   };
   reader.readAsText(file);
   fileInput.value = "";
@@ -2217,7 +2348,7 @@ async function loadActiveSources(){
         // 2nd attempt: route through local proxy server as fallback
         if(text === null){
           try {
-            showToast("Retrying via proxy…", 0);
+            showToast(t("retryProxy"), 0);
             const proxyResp = await fetch("/api/proxy?url=" + encodeURIComponent(src.url));
             if(proxyResp && proxyResp.ok){
               text = await proxyResp.text();
@@ -2249,8 +2380,8 @@ async function loadActiveSources(){
         : t("noChannelFound");
     }
   } else {
-    if(errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
-    else showToast(t("sourceOk").replace("{n}", allChannels.length).replace("{s}", indices.length), 2000);
+    if(errors > 0) showToast(t("sourceError"), 3000);
+    else showToast(t("sourceOk"), 2000);
 
     // Auto-play pinned channel FIRST — before any EPG work
     if(pinnedUrl){
@@ -2654,13 +2785,13 @@ function renderEpgPanel(){
   epgListEl.innerHTML = "";
 
   if(currentIdx < 0 || currentIdx >= allChannels.length){
-    if(epgPanelTitle) epgPanelTitle.textContent = "Program Guide";
-    epgListEl.innerHTML = '<div class="epg-empty">No channel selected</div>';
+    if(epgPanelTitle) epgPanelTitle.textContent = t("epgTitle");
+    epgListEl.innerHTML = '<div class="epg-empty">' + t("noChannel") + '</div>';
     return;
   }
 
   const ch = allChannels[currentIdx];
-  if(epgPanelTitle) epgPanelTitle.textContent = ch.name || "Program Guide";
+  if(epgPanelTitle) epgPanelTitle.textContent = ch.name || t("epgTitle");
 
   // Find programs using the unified matching function
   const epgChId = findEpgChannelId(ch.tvgId, ch.name);
@@ -2668,9 +2799,7 @@ function renderEpgPanel(){
 
   if(!programs || programs.length === 0){
     const epgKeys = Object.keys(epgData).length;
-    const hint = epgKeys === 0
-      ? "No EPG data loaded. Enter an EPG URL above."
-      : "No program data for \"" + ch.name + "\" (tvg-id: " + (ch.tvgId || "none") + "). EPG has " + epgKeys + " channels.";
+    const hint = epgKeys === 0 ? t("epgNoData") : t("epgNoProgram");
     epgListEl.innerHTML = '<div class="epg-empty">' + hint + '</div>';
     return;
   }
@@ -2739,7 +2868,7 @@ function renderEpgPanel(){
   }
 
   if(!hasItems){
-    epgListEl.innerHTML = '<div class="epg-empty">No upcoming programs</div>';
+    epgListEl.innerHTML = '<div class="epg-empty">' + t("epgNoUpcoming") + '</div>';
   }
 
   // Scroll the "now" item into view
@@ -2778,7 +2907,7 @@ if(epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
   // Support multiple URLs separated by comma or newline
   const urls = rawUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u);
   for(const u of urls){
-    if(!u.startsWith("http://") && !u.startsWith("https://")){ showToast("URL must start with http:// or https://", 2500); return; }
+    if(!u.startsWith("http://") && !u.startsWith("https://")){ showToast(t("invalidUrl"), 2500); return; }
   }
 
   epgUrlBtn.disabled = true;
@@ -2788,7 +2917,7 @@ if(epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
     localStorage.setItem("customEpgUrl", rawUrl);
     renderEpgPanel();
   } catch(e){
-    showToast("Failed to load EPG: " + e.message, 3000);
+    console.error("[EPG] Load failed:", e.message);
   }
   epgUrlBtn.disabled = false;
   epgUrlBtn.textContent = "Load";
