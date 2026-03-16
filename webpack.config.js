@@ -1,9 +1,12 @@
 const path = require('path');
+const crypto = require('crypto');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const BUILD_HASH = crypto.randomBytes(8).toString('hex');
 
 module.exports = {
   mode: 'production',
@@ -39,7 +42,13 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'sw.js', to: 'sw.js' },
+        {
+          from: 'sw.js',
+          to: 'sw.js',
+          transform(content) {
+            return content.toString().replace('__BUILD_HASH__', BUILD_HASH);
+          },
+        },
         { from: 'manifest.json', to: 'manifest.json' },
         { from: 'icon.svg', to: 'icon.svg' },
         { from: 'icon-192.png', to: 'icon-192.png' },

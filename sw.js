@@ -1,4 +1,5 @@
-const CACHE_NAME = 'iptv-player-v2';
+const CACHE_VERSION = '__BUILD_HASH__';
+const CACHE_NAME = `iptv-player-${CACHE_VERSION}`;
 const SHELL_ASSETS = [
   '/',
   '/index.html',
@@ -11,17 +12,22 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_ASSETS))
   );
-  self.skipWaiting();
 });
 
-// Activate — purge old caches
+// Activate — purge old caches and claim clients
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
+});
+
+// Listen for skip-waiting message from the client
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 // Fetch — network-first for API/streams, cache-first for shell assets
