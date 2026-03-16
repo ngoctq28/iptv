@@ -39,9 +39,14 @@
         <button id="btnRetry" class="ctrl-btn" title="Reload">
           <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         </button>
-        <button id="btnUnmute" class="ctrl-btn" title="Sound">
-          <span id="muteIcon"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg></span>
-        </button>
+        <div id="volumeContainer">
+          <button id="btnUnmute" class="ctrl-btn" title="Sound">
+            <span id="muteIcon"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg></span>
+          </button>
+          <div id="volumeSliderWrap">
+            <input id="volumeSlider" type="range" min="0" max="100" value="100" />
+          </div>
+        </div>
       </div>
       <div class="ctrl-spacer"></div>
       <button id="quickSwitchBtn" class="ctrl-btn" title="Quick switch channel">

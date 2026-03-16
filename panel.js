@@ -1126,6 +1126,7 @@ const btnPiP     = document.getElementById("btnPiP");
 const btnFull    = document.getElementById("btnFullscreen");
 const btnPlayerFs = document.getElementById("btnPlayerFullscreen");
 const btnRetry   = document.getElementById("btnRetry");
+const volumeSlider = document.getElementById("volumeSlider");
 const toast      = document.getElementById("statusToast");
 const searchIn   = document.getElementById("searchInput");
 const btnCheck   = document.getElementById("btnCheck");
@@ -1427,11 +1428,33 @@ function showToast(msg, ms){
 function hideToast(){ if(toast){ toast.classList.remove("show"); clearTimeout(toastTimer); } }
 
 /* ===== MUTE / UNMUTE ===== */
+function updateMuteIcon(){
+  if(!btnUnmute) return;
+  const v = video.volume;
+  const m = video.muted;
+  let svg;
+  if(m || v === 0) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+  else if(v < 0.5) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  else svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  btnUnmute.querySelector("#muteIcon").innerHTML = svg;
+  btnUnmute.classList.toggle("active", !m && v > 0);
+}
 if(btnUnmute) btnUnmute.addEventListener("click", () => {
   video.muted = !video.muted;
-  btnUnmute.querySelector("#muteIcon").innerHTML = video.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-  btnUnmute.classList.toggle("active", !video.muted);
+  if(!video.muted && video.volume === 0) video.volume = 0.5;
+  updateMuteIcon();
 });
+
+/* ===== VOLUME SLIDER ===== */
+if(volumeSlider){
+  volumeSlider.value = Math.round(video.volume * 100);
+  volumeSlider.addEventListener("input", () => {
+    const val = parseInt(volumeSlider.value, 10) / 100;
+    video.volume = val;
+    video.muted = val === 0;
+    updateMuteIcon();
+  });
+}
 
 /* ===== PIP (directly on panel video) ===== */
 if(btnPiP) btnPiP.addEventListener("click", async () => {
@@ -1447,11 +1470,10 @@ if(btnPiP) btnPiP.addEventListener("click", async () => {
 if(video){
   video.addEventListener("leavepictureinpicture", () => { if(btnPiP) btnPiP.classList.remove("active"); });
   video.addEventListener("enterpictureinpicture", () => { if(btnPiP) btnPiP.classList.add("active"); });
-  // keep mute button in sync with native controls
+  // keep mute button & volume slider in sync with native controls
   video.addEventListener("volumechange", () => {
-    if(!btnUnmute) return;
-    btnUnmute.querySelector("#muteIcon").innerHTML = video.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-    btnUnmute.classList.toggle("active", !video.muted);
+    updateMuteIcon();
+    if(volumeSlider) volumeSlider.value = Math.round(video.muted ? 0 : video.volume * 100);
   });
 }
 
