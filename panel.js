@@ -1334,6 +1334,7 @@ const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
 let currentCategory = "tv"; // 'tv', 'radio' or 'fav'
+const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
 
 /* ===== EPG (Electronic Program Guide) ===== */
 let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
@@ -1803,6 +1804,23 @@ function playByIndex(idx, opts){
   if(nowBar) nowBar.classList.add("live");
   updateMiniButtons();
 
+  // radio overlay
+  const radioOv = document.getElementById("radioOverlay");
+  const radioOvImg = document.getElementById("radioOverlayImg");
+  const radioOvName = document.getElementById("radioOverlayName");
+  if(radioOv){
+    if(ch.isRadio){
+      radioOv.classList.add("active");
+      if(radioOvImg){
+        radioOvImg.src = ch.logo || fallbackImg;
+        radioOvImg.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
+      }
+      if(radioOvName) radioOvName.textContent = ch.name || "";
+    } else {
+      radioOv.classList.remove("active");
+    }
+  }
+
   // cleanup previous
   video.pause();
   destroyHls();
@@ -2020,7 +2038,6 @@ function makeCard(ch, idx, container){
   div.dataset.idx = idx;
 
   const img = document.createElement("img");
-  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
   img.src = ch.logo || fallbackImg;
   img.onerror = function() { this.onerror = null; this.src = fallbackImg; };
   img.alt = ch.name;
