@@ -1617,11 +1617,10 @@ if(btnFull) btnFull.addEventListener("click", () => {
 
 /* ===== PLAYER FULLSCREEN ===== */
 if(btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
-  const ps = document.getElementById("playerSection");
   if(document.fullscreenElement){
     document.exitFullscreen();
-  } else if(ps){
-    ps.requestFullscreen();
+  } else {
+    document.body.requestFullscreen();
   }
 });
 document.addEventListener("fullscreenchange", () => {
@@ -1630,6 +1629,7 @@ document.addEventListener("fullscreenchange", () => {
     btnPlayerFs.innerHTML = document.fullscreenElement
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
       : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
+    !document.fullscreenElement ? openList() : closeList();
   }
 });
 
@@ -2466,92 +2466,6 @@ if(scrollBtn){
 }
 
 /* ===== QUICK SWITCH MODAL ===== */
-const quickSwitchBtn = document.getElementById("quickSwitchBtn");
-const quickSwitchModal = document.getElementById("quickSwitchModal");
-const quickSwitchOverlay = document.getElementById("quickSwitchOverlay");
-const quickSwitchClose = document.getElementById("quickSwitchClose");
-const quickSwitchSearch = document.getElementById("quickSwitchSearch");
-const quickSwitchGrid = document.getElementById("quickSwitchGrid");
-let qsCat = "tv";
-
-function openQuickSwitch(){
-  if(!quickSwitchModal) return;
-  qsCat = currentCategory;
-  quickSwitchModal.classList.add("open");
-  if(quickSwitchSearch){ quickSwitchSearch.value = ""; }
-  updateQsTabs();
-  renderQuickSwitch();
-}
-
-function closeQuickSwitch(){
-  if(quickSwitchModal) quickSwitchModal.classList.remove("open");
-}
-
-function renderQuickSwitch(filter){
-  if(!quickSwitchGrid) return;
-  const q = (filter || "").toLowerCase();
-  const isFavCat = qsCat === "fav";
-  const isRadioCat = qsCat === "radio";
-  const frag = document.createDocumentFragment();
-  const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
-  allChannels.forEach((ch, i) => {
-    if(hidden.has(ch.url)) return;
-    const isFav = favorites.some(f => f.url === ch.url);
-    if(isFavCat){ if(!isFav) return; }
-    else { if(!!ch.isRadio !== isRadioCat) return; }
-    if(q && !ch.name.toLowerCase().includes(q)) return;
-    const div = document.createElement("div");
-    div.className = "qs-card" + (i === currentIdx ? " active" : "");
-    const img = document.createElement("img");
-    img.src = ch.logo || fallbackImg;
-    img.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
-    img.alt = ch.name;
-    img.loading = "lazy";
-    const name = document.createElement("div");
-    name.className = "qs-name";
-    name.textContent = ch.name;
-    div.append(img, name);
-    div.onclick = () => { playByIndex(i); closeQuickSwitch(); };
-    frag.appendChild(div);
-  });
-  quickSwitchGrid.innerHTML = "";
-  quickSwitchGrid.appendChild(frag);
-}
-
-if(quickSwitchBtn) quickSwitchBtn.addEventListener("click", openQuickSwitch);
-if(quickSwitchClose) quickSwitchClose.addEventListener("click", closeQuickSwitch);
-if(quickSwitchOverlay) quickSwitchOverlay.addEventListener("click", closeQuickSwitch);
-if(quickSwitchSearch) quickSwitchSearch.addEventListener("input", () => renderQuickSwitch(quickSwitchSearch.value));
-
-function updateQsTabs(){
-  const tabs = document.querySelectorAll(".qs-tab");
-  tabs.forEach(t => t.classList.toggle("active", t.dataset.cat === qsCat));
-  // Update badges
-  let tvCount = 0, radioCount = 0, favCount = 0;
-  allChannels.forEach(ch => {
-    if(hidden.has(ch.url)) return;
-    if(ch.isRadio) radioCount++; else tvCount++;
-    if(favorites.some(f => f.url === ch.url)) favCount++;
-  });
-  const tvBadge = document.querySelector('.qs-tab[data-cat="tv"] .qs-badge');
-  const radioBadge = document.querySelector('.qs-tab[data-cat="radio"] .qs-badge');
-  const favBadge = document.querySelector('.qs-tab[data-cat="fav"] .qs-badge');
-  if(tvBadge) tvBadge.textContent = tvCount;
-  if(radioBadge) radioBadge.textContent = radioCount;
-  if(favBadge) favBadge.textContent = favCount;
-}
-document.querySelectorAll(".qs-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    qsCat = tab.dataset.cat;
-    updateQsTabs();
-    renderQuickSwitch(quickSwitchSearch ? quickSwitchSearch.value : "");
-  });
-});
-
-document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape" && quickSwitchModal && quickSwitchModal.classList.contains("open")) closeQuickSwitch();
-});
-
 /* ===== CINEMA MODE ===== */
 const cinemaBtn = document.getElementById("cinemaBtn");
 const cinemaOverlay = document.getElementById("cinemaOverlay");
@@ -2677,7 +2591,6 @@ function applyLang(){
   }
 
   if(searchIn) searchIn.placeholder = t("searchPlaceholder");
-  if(quickSwitchSearch) quickSwitchSearch.placeholder = t("searchPlaceholder");
   if(btnCheck){
     btnCheck.querySelector("span:last-child").textContent = t("checkBtn");
     btnCheck.title = t("checkTitle");
