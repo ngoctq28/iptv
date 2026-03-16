@@ -1288,6 +1288,7 @@ const MAX_RETRIES = 5;
 let retryCount   = 0;
 let retryTimer   = null;
 let stallTimer   = null;
+let _playbackStopped = false; // set when max retries exhausted to block further retries
 const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
@@ -1711,6 +1712,7 @@ function playByIndex(idx, opts){
   clearTimeout(retryTimer);
   clearTimeout(stallTimer);
   retryCount = 0;
+  _playbackStopped = false;
   currentUrl = ch.url;
 
   if(typeof Hls !== "undefined" && Hls.isSupported() && isHlsUrl(ch.url)){
@@ -1751,6 +1753,7 @@ function playByIndex(idx, opts){
       });
 
       let hlsMediaRecoveryAttempts = 0;
+      let hlsNetworkRetries = 0;
 
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
         hls.loadSource(sourceUrl);
@@ -1765,6 +1768,7 @@ function playByIndex(idx, opts){
 
       hls.on(Hls.Events.FRAG_LOADED, () => {
         hlsMediaRecoveryAttempts = 0;
+        hlsNetworkRetries = 0;
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
@@ -1782,8 +1786,18 @@ function playByIndex(idx, opts){
                 buildHlsInstance(proxiedUrl, true);
                 hls.attachMedia(video);
               } else {
-                showToast(t("networkError"), 0);
-                setTimeout(() => { if(hls) hls.loadSource(sourceUrl); }, 4000);
+                hlsNetworkRetries++;
+                if(hlsNetworkRetries > MAX_RETRIES){
+                  console.warn("[HLS] Max retries reached, stopping playback");
+                  _playbackStopped = true;
+                  showToast(t("playErrorFinal"), 0);
+                  destroyHls();
+                  clearTimeout(stallTimer);
+                  clearTimeout(retryTimer);
+                } else {
+                  showToast(t("networkError"), 0);
+                  setTimeout(() => { if(hls) hls.loadSource(sourceUrl); }, 4000);
+                }
               }
             } else {
               hls.startLoad();
@@ -1829,14 +1843,19 @@ function playByIndex(idx, opts){
 }
 
 function doRetry(){
-  if(currentIdx < 0) return;
+  if(currentIdx < 0 || _playbackStopped) return;
   retryCount++;
   if(retryCount <= MAX_RETRIES){
     const delay = Math.min(retryCount * 1500, 5000);
     showToast(t("playErrorRetry"), 0);
     retryTimer = setTimeout(() => playByIndex(currentIdx), delay);
   } else {
+    _playbackStopped = true;
     showToast(t("playErrorFinal"), 0);
+    // Stop playback completely after max retries
+    clearTimeout(stallTimer);
+    clearTimeout(retryTimer);
+    if(hls){ hls.destroy(); hls = null; }
   }
 }
 
@@ -1846,7 +1865,7 @@ function resetStallTimer(){
   clearTimeout(stallTimer);
   if(currentIdx < 0) return;
   stallTimer = setTimeout(() => {
-    if(currentIdx < 0) return;
+    if(currentIdx < 0 || _playbackStopped) return;
     // If using hls.js, try recovery first
     if(hls){
       showToast(t("reconnecting"), 0);
@@ -1879,7 +1898,7 @@ if(video){
   video.addEventListener("error", () => {
     if(nowBar) nowBar.classList.remove("live");
     clearTimeout(stallTimer);
-    if(currentIdx < 0) return;
+    if(currentIdx < 0 || _playbackStopped) return;
     // If hls.js is handling this stream, let it manage errors
     if(hls) return;
     doRetry();
