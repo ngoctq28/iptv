@@ -2478,7 +2478,7 @@ function openQuickSwitch(){
   if(!quickSwitchModal) return;
   qsCat = currentCategory;
   quickSwitchModal.classList.add("open");
-  if(quickSwitchSearch){ quickSwitchSearch.value = ""; quickSwitchSearch.focus(); }
+  if(quickSwitchSearch){ quickSwitchSearch.value = ""; }
   updateQsTabs();
   renderQuickSwitch();
 }
