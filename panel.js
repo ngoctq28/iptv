@@ -1623,6 +1623,25 @@ if(btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
     document.body.requestFullscreen();
   }
 });
+/* ===== FULLSCREEN CONTROLS AUTO-HIDE ===== */
+const playerSection = document.getElementById("playerSection");
+let _fsControlsTimer = null;
+function showFsControls() {
+  if (!document.fullscreenElement || !playerSection) return;
+  playerSection.classList.add("controls-visible");
+  clearTimeout(_fsControlsTimer);
+  _fsControlsTimer = setTimeout(() => {
+    playerSection.classList.remove("controls-visible");
+  }, 3000);
+}
+if (playerSection) {
+  playerSection.addEventListener("mousemove", showFsControls);
+  playerSection.addEventListener("touchstart", showFsControls);
+  playerSection.addEventListener("click", (e) => {
+    if (document.fullscreenElement && !e.target.closest(".ctrl-btn,.ctrl-group")) showFsControls();
+  });
+}
+
 document.addEventListener("fullscreenchange", () => {
   if(btnPlayerFs) {
     btnPlayerFs.classList.toggle("active", !!document.fullscreenElement);
@@ -1630,6 +1649,12 @@ document.addEventListener("fullscreenchange", () => {
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
       : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
     !document.fullscreenElement ? openList() : closeList();
+  }
+  if (document.fullscreenElement) {
+    showFsControls();
+  } else {
+    clearTimeout(_fsControlsTimer);
+    if (playerSection) playerSection.classList.remove("controls-visible");
   }
 });
 
