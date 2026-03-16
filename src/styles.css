@@ -110,7 +110,8 @@ body:fullscreen #nowPlayingRow,body:fullscreen #epgPanel{display:none}
 
 /* SOURCE MANAGER */
 #sourceSection{border-bottom:1px solid var(--border);padding:8px 12px}
-#sourceToggle{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;user-select:none}
+#sourceToggleRow{display:flex;align-items:center;justify-content:space-between}
+#sourceToggle{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;user-select:none}
 #sourceToggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 #sourceToggle .arrow{transition:transform .2s;font-size:10px}
 #sourceToggle.open .arrow{transform:rotate(90deg)}
@@ -161,21 +162,31 @@ body.cinema #player{max-height:none;aspect-ratio:16/9}
 @keyframes cinemaIn{to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 
 /* CUSTOM VIDEO CONTROLS — shared bar styles */
-#controlsTop,#controlsBottom{position:absolute;left:0;right:0;display:flex;align-items:center;gap:8px;padding:14px 18px;opacity:0;transition:opacity .25s ease 1.5s;z-index:40;pointer-events:none}
-#playerSection:hover #controlsTop,#playerSection:hover #controlsBottom{opacity:1;pointer-events:auto;transition-delay:0s}
-body:fullscreen #playerSection:hover #controlsTop,body:fullscreen #playerSection:hover #controlsBottom{opacity:0;pointer-events:none}
+#controlsTop,#controlsBottom{position:absolute;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px 18px;opacity:0;transition:opacity .25s ease 1.5s;z-index:40;pointer-events:none}
+#controlsCenter{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:24px;z-index:40;opacity:0;transition:opacity .25s ease 1.5s;pointer-events:none}
+#playerSection:hover #controlsTop,#playerSection:hover #controlsBottom,#playerSection:hover #controlsCenter{opacity:1;pointer-events:auto;transition-delay:0s}
+body:fullscreen #playerSection:hover #controlsTop,body:fullscreen #playerSection:hover #controlsBottom,body:fullscreen #playerSection:hover #controlsCenter{opacity:0;pointer-events:none}
 body:fullscreen #playerSection{cursor:none}
 body:fullscreen #playerSection.controls-visible{cursor:auto}
-body:fullscreen #playerSection.controls-visible #controlsTop,body:fullscreen #playerSection.controls-visible #controlsBottom{opacity:1;pointer-events:auto;transition-delay:0s}
+body:fullscreen #playerSection.controls-visible #controlsTop,body:fullscreen #playerSection.controls-visible #controlsBottom,body:fullscreen #playerSection.controls-visible #controlsCenter{opacity:1;pointer-events:auto;transition-delay:0s}
 body:fullscreen #controlsTop,body:fullscreen #controlsBottom{transition:opacity .25s ease .0s}
-#controlsTop{top:0;background:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(255,255,255,0) 100%);justify-content:flex-end}
-#controlsBottom{bottom:0;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(0,0,0,.85) 100%)}
+#controlsTop{top:0;background:linear-gradient(to bottom,rgba(0,0,0,.95) 0%,rgba(255,255,255,0) 80%);justify-content:flex-end}
+#controlsBottom{bottom:0;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(0,0,0,.95) 80%)}
 .ctrl-group{display:flex;align-items:center;gap:8px}
+.ctrl-sep{width:1px;height:20px;background:rgba(255,255,255,.2);flex-shrink:0;margin:0 4px}
 .ctrl-spacer{flex:1}
 .ctrl-btn{display:flex;align-items:center;justify-content:center;width:35px;height:35px;border:none;border-radius:50%;background:none;color:#fff;cursor:pointer;transition:transform .15s;flex-shrink:0}
 .ctrl-btn:hover{transform:scale(1.1)}
 .ctrl-btn:active{transform:scale(.95)}
 .ctrl-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* CENTER PLAYER CONTROLS */
+.center-btn{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:none;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;cursor:pointer;transition:transform .15s,background .15s;flex-shrink:0}
+.center-btn:hover{transform:scale(1.1);background:rgba(0,0,0,.7)}
+.center-btn:active{transform:scale(.95)}
+.center-btn svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.center-btn-main{width:56px;height:56px}
+.center-btn-main svg{width:30px;height:30px;stroke-width:2.2}
 #listBtn.ctrl-btn{width:45px;height:45px;border-radius:50%;padding:0;position:static;opacity:1}
 #listBtn.ctrl-btn svg{width:22px;height:22px}
 
@@ -252,7 +263,7 @@ body:fullscreen #controlsTop,body:fullscreen #controlsBottom{transition:opacity 
 body:has(#epgPanel.open) #leftPane{position:sticky;top:0;z-index:30;height:100vh;overflow:hidden}
 
 /* Close button for rightPane (mobile overlay) */
-#rightPaneCloseBtn{display:none;position:absolute;top:2px;right:3px;z-index:51;background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:18px;padding:2px 8px;border-radius:6px;transition:background .12s,color .12s;line-height:1}
+#rightPaneCloseBtn{display:none;background:none;border:none;color:var(--text-sec);cursor:pointer;font-size:24px;padding:4px 10px;border-radius:6px;transition:background .12s,color .12s;line-height:1;flex-shrink:0}
 #rightPaneCloseBtn:hover{background:var(--surface-hover);color:var(--text)}
 
 /* Mobile/tablet: rightPane slides in as overlay from the right */

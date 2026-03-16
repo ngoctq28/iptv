@@ -60,6 +60,8 @@ const LANGS = {
     unpinnedToast: "\u0110\u00E3 b\u1ECF ghim k\u00EAnh",
     shortcutsTitle: "Ph\u00EDm t\u1EAFt",
     playPause: "Ph\u00E1t / T\u1EA1m d\u1EEBng",
+    seekBack: "Tua l\u1EA1i 10 gi\u00E2y",
+    seekForward: "Tua ti\u1EBFp 10 gi\u00E2y",
     prevChannel: "K\u00EAnh tr\u01B0\u1EDBc",
     nextChannel: "K\u00EAnh ti\u1EBFp",
     fullscreen: "To\u00E0n m\u00E0n h\u00ECnh",
@@ -125,6 +127,8 @@ const LANGS = {
     unpinnedToast: "Channel unpinned",
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
+    seekBack: "Rewind 10s",
+    seekForward: "Forward 10s",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
     fullscreen: "Fullscreen",
@@ -190,6 +194,8 @@ const LANGS = {
     unpinnedToast: "Channel unpinned",
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
+    seekBack: "Rewind 10s",
+    seekForward: "Forward 10s",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
     fullscreen: "Fullscreen",
@@ -255,6 +261,8 @@ const LANGS = {
     unpinnedToast: "Cha\u00EEne d\u00E9s\u00E9pingl\u00E9e",
     shortcutsTitle: "Raccourcis",
     playPause: "Lecture / Pause",
+    seekBack: "Reculer 10s",
+    seekForward: "Avancer 10s",
     prevChannel: "Cha\u00EEne pr\u00E9c\u00E9dente",
     nextChannel: "Cha\u00EEne suivante",
     fullscreen: "Plein \u00E9cran",
@@ -320,6 +328,8 @@ const LANGS = {
     unpinnedToast: "Kanal losgel\u00F6st",
     shortcutsTitle: "Tastaturk\u00FCrzel",
     playPause: "Wiedergabe / Pause",
+    seekBack: "10s zurück",
+    seekForward: "10s vor",
     prevChannel: "Vorheriger Kanal",
     nextChannel: "N\u00E4chster Kanal",
     fullscreen: "Vollbild",
@@ -385,6 +395,8 @@ const LANGS = {
     unpinnedToast: "\u041A\u0430\u043D\u0430\u043B \u043E\u0442\u043A\u0440\u0435\u043F\u043B\u0451\u043D",
     shortcutsTitle: "\u0413\u043E\u0440\u044F\u0447\u0438\u0435 \u043A\u043B\u0430\u0432\u0438\u0448\u0438",
     playPause: "\u0412\u043E\u0441\u043F\u0440. / \u041F\u0430\u0443\u0437\u0430",
+    seekBack: "\u041D\u0430\u0437\u0430\u0434 10\u0441",
+    seekForward: "\u0412\u043F\u0435\u0440\u0451\u0434 10\u0441",
     prevChannel: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
     nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
     fullscreen: "\u041F\u043E\u043B\u043D\u044B\u0439 \u044D\u043A\u0440\u0430\u043D",
@@ -450,6 +462,8 @@ const LANGS = {
     unpinnedToast: "Channel unpinned",
     shortcutsTitle: "Shortcuts",
     playPause: "Play / Pause",
+    seekBack: "Rewind 10s",
+    seekForward: "Forward 10s",
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
     fullscreen: "Fullscreen",
@@ -515,6 +529,8 @@ const LANGS = {
     unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9876",
     shortcutsTitle: "\u5FEB\u6377\u952E",
     playPause: "\u64AD\u653E / \u6682\u505C",
+    seekBack: "\u540E\u9000 10\u79D2",
+    seekForward: "\u524D\u8FDB 10\u79D2",
     prevChannel: "\u4E0A\u4E00\u4E2A\u9891\u9053",
     nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053",
     fullscreen: "\u5168\u5C4F",
@@ -580,6 +596,8 @@ const LANGS = {
     unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9802",
     shortcutsTitle: "\u5FEB\u6377\u9375",
     playPause: "\u64AD\u653E / \u66AB\u505C",
+    seekBack: "\u5F8C\u9000 10\u79D2",
+    seekForward: "\u524D\u9032 10\u79D2",
     prevChannel: "\u4E0A\u4E00\u500B\u983B\u9053",
     nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053",
     fullscreen: "\u5168\u753B\u9762",
@@ -645,6 +663,8 @@ const LANGS = {
     unpinnedToast: "\u30D4\u30F3\u7559\u3081\u3092\u89E3\u9664\u3057\u307E\u3057\u305F",
     shortcutsTitle: "\u30B7\u30E7\u30FC\u30C8\u30AB\u30C3\u30C8",
     playPause: "\u518D\u751F / \u4E00\u6642\u505C\u6B62",
+    seekBack: "10\u79D2\u623B\u308B",
+    seekForward: "10\u79D2\u9032\u3080",
     prevChannel: "\u524D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
     nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
     fullscreen: "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3",
@@ -710,6 +730,8 @@ const LANGS = {
     unpinnedToast: "\uCC44\uB110 \uACE0\uC815 \uD574\uC81C",
     shortcutsTitle: "\uB2E8\uCD95\uD0A4",
     playPause: "\uC7AC\uC0DD / \uC77C\uC2DC\uC815\uC9C0",
+    seekBack: "10\uCD08 \uB418\uAC10\uAE30",
+    seekForward: "10\uCD08 \uC55E\uC73C\uB85C",
     prevChannel: "\uC774\uC804 \uCC44\uB110",
     nextChannel: "\uB2E4\uC74C \uCC44\uB110",
     fullscreen: "\uC804\uCCB4 \uD654\uBA74",
@@ -775,6 +797,8 @@ const LANGS = {
     unpinnedToast: "Canal desfijado",
     shortcutsTitle: "Atajos",
     playPause: "Reproducir / Pausa",
+    seekBack: "Retroceder 10s",
+    seekForward: "Adelantar 10s",
     prevChannel: "Canal anterior",
     nextChannel: "Canal siguiente",
     fullscreen: "Pantalla completa",
@@ -840,6 +864,8 @@ const LANGS = {
     unpinnedToast: "Canal desfixado",
     shortcutsTitle: "Atalhos",
     playPause: "Reproduzir / Pausa",
+    seekBack: "Voltar 10s",
+    seekForward: "Avançar 10s",
     prevChannel: "Canal anterior",
     nextChannel: "Pr\u00F3ximo canal",
     fullscreen: "Tela cheia",
@@ -905,6 +931,8 @@ const LANGS = {
     unpinnedToast: "\u062A\u0645 \u0625\u0644\u063A\u0627\u0621 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629",
     shortcutsTitle: "\u0627\u062E\u062A\u0635\u0627\u0631\u0627\u062A",
     playPause: "\u062A\u0634\u063A\u064A\u0644 / \u0625\u064A\u0642\u0627\u0641",
+    seekBack: "\u0631\u062C\u0648\u0639 10 \u062B\u0648\u0627\u0646\u064A",
+    seekForward: "\u062A\u0642\u062F\u0645 10 \u062B\u0648\u0627\u0646\u064A",
     prevChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629",
     nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629",
     fullscreen: "\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629",
@@ -970,6 +998,8 @@ const LANGS = {
     unpinnedToast: "\u091A\u0948\u0928\u0932 \u0905\u0928\u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E",
     shortcutsTitle: "\u0936\u0949\u0930\u094D\u091F\u0915\u091F",
     playPause: "\u091A\u0932\u093E\u090F\u0902 / \u0930\u094B\u0915\u0947\u0902",
+    seekBack: "10\u0938\u0947. \u092A\u0940\u091B\u0947",
+    seekForward: "10\u0938\u0947. \u0906\u0917\u0947",
     prevChannel: "\u092A\u093F\u091B\u0932\u093E \u091A\u0948\u0928\u0932",
     nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932",
     fullscreen: "\u092A\u0942\u0930\u094D\u0923 \u0938\u094D\u0915\u094D\u0930\u0940\u0928",
@@ -1035,6 +1065,8 @@ const LANGS = {
     unpinnedToast: "\u0E22\u0E01\u0E40\u0E25\u0E34\u0E01\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27",
     shortcutsTitle: "\u0E17\u0E32\u0E07\u0E25\u0E31\u0E14",
     playPause: "\u0E40\u0E25\u0E48\u0E19 / \u0E2B\u0E22\u0E38\u0E14",
+    seekBack: "\u0E22\u0E49\u0E2D\u0E19 10\u0E27\u0E34.",
+    seekForward: "\u0E44\u0E1B 10\u0E27\u0E34.",
     prevChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32",
     nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B",
     fullscreen: "\u0E40\u0E15\u0E47\u0E21\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D",
@@ -1100,6 +1132,8 @@ const LANGS = {
     unpinnedToast: "Saluran tidak disematkan",
     shortcutsTitle: "Pintasan",
     playPause: "Putar / Jeda",
+    seekBack: "Mundur 10d",
+    seekForward: "Maju 10d",
     prevChannel: "Saluran sebelumnya",
     nextChannel: "Saluran berikutnya",
     fullscreen: "Layar penuh",
@@ -1165,6 +1199,8 @@ const LANGS = {
     unpinnedToast: "Canale rimosso",
     shortcutsTitle: "Scorciatoie",
     playPause: "Riproduci / Pausa",
+    seekBack: "Indietro 10s",
+    seekForward: "Avanti 10s",
     prevChannel: "Canale precedente",
     nextChannel: "Canale successivo",
     fullscreen: "Schermo intero",
@@ -1230,6 +1266,8 @@ const LANGS = {
     unpinnedToast: "Kanal sabitlemesi kald\u0131r\u0131ld\u0131",
     shortcutsTitle: "K\u0131sayollar",
     playPause: "Oynat / Duraklat",
+    seekBack: "10sn geri",
+    seekForward: "10sn ileri",
     prevChannel: "\u00D6nceki kanal",
     nextChannel: "Sonraki kanal",
     fullscreen: "Tam ekran",
@@ -1256,6 +1294,9 @@ const nowName    = document.getElementById("nowPlayingName");
 const nowBar     = document.getElementById("nowPlaying");
 const btnUnmute  = document.getElementById("btnUnmute");
 const btnPiP     = document.getElementById("btnPiP");
+const btnPlayPause = document.getElementById("btnPlayPause");
+const btnSeekBack  = document.getElementById("btnSeekBack");
+const btnSeekFwd   = document.getElementById("btnSeekForward");
 const btnFull    = document.getElementById("btnFullscreen");
 const btnPlayerFs = document.getElementById("btnPlayerFullscreen");
 const btnRetry   = document.getElementById("btnRetry");
@@ -1609,6 +1650,30 @@ if(video){
   });
 }
 
+/* ===== PLAY/PAUSE & SEEK CENTER CONTROLS ===== */
+function updatePlayPauseIcon(){
+  if(!btnPlayPause) return;
+  const icon = document.getElementById("playPauseIcon");
+  if(!icon) return;
+  if(video.paused){
+    icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
+  } else {
+    icon.innerHTML = '<line x1="10" y1="6" x2="10" y2="18"/><line x1="14" y1="6" x2="14" y2="18"/>';
+  }
+}
+if(btnPlayPause){
+  btnPlayPause.addEventListener("click", () => {
+    if(video.paused) video.play().catch(() => {});
+    else video.pause();
+  });
+}
+if(video){
+  video.addEventListener("play", updatePlayPauseIcon);
+  video.addEventListener("pause", updatePlayPauseIcon);
+}
+if(btnSeekBack) btnSeekBack.addEventListener("click", () => { video.currentTime = Math.max(0, video.currentTime - 10); });
+if(btnSeekFwd) btnSeekFwd.addEventListener("click", () => { video.currentTime += 10; });
+
 /* ===== FULLSCREEN (open stream in new tab) ===== */
 if(btnFull) btnFull.addEventListener("click", () => {
   if(currentIdx < 0 || !currentUrl) return;
@@ -1639,6 +1704,9 @@ if (playerSection) {
   playerSection.addEventListener("touchstart", showFsControls);
   playerSection.addEventListener("click", (e) => {
     if (document.fullscreenElement && !e.target.closest(".ctrl-btn,.ctrl-group")) showFsControls();
+    if (document.pictureInPictureElement && !e.target.closest(".ctrl-btn,.ctrl-group")) {
+      document.exitPictureInPicture().catch(() => {});
+    }
   });
 }
 
@@ -1648,7 +1716,11 @@ document.addEventListener("fullscreenchange", () => {
     btnPlayerFs.innerHTML = document.fullscreenElement
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
       : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
-    !document.fullscreenElement ? openList() : closeList();
+    if(!document.fullscreenElement) {
+      window.innerWidth <= 1024 ? closeList() : openList();
+    } else {
+      closeList();
+    }
   }
   if (document.fullscreenElement) {
     showFsControls();
@@ -1964,7 +2036,10 @@ function makeCard(ch, idx, container){
   star.textContent = "\u2605";
   star.onclick = (e) => { e.stopPropagation(); toggleFav(ch); };
 
-  div.onclick = () => playByIndex(idx);
+  div.onclick = () => {
+    playByIndex(idx);
+    if(window.innerWidth <= 1024) closeList();
+  };
   div.append(img, name, star);
   container.appendChild(div);
 }
@@ -2638,6 +2713,11 @@ function applyLang(){
   if(_prevBtn) _prevBtn.title = t("prevChannel") + " (\u2191)";
   if(_nextBtn) _nextBtn.title = t("nextChannel") + " (\u2193)";
 
+  // Center controls
+  if(btnPlayPause) btnPlayPause.title = t("playPause") + " (Space)";
+  if(btnSeekBack) btnSeekBack.title = t("seekBack");
+  if(btnSeekFwd) btnSeekFwd.title = t("seekForward");
+
   // Shortcuts button
   const _scBtn = document.getElementById("shortcutsBtn");
   if(_scBtn) _scBtn.title = t("shortcutsTitle");
@@ -2997,12 +3077,14 @@ document.addEventListener("keydown", (e) => {
       if(btnUnmute) btnUnmute.click();
       break;
     case "ArrowUp": // Previous channel
+    case "MediaTrackPrevious":
       e.preventDefault();
       if(allChannels.length === 0) break;
       if(currentIdx <= 0) playByIndex(allChannels.length - 1, { noScroll: true });
       else playByIndex(currentIdx - 1, { noScroll: true });
       break;
     case "ArrowDown": // Next channel
+    case "MediaTrackNext":
       e.preventDefault();
       if(allChannels.length === 0) break;
       if(currentIdx >= allChannels.length - 1) playByIndex(0, { noScroll: true });
@@ -3012,6 +3094,14 @@ document.addEventListener("keydown", (e) => {
     case "F":
       e.preventDefault();
       if(cinemaBtn) cinemaBtn.click();
+      break;
+    case "ArrowLeft": // ArrowLeft = seek back 10s
+      e.preventDefault();
+      video.currentTime = Math.max(0, video.currentTime - 10);
+      break;
+    case "ArrowRight": // ArrowRight = seek forward 10s
+      e.preventDefault();
+      video.currentTime += 10;
       break;
   }
 });
@@ -3025,6 +3115,8 @@ function buildShortcutsPanel(){
   if(!panel) return;
   const shortcuts = [
     { key: "Space", desc: t("playPause") },
+    { key: "\u2190", desc: t("seekBack") },
+    { key: "\u2192", desc: t("seekForward") },
     { key: "M", desc: t("sound") },
     { key: "\u2191", desc: t("prevChannel") },
     { key: "\u2193", desc: t("nextChannel") },
