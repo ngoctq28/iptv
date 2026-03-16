@@ -19,15 +19,28 @@ if ('serviceWorker' in navigator) {
     // Check for updates every 5 minutes
     setInterval(() => reg.update(), 5 * 60 * 1000);
 
-    function onNewSW(worker) {
-      showUpdateBanner(() => {
-        worker.postMessage({ type: 'SKIP_WAITING' });
-      });
+    // Check for updates when app resumes (mobile tabs get suspended)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') reg.update();
+    });
+
+    function applyUpdate() {
+      // Always message the *current* waiting worker at click time
+      const waiting = reg.waiting;
+      if (waiting) {
+        waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+      // Fallback: if controllerchange doesn't fire within 2s, force reload
+      setTimeout(() => window.location.reload(), 2000);
+    }
+
+    function onNewSW() {
+      showUpdateBanner(applyUpdate);
     }
 
     // A new SW is already waiting (e.g. user revisits after deploy)
     if (reg.waiting) {
-      onNewSW(reg.waiting);
+      onNewSW();
     }
 
     // Detect newly found updates
@@ -36,7 +49,7 @@ if ('serviceWorker' in navigator) {
       if (!newWorker) return;
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          onNewSW(newWorker);
+          onNewSW();
         }
       });
     });
@@ -44,7 +57,8 @@ if ('serviceWorker' in navigator) {
 }
 
 function showUpdateBanner(onRefresh) {
-  if (document.getElementById('updateBanner')) return;
+  const existing = document.getElementById('updateBanner');
+  if (existing) existing.remove();
   const banner = document.createElement('div');
   banner.id = 'updateBanner';
   banner.innerHTML =

@@ -43,7 +43,21 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Shell assets: cache-first, fallback to network
+  // Navigation requests (HTML pages): network-first so refresh gets latest version
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then((response) => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(e.request).then((r) => r || caches.match('/index.html')))
+    );
+    return;
+  }
+
+  // Static assets: cache-first, fallback to network
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetchPromise = fetch(e.request).then((response) => {
