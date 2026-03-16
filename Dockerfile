@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 1: install ALL dependencies and build frontend with webpack
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:22-alpine AS build
+FROM node:22-slim AS build
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ RUN npm run build
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 2: install production dependencies only
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:22-alpine AS deps
+FROM node:22-slim AS deps
 
 WORKDIR /app
 
@@ -35,10 +35,10 @@ RUN npm ci --omit=dev --ignore-scripts
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 3: final image — copy server + built frontend + prod node_modules
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:22-alpine AS final
+FROM node:22-slim AS final
 
 # Security: run as a non-root user
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN groupadd --system appgroup && useradd --system --gid appgroup appuser
 
 WORKDIR /app
 
@@ -63,7 +63,7 @@ EXPOSE 3000
 
 # Health check — hits the root route every 30 s
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget -qO- http://localhost:${PORT:-3000}/ > /dev/null || exit 1
+  CMD node -e "const http=require('http');http.get('http://localhost:'+(process.env.PORT||3000)+'/',(r)=>{process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1))"
 
 # Start the server in production mode
 CMD ["npm", "start"]
