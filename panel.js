@@ -71,7 +71,9 @@ const LANGS = {
     epgTitle: "L\u1ECBch ph\u00E1t s\u00F3ng",
     epgNoData: "Ch\u01B0a c\u00F3 d\u1EEF li\u1EC7u EPG",
     epgNoProgram: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh",
-    epgNoUpcoming: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh s\u1EAFp t\u1EDBi"
+    epgNoUpcoming: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh s\u1EAFp t\u1EDBi",
+    channelListTitle: "Danh s\u00E1ch k\u00EAnh",
+    closeTip: "\u0110\u00F3ng"
   },
   en: {
     flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "English (US)",
@@ -139,73 +141,8 @@ const LANGS = {
     epgNoData: "No EPG data loaded",
     epgNoProgram: "No program data",
     epgNoUpcoming: "No upcoming programs",
-  },
-  "en-GB": {
-    flag: "\uD83C\uDDEC\uD83C\uDDE7", label: "English (UK)",
-    noChannel: "No channel selected",
-    sound: "Sound",
-    pip: "Mini",
-    newTab: "New tab",
-    reload: "Reload",
-    favHeader: "\u2B50 Favourites",
-    favEmpty: "No favourite channels yet",
-    sourceToggle: "\uD83D\uDD17 Sources",
-    addPlaceholder: "Paste M3U link here...",
-    addBtn: "+ Add",
-    fileBtn: "\uD83D\uDCC1 File",
-    searchPlaceholder: "Search channels...",
-    checkBtn: "Check channels",
-    showAll: "Show all",
-    scrollTop: "Top",
-    defaultBadge: "default",
-    renameTip: "Rename",
-    deleteTip: "Delete this source",
-    renamed: "Renamed",
-    pipNotSupported: "PiP not supported",
-    reloading: "Reloading...",
-    channelN: "Channel ",
-    networkError: "Network error \u2014 retrying...",
-    mediaError: "Media error \u2014 recovering...",
-    playErrorRetry: "Playback error \u2014 auto retry",
-    playErrorFinal: "Playback error \u2014 press Reload",
-    reconnecting: "Reconnecting...",
-    loading: "Loading...",
-    checking: "Checking",
-    selectSource: "Select a source below to start",
-    invalidUrl: "Link must start with http:// or https://",
-    addedSource: "Added source: ",
-    noChannelInFile: "No channels found in file",
-    addedFile: "Added: ",
-    channelUnit: " channels",
-    loadingSources: "Loading {n} sources...",
-    cantLoadSource: "Cannot load sources",
-    noChannelFound: "No channels found",
-    sourceError: "{e} source errors, {n} channels loaded",
-    sourceOk: "{n} channels from {s} sources",
-    checkTitle: "Check which channels are working",
-    showAllTitle: "Show all hidden channels",
-    fileTitle: "Choose M3U file from device",
-    cinemaMode: "Cinema",
-    pinChannel: "Pin",
-    pinChannelTip: "Pin channel (auto-play on startup)",
-    favChannel: "Favourite",
-    hideChannel: "Hide",
-    pinnedToast: "Channel pinned",
-    unpinnedToast: "Channel unpinned",
-    shortcutsTitle: "Shortcuts",
-    playPause: "Play / Pause",
-    seekBack: "Rewind 10s",
-    seekForward: "Forward 10s",
-    prevChannel: "Previous channel",
-    nextChannel: "Next channel",
-    fullscreen: "Fullscreen",
-    epgLoaded: "EPG loaded",
-    retryProxy: "Retrying via proxy…",
-    epgLoadFailed: "Failed to load EPG",
-    epgTitle: "Programme Guide",
-    epgNoData: "No EPG data loaded",
-    epgNoProgram: "No programme data",
-    epgNoUpcoming: "No upcoming programmes",
+    channelListTitle: "Channel list",
+    closeTip: "Close",
   },
   fr: {
     flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
@@ -272,7 +209,9 @@ const LANGS = {
     epgTitle: "Guide des programmes",
     epgNoData: "Aucune donn\u00E9e EPG charg\u00E9e",
     epgNoProgram: "Aucune donn\u00E9e de programme",
-    epgNoUpcoming: "Aucun programme \u00E0 venir"
+    epgNoUpcoming: "Aucun programme \u00E0 venir",
+    channelListTitle: "Liste des cha\u00EEnes",
+    closeTip: "Fermer"
   },
   de: {
     flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
@@ -339,7 +278,9 @@ const LANGS = {
     epgTitle: "Programmf\u00FChrer",
     epgNoData: "Keine EPG-Daten geladen",
     epgNoProgram: "Keine Programmdaten",
-    epgNoUpcoming: "Keine kommenden Programme"
+    epgNoUpcoming: "Keine kommenden Programme",
+    channelListTitle: "Kanalliste",
+    closeTip: "Schlie\u00DFen"
   },
   ru: {
     flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
@@ -406,74 +347,9 @@ const LANGS = {
     epgTitle: "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043F\u0435\u0440\u0435\u0434\u0430\u0447",
     epgNoData: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 EPG",
     epgNoProgram: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 \u043E \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0435",
-    epgNoUpcoming: "\u041D\u0435\u0442 \u043F\u0440\u0435\u0434\u0441\u0442\u043E\u044F\u0449\u0438\u0445 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C"
-  },
-  "en-AU": {
-    flag: "\uD83C\uDDE6\uD83C\uDDFA", label: "English (AU)",
-    noChannel: "No channel selected",
-    sound: "Sound",
-    pip: "Mini",
-    newTab: "New tab",
-    reload: "Reload",
-    favHeader: "\u2B50 Favourites",
-    favEmpty: "No favourite channels yet",
-    sourceToggle: "\uD83D\uDD17 Sources",
-    addPlaceholder: "Paste M3U link here...",
-    addBtn: "+ Add",
-    fileBtn: "\uD83D\uDCC1 File",
-    searchPlaceholder: "Search channels...",
-    checkBtn: "Check channels",
-    showAll: "Show all",
-    scrollTop: "Top",
-    defaultBadge: "default",
-    renameTip: "Rename",
-    deleteTip: "Delete this source",
-    renamed: "Renamed",
-    pipNotSupported: "PiP not supported",
-    reloading: "Reloading...",
-    channelN: "Channel ",
-    networkError: "Network error \u2014 retrying...",
-    mediaError: "Media error \u2014 recovering...",
-    playErrorRetry: "Playback error \u2014 auto retry",
-    playErrorFinal: "Playback error \u2014 press Reload",
-    reconnecting: "Reconnecting...",
-    loading: "Loading...",
-    checking: "Checking",
-    selectSource: "Select a source below to start",
-    invalidUrl: "Link must start with http:// or https://",
-    addedSource: "Added source: ",
-    noChannelInFile: "No channels found in file",
-    addedFile: "Added: ",
-    channelUnit: " channels",
-    loadingSources: "Loading {n} sources...",
-    cantLoadSource: "Cannot load sources",
-    noChannelFound: "No channels found",
-    sourceError: "{e} source errors, {n} channels loaded",
-    sourceOk: "{n} channels from {s} sources",
-    checkTitle: "Check which channels are working",
-    showAllTitle: "Show all hidden channels",
-    fileTitle: "Choose M3U file from device",
-    cinemaMode: "Cinema",
-    pinChannel: "Pin",
-    pinChannelTip: "Pin channel (auto-play on startup)",
-    favChannel: "Favourite",
-    hideChannel: "Hide",
-    pinnedToast: "Channel pinned",
-    unpinnedToast: "Channel unpinned",
-    shortcutsTitle: "Shortcuts",
-    playPause: "Play / Pause",
-    seekBack: "Rewind 10s",
-    seekForward: "Forward 10s",
-    prevChannel: "Previous channel",
-    nextChannel: "Next channel",
-    fullscreen: "Fullscreen",
-    epgLoaded: "EPG loaded",
-    retryProxy: "Retrying via proxy…",
-    epgLoadFailed: "Failed to load EPG",
-    epgTitle: "Programme Guide",
-    epgNoData: "No EPG data loaded",
-    epgNoProgram: "No programme data",
-    epgNoUpcoming: "No upcoming programmes",
+    epgNoUpcoming: "\u041D\u0435\u0442 \u043F\u0440\u0435\u0434\u0441\u0442\u043E\u044F\u0449\u0438\u0445 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C",
+    channelListTitle: "\u0421\u043F\u0438\u0441\u043E\u043A \u043A\u0430\u043D\u0430\u043B\u043E\u0432",
+    closeTip: "\u0417\u0430\u043A\u0440\u044B\u0442\u044C"
   },
   "zh-CN": {
     flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
@@ -540,7 +416,9 @@ const LANGS = {
     epgTitle: "\u8282\u76EE\u6307\u5357",
     epgNoData: "\u672A\u52A0\u8F7D EPG \u6570\u636E",
     epgNoProgram: "\u6CA1\u6709\u8282\u76EE\u6570\u636E",
-    epgNoUpcoming: "\u6CA1\u6709\u5373\u5C06\u64AD\u51FA\u7684\u8282\u76EE"
+    epgNoUpcoming: "\u6CA1\u6709\u5373\u5C06\u64AD\u51FA\u7684\u8282\u76EE",
+    channelListTitle: "\u9891\u9053\u5217\u8868",
+    closeTip: "\u5173\u95ED"
   },
   "zh-TW": {
     flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
@@ -607,7 +485,9 @@ const LANGS = {
     epgTitle: "\u7BC0\u76EE\u6307\u5357",
     epgNoData: "\u672A\u8F09\u5165 EPG \u8CC7\u6599",
     epgNoProgram: "\u6C92\u6709\u7BC0\u76EE\u8CC7\u6599",
-    epgNoUpcoming: "\u6C92\u6709\u5373\u5C07\u64AD\u51FA\u7684\u7BC0\u76EE"
+    epgNoUpcoming: "\u6C92\u6709\u5373\u5C07\u64AD\u51FA\u7684\u7BC0\u76EE",
+    channelListTitle: "\u983B\u9053\u5217\u8868",
+    closeTip: "\u95DC\u9589"
   },
   ja: {
     flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
@@ -674,7 +554,9 @@ const LANGS = {
     epgTitle: "\u756A\u7D44\u8868",
     epgNoData: "EPG \u30C7\u30FC\u30BF\u306A\u3057",
     epgNoProgram: "\u756A\u7D44\u30C7\u30FC\u30BF\u306A\u3057",
-    epgNoUpcoming: "\u4ECA\u5F8C\u306E\u756A\u7D44\u306A\u3057"
+    epgNoUpcoming: "\u4ECA\u5F8C\u306E\u756A\u7D44\u306A\u3057",
+    channelListTitle: "\u30C1\u30E3\u30F3\u30CD\u30EB\u30EA\u30B9\u30C8",
+    closeTip: "\u9589\u3058\u308B"
   },
   ko: {
     flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
@@ -741,7 +623,9 @@ const LANGS = {
     epgTitle: "\uD504\uB85C\uADF8\uB7A8 \uAC00\uC774\uB4DC",
     epgNoData: "EPG \uB370\uC774\uD130 \uC5C6\uC74C",
     epgNoProgram: "\uD504\uB85C\uADF8\uB7A8 \uB370\uC774\uD130 \uC5C6\uC74C",
-    epgNoUpcoming: "\uC608\uC815\uB41C \uD504\uB85C\uADF8\uB7A8 \uC5C6\uC74C"
+    epgNoUpcoming: "\uC608\uC815\uB41C \uD504\uB85C\uADF8\uB7A8 \uC5C6\uC74C",
+    channelListTitle: "\uCC44\uB110 \uBAA9\uB85D",
+    closeTip: "\uB2EB\uAE30"
   },
   es: {
     flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
@@ -808,7 +692,9 @@ const LANGS = {
     epgTitle: "Gu\u00EDa de programas",
     epgNoData: "No hay datos EPG cargados",
     epgNoProgram: "Sin datos de programa",
-    epgNoUpcoming: "No hay programas pr\u00F3ximos"
+    epgNoUpcoming: "No hay programas pr\u00F3ximos",
+    channelListTitle: "Lista de canales",
+    closeTip: "Cerrar"
   },
   pt: {
     flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
@@ -875,7 +761,9 @@ const LANGS = {
     epgTitle: "Guia de programas",
     epgNoData: "Nenhum dado EPG carregado",
     epgNoProgram: "Sem dados de programa",
-    epgNoUpcoming: "Nenhum programa pr\u00F3ximo"
+    epgNoUpcoming: "Nenhum programa pr\u00F3ximo",
+    channelListTitle: "Lista de canais",
+    closeTip: "Fechar"
   },
   ar: {
     flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -942,7 +830,9 @@ const LANGS = {
     epgTitle: "\u062F\u0644\u064A\u0644 \u0627\u0644\u0628\u0631\u0627\u0645\u062C",
     epgNoData: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A EPG",
     epgNoProgram: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A \u0628\u0631\u0646\u0627\u0645\u062C",
-    epgNoUpcoming: "\u0644\u0627 \u0628\u0631\u0627\u0645\u062C \u0642\u0627\u062F\u0645\u0629"
+    epgNoUpcoming: "\u0644\u0627 \u0628\u0631\u0627\u0645\u062C \u0642\u0627\u062F\u0645\u0629",
+    channelListTitle: "\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0642\u0646\u0648\u0627\u062A",
+    closeTip: "\u0625\u063A\u0644\u0627\u0642"
   },
   hi: {
     flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
@@ -1009,7 +899,9 @@ const LANGS = {
     epgTitle: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0917\u093E\u0907\u0921",
     epgNoData: "EPG \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
     epgNoProgram: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
-    epgNoUpcoming: "\u0906\u0917\u093E\u092E\u0940 \u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0928\u0939\u0940\u0902"
+    epgNoUpcoming: "\u0906\u0917\u093E\u092E\u0940 \u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0928\u0939\u0940\u0902",
+    channelListTitle: "\u091A\u0948\u0928\u0932 \u0938\u0942\u091A\u0940",
+    closeTip: "\u092C\u0902\u0926 \u0915\u0930\u0947\u0902"
   },
   th: {
     flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
@@ -1076,7 +968,9 @@ const LANGS = {
     epgTitle: "\u0E1C\u0E31\u0E07\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
     epgNoData: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 EPG",
     epgNoProgram: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
-    epgNoUpcoming: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E16\u0E31\u0E14\u0E44\u0E1B"
+    epgNoUpcoming: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E16\u0E31\u0E14\u0E44\u0E1B",
+    channelListTitle: "\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E0A\u0E48\u0E2D\u0E07",
+    closeTip: "\u0E1B\u0E34\u0E14"
   },
   id: {
     flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
@@ -1143,7 +1037,9 @@ const LANGS = {
     epgTitle: "Panduan Program",
     epgNoData: "Tidak ada data EPG",
     epgNoProgram: "Tidak ada data program",
-    epgNoUpcoming: "Tidak ada program mendatang"
+    epgNoUpcoming: "Tidak ada program mendatang",
+    channelListTitle: "Daftar saluran",
+    closeTip: "Tutup"
   },
   it: {
     flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
@@ -1210,7 +1106,9 @@ const LANGS = {
     epgTitle: "Guida programmi",
     epgNoData: "Nessun dato EPG caricato",
     epgNoProgram: "Nessun dato di programma",
-    epgNoUpcoming: "Nessun programma in arrivo"
+    epgNoUpcoming: "Nessun programma in arrivo",
+    channelListTitle: "Lista canali",
+    closeTip: "Chiudi"
   },
   tr: {
     flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
@@ -1277,7 +1175,9 @@ const LANGS = {
     epgTitle: "Program rehberi",
     epgNoData: "EPG verisi yüklenmedi",
     epgNoProgram: "Program verisi yok",
-    epgNoUpcoming: "Gelecek program yok"
+    epgNoUpcoming: "Gelecek program yok",
+    channelListTitle: "Kanal listesi",
+    closeTip: "Kapat"
   }
 };
 
@@ -1292,6 +1192,7 @@ const DEFAULT_SOURCES = [
 const video      = document.getElementById("player");
 const nowName    = document.getElementById("nowPlayingName");
 const nowBar     = document.getElementById("nowPlaying");
+const playerTitle = document.getElementById("playerTitle");
 const btnUnmute  = document.getElementById("btnUnmute");
 const btnPiP     = document.getElementById("btnPiP");
 const btnPlayPause = document.getElementById("btnPlayPause");
@@ -1315,6 +1216,94 @@ const addSourceBtn   = document.getElementById("addSourceBtn");
 const pinBtn         = document.getElementById("pinBtn");
 const favBtn         = document.getElementById("favBtn");
 const hideBtn        = document.getElementById("hideBtn");
+
+/* ===== AUDIO VISUALIZER ===== */
+var _audioCtx = null, _analyser = null, _audioSrc = null, _vizRAF = null;
+var _vizCanvas = document.getElementById("radioVisualizer");
+var _vizCtx = _vizCanvas ? _vizCanvas.getContext("2d") : null;
+
+function initAudioVisualizer(){
+  if(_audioCtx) return;
+  _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  _analyser = _audioCtx.createAnalyser();
+  _analyser.fftSize = 1024;
+  _analyser.smoothingTimeConstant = 0.7;
+  _audioSrc = _audioCtx.createMediaElementSource(video);
+  _audioSrc.connect(_analyser);
+  _analyser.connect(_audioCtx.destination);
+}
+
+function startVisualizer(){
+  if(!_vizCanvas || !_vizCtx) return;
+  try{ initAudioVisualizer(); } catch(e){ return; }
+  if(_audioCtx.state === "suspended") _audioCtx.resume();
+  cancelAnimationFrame(_vizRAF);
+  var binCount = _analyser.frequencyBinCount;
+  var dataArr = new Uint8Array(binCount);
+  var numBars = 90;
+  var trimLo = 2, trimHi = 2; // trim low and high frequencies that are often just noise
+  var useBars = numBars - trimLo - trimHi;
+  /* build log-spaced bin ranges */
+  var logBands = [];
+  var minF = 1, maxF = binCount;
+  for(var i = 0; i < numBars; i++){
+    var lo = Math.floor(minF * Math.pow(maxF / minF, i / numBars));
+    var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / numBars));
+    if(hi <= lo) hi = lo + 1;
+    logBands.push([lo, Math.min(hi, binCount)]);
+  }
+  var smoothBars = new Float32Array(numBars);
+  /* reorder: high frequencies center, low frequencies edges (mirrored) */
+  var drawOrder = new Array(useBars);
+  var half = Math.ceil(useBars / 2);
+  for(var i = 0; i < useBars; i++){
+    if(i % 2 === 0) drawOrder[half - 1 - (i >> 1)] = i + trimLo;
+    else drawOrder[half + (i >> 1)] = i + trimLo;
+  }
+  (function draw(){
+    _vizRAF = requestAnimationFrame(draw);
+    var dpr = window.devicePixelRatio || 1;
+    var w = _vizCanvas.width = _vizCanvas.offsetWidth * dpr;
+    var h = _vizCanvas.height = _vizCanvas.offsetHeight * dpr;
+    _vizCtx.clearRect(0,0,w,h);
+    _analyser.getByteFrequencyData(dataArr);
+    var midY = h / 2;
+    var gap = 2 * dpr;
+    var barW = Math.max(1.5, (w - gap * (useBars + 1)) / useBars);
+    var r = barW / 2;
+    _vizCtx.fillStyle = "#fff";
+    /* compute bar heights */
+    var barHeights = new Float32Array(numBars);
+    for(var i = 0; i < numBars; i++){
+      var lo = logBands[i][0], hi = logBands[i][1];
+      var sum = 0;
+      for(var j = lo; j < hi; j++) sum += dataArr[j];
+      var val = (sum / (hi - lo)) / 255;
+      smoothBars[i] += (val - smoothBars[i]) * 0.45;
+      barHeights[i] = Math.max(2 * dpr, smoothBars[i] * midY * 0.92);
+    }
+    /* draw in reordered position: high freq center */
+    for(var d = 0; d < useBars; d++){
+      var srcIdx = drawOrder[d];
+      var barH = barHeights[srcIdx];
+      var x = gap + d * (barW + gap);
+      _vizCtx.beginPath();
+      _vizCtx.roundRect(x, midY - barH, barW, barH, [r,r,0,0]);
+      _vizCtx.fill();
+      _vizCtx.beginPath();
+      _vizCtx.roundRect(x, midY + 1 * dpr, barW, barH, [0,0,r,r]);
+      _vizCtx.fill();
+    }
+  })();
+}
+
+function stopVisualizer(){
+  cancelAnimationFrame(_vizRAF);
+  _vizRAF = null;
+  if(_vizCanvas && _vizCtx){
+    _vizCtx.clearRect(0, 0, _vizCanvas.width, _vizCanvas.height);
+  }
+}
 
 /* ===== STATE ===== */
 let allChannels  = [];
@@ -1789,6 +1778,12 @@ function playByIndex(idx, opts){
   currentIdx = idx;
   const ch = allChannels[idx];
 
+  // Persist selected channel and tab in URL
+  const url = new URL(window.location);
+  url.searchParams.set("ch", ch.name || "");
+  url.hash = currentCategory;
+  history.replaceState(null, "", url);
+
   // highlight — only touch the old and new cards instead of scanning all .ch-card
   if(prevIdx >= 0){
     const prev = grid && grid.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
@@ -1800,7 +1795,9 @@ function playByIndex(idx, opts){
   }
 
   // update now-playing
-  if(nowName) nowName.textContent = ch.name || t("channelN") + (idx+1);
+  const _chTitle = ch.name || t("channelN") + (idx+1);
+  if(nowName) nowName.textContent = _chTitle;
+  if(playerTitle) playerTitle.textContent = _chTitle;
   if(nowBar) nowBar.classList.add("live");
   updateMiniButtons();
 
@@ -1815,9 +1812,11 @@ function playByIndex(idx, opts){
         radioOvImg.src = ch.logo || fallbackImg;
         radioOvImg.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
       }
-      if(radioOvName) radioOvName.textContent = ch.name || "";
+      if(radioOvName) radioOvName.textContent = (ch.name || "").toUpperCase();
+      startVisualizer();
     } else {
       radioOv.classList.remove("active");
+      stopVisualizer();
     }
   }
 
@@ -2174,11 +2173,21 @@ if(searchIn) searchIn.addEventListener("input", () => {
 
 const catTabs = document.querySelectorAll(".cat-tab");
 if(catTabs.length > 0){
+  // Restore active tab from URL hash
+  const hashCat = window.location.hash.replace("#", "");
+  if(["tv","radio","fav"].includes(hashCat)){
+    currentCategory = hashCat;
+    catTabs.forEach(b => b.classList.toggle("active", b.dataset.cat === hashCat));
+  }
+
   catTabs.forEach(btn => {
     btn.addEventListener("click", () => {
       catTabs.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       currentCategory = btn.dataset.cat;
+      const url = new URL(window.location);
+      url.hash = currentCategory;
+      history.replaceState(null, "", url);
       renderGrid();
     });
   });
@@ -2201,6 +2210,7 @@ function showEmptyState(){
   clearTimeout(stallTimer);
   if(grid) grid.innerHTML = "";
   if(nowName) nowName.textContent = t("noChannel");
+  if(playerTitle) playerTitle.textContent = "";
   if(nowBar) nowBar.classList.remove("live");
   renderGrid();
   if(emptyState){
@@ -2519,14 +2529,19 @@ async function loadActiveSources(){
     if(errors > 0) showToast(t("sourceError"), 3000);
     else showToast(t("sourceOk"), 2000);
 
-    // Auto-play pinned channel FIRST — before any EPG work
-    if(pinnedUrl){
-      const pi = allChannels.findIndex(c => c.url === pinnedUrl);
-      if(pi >= 0) playByIndex(pi);
-    } else if (allChannels.length > 0) {
-      // Play first channel by default if no pinned channel
-      playByIndex(0);
+    // Auto-play: URL param > pinned channel > first channel
+    const urlCh = new URLSearchParams(window.location.search).get("ch");
+    let autoIdx = -1;
+    if(urlCh){
+      autoIdx = allChannels.findIndex(c => c.name === urlCh);
     }
+    if(autoIdx < 0 && pinnedUrl){
+      autoIdx = allChannels.findIndex(c => c.url === pinnedUrl);
+    }
+    if(autoIdx < 0 && allChannels.length > 0){
+      autoIdx = 0;
+    }
+    if(autoIdx >= 0) playByIndex(autoIdx);
   }
 
   // Load EPG data AFTER playback has started — defer so video gets priority
@@ -2677,6 +2692,7 @@ function applyLang(){
 
   // Static HTML elements
   if(nowName && currentIdx < 0) nowName.textContent = t("noChannel");
+  if(playerTitle && currentIdx < 0) playerTitle.textContent = "";
   if(btnUnmute){
     btnUnmute.title = t("sound") + " (M)";
   }
@@ -2738,6 +2754,14 @@ function applyLang(){
   // Shortcuts button
   const _scBtn = document.getElementById("shortcutsBtn");
   if(_scBtn) _scBtn.title = t("shortcutsTitle");
+
+  // List, EPG & close buttons
+  const _listBtn = document.getElementById("listBtn");
+  const _epgBtn = document.getElementById("epgBtn");
+  const _closeBtn = document.getElementById("rightPaneCloseBtn");
+  if(_listBtn) _listBtn.title = t("channelListTitle");
+  if(_epgBtn) _epgBtn.title = t("epgTitle");
+  if(_closeBtn) _closeBtn.title = t("closeTip");
 
   // Re-render dynamic content
   renderSources();
@@ -2801,12 +2825,12 @@ if(nextChBtn) nextChBtn.addEventListener("click", () => {
 });
 
 /* ===== EPG PANEL ===== */
-const epgBtn       = document.getElementById("epgBtn");
-const listBtn      = document.getElementById("listBtn");
-const epgPanel     = document.getElementById("epgPanel");
-const epgListEl    = document.getElementById("epgList");
-const epgPanelTitle = document.getElementById("epgPanelTitle");
-const epgCloseBtn  = document.getElementById("epgCloseBtn");
+var epgBtn       = document.getElementById("epgBtn");
+var listBtn      = document.getElementById("listBtn");
+var epgPanel     = document.getElementById("epgPanel");
+var epgListEl    = document.getElementById("epgList");
+var epgPanelTitle = document.getElementById("epgPanelTitle");
+var epgCloseBtn  = document.getElementById("epgCloseBtn");
 
 function openEpgPanel(){
   if(!epgPanel) return;
@@ -3001,8 +3025,8 @@ function saveHidden(){
 }
 
 /* ===== HLS QUALITY SELECTOR ===== */
-const qualityBtn  = document.getElementById("qualityBtn");
-const qualityMenu = document.getElementById("qualityMenu");
+var qualityBtn  = document.getElementById("qualityBtn");
+var qualityMenu = document.getElementById("qualityMenu");
 
 function buildQualityMenu(){
   if(!qualityMenu) return;
