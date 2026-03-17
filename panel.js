@@ -1255,42 +1255,33 @@ const favBtn         = document.getElementById("favBtn");
 const hideBtn        = document.getElementById("hideBtn");
 
 /* ===== AUDIO VISUALIZER ===== */
-var _audioCtx = null, _analyser = null, _audioSrc = null, _vizRAF = null;
-var _vizSrcEl = null; // which element the visualizer is tapping
+var _audioCtx = null, _analyser = null, _vizRAF = null;
 var _vizCanvas = document.getElementById("radioVisualizer");
 var _vizCtx = _vizCanvas ? _vizCanvas.getContext("2d") : null;
 
+// Create a single persistent AudioContext and connect both media elements once.
+// createMediaElementSource can only be called once per element for the lifetime
+// of the page, so we set it up once and never tear it down. Both elements feed
+// the same analyser; only one plays at a time so there's no mixing.
 function initAudioVisualizer(){
-  // Reinitialize if the active media element changed
-  if(_audioCtx && _vizSrcEl !== mediaEl){ cleanupAudioVisualizer(); }
   if(_audioCtx) return;
-  _vizSrcEl = mediaEl;
   _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   _analyser = _audioCtx.createAnalyser();
   _analyser.fftSize = 1024;
   _analyser.smoothingTimeConstant = 0.7;
-  // Use captureStream to tap audio for visualization without re-routing
-  // playback through AudioContext. createMediaElementSource intercepts the
-  // audio pipeline and causes distortion on HLS discontinuities.
-  var el = mediaEl;
-  var stream = null;
-  try { stream = el.captureStream ? el.captureStream() : el.mozCaptureStream ? el.mozCaptureStream() : null; } catch(e){}
-  if(stream){
-    _audioSrc = _audioCtx.createMediaStreamSource(stream);
-    _audioSrc.connect(_analyser);
-  } else {
-    _audioSrc = _audioCtx.createMediaElementSource(el);
-    _audioSrc.connect(_analyser);
-    _analyser.connect(_audioCtx.destination);
+  _analyser.connect(_audioCtx.destination);
+  if(video){
+    try {
+      var vs = _audioCtx.createMediaElementSource(video);
+      vs.connect(_analyser);
+    } catch(e){}
   }
-}
-
-function cleanupAudioVisualizer(){
-  cancelAnimationFrame(_vizRAF); _vizRAF = null;
-  if(_audioSrc){ try{ _audioSrc.disconnect(); }catch(e){} _audioSrc = null; }
-  if(_analyser){ try{ _analyser.disconnect(); }catch(e){} _analyser = null; }
-  if(_audioCtx){ try{ _audioCtx.close(); }catch(e){} _audioCtx = null; }
-  _vizSrcEl = null;
+  if(audioEl){
+    try {
+      var as = _audioCtx.createMediaElementSource(audioEl);
+      as.connect(_analyser);
+    } catch(e){}
+  }
 }
 
 function startVisualizer(){
@@ -1358,7 +1349,8 @@ function startVisualizer(){
 }
 
 function stopVisualizer(){
-  cleanupAudioVisualizer();
+  cancelAnimationFrame(_vizRAF);
+  _vizRAF = null;
   if(_vizCanvas && _vizCtx){
     _vizCtx.clearRect(0, 0, _vizCanvas.width, _vizCanvas.height);
   }
@@ -1872,11 +1864,10 @@ function playByIndex(idx, opts){
   const radioOvImg = document.getElementById("radioOverlayImg");
   const radioOvName = document.getElementById("radioOverlayName");
   // Switch media element based on channel type
-  // For HLS streams, always use <video> (HLS.js handles discontinuities
-  // poorly on <audio>). Only use <audio> for direct audio URLs.
-  const useAudio = ch.isRadio && !isHlsUrl(ch.url);
+  // Radio channels use <audio> for direct URLs, <video> for HLS
+  // (HLS.js requires a video element for TS demuxing)
   const prevMediaEl = mediaEl;
-  mediaEl = useAudio ? audioEl : video;
+  mediaEl = (ch.isRadio && !isHlsUrl(ch.url)) ? audioEl : video;
 
   // radio overlay (after mediaEl is set so visualizer taps the right element)
   if(radioOv){
@@ -1948,6 +1939,7 @@ function playByIndex(idx, opts){
 
       let hlsMediaRecoveryAttempts = 0;
       let hlsNetworkRetries = 0;
+      let _lastDiscontinuity = -1;
 
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
         hls.loadSource(sourceUrl);
@@ -1958,6 +1950,22 @@ function playByIndex(idx, opts){
         buildQualityMenu();
         safePlay();
         if(useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
+      });
+
+      // Detect discontinuities in radio streams and force codec reset
+      hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
+        if(!ch.isRadio) return;
+        const frag = data.frag;
+        if(frag && frag.cc !== undefined && frag.cc !== _lastDiscontinuity){
+          if(_lastDiscontinuity >= 0){
+            console.log("[HLS] Radio discontinuity crossed:", _lastDiscontinuity, "->", frag.cc, "— flushing buffer");
+            try {
+              hls.swapAudioCodec();
+              hls.recoverMediaError();
+            } catch(e){}
+          }
+          _lastDiscontinuity = frag.cc;
+        }
       });
 
       hls.on(Hls.Events.FRAG_LOADED, () => {

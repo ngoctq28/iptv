@@ -63,13 +63,13 @@ module.exports = {
     ],
   },
   devServer: {
-    port: 3000,
+    port: 5000,
     hot: true,
     open: true,
     proxy: [
       {
         context: ['/api', '/env.js'],
-        target: 'http://localhost:3001',
+        target: 'http://localhost:5001',
       },
     ],
   },
