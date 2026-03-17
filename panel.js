@@ -1256,18 +1256,41 @@ const hideBtn        = document.getElementById("hideBtn");
 
 /* ===== AUDIO VISUALIZER ===== */
 var _audioCtx = null, _analyser = null, _audioSrc = null, _vizRAF = null;
+var _vizSrcEl = null; // which element the visualizer is tapping
 var _vizCanvas = document.getElementById("radioVisualizer");
 var _vizCtx = _vizCanvas ? _vizCanvas.getContext("2d") : null;
 
 function initAudioVisualizer(){
+  // Reinitialize if the active media element changed
+  if(_audioCtx && _vizSrcEl !== mediaEl){ cleanupAudioVisualizer(); }
   if(_audioCtx) return;
+  _vizSrcEl = mediaEl;
   _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   _analyser = _audioCtx.createAnalyser();
   _analyser.fftSize = 1024;
   _analyser.smoothingTimeConstant = 0.7;
-  _audioSrc = _audioCtx.createMediaElementSource(audioEl);
-  _audioSrc.connect(_analyser);
-  _analyser.connect(_audioCtx.destination);
+  // Use captureStream to tap audio for visualization without re-routing
+  // playback through AudioContext. createMediaElementSource intercepts the
+  // audio pipeline and causes distortion on HLS discontinuities.
+  var el = mediaEl;
+  var stream = null;
+  try { stream = el.captureStream ? el.captureStream() : el.mozCaptureStream ? el.mozCaptureStream() : null; } catch(e){}
+  if(stream){
+    _audioSrc = _audioCtx.createMediaStreamSource(stream);
+    _audioSrc.connect(_analyser);
+  } else {
+    _audioSrc = _audioCtx.createMediaElementSource(el);
+    _audioSrc.connect(_analyser);
+    _analyser.connect(_audioCtx.destination);
+  }
+}
+
+function cleanupAudioVisualizer(){
+  cancelAnimationFrame(_vizRAF); _vizRAF = null;
+  if(_audioSrc){ try{ _audioSrc.disconnect(); }catch(e){} _audioSrc = null; }
+  if(_analyser){ try{ _analyser.disconnect(); }catch(e){} _analyser = null; }
+  if(_audioCtx){ try{ _audioCtx.close(); }catch(e){} _audioCtx = null; }
+  _vizSrcEl = null;
 }
 
 function startVisualizer(){
@@ -1335,8 +1358,7 @@ function startVisualizer(){
 }
 
 function stopVisualizer(){
-  cancelAnimationFrame(_vizRAF);
-  _vizRAF = null;
+  cleanupAudioVisualizer();
   if(_vizCanvas && _vizCtx){
     _vizCtx.clearRect(0, 0, _vizCanvas.width, _vizCanvas.height);
   }
@@ -1849,6 +1871,14 @@ function playByIndex(idx, opts){
   const radioOv = document.getElementById("radioOverlay");
   const radioOvImg = document.getElementById("radioOverlayImg");
   const radioOvName = document.getElementById("radioOverlayName");
+  // Switch media element based on channel type
+  // For HLS streams, always use <video> (HLS.js handles discontinuities
+  // poorly on <audio>). Only use <audio> for direct audio URLs.
+  const useAudio = ch.isRadio && !isHlsUrl(ch.url);
+  const prevMediaEl = mediaEl;
+  mediaEl = useAudio ? audioEl : video;
+
+  // radio overlay (after mediaEl is set so visualizer taps the right element)
   if(radioOv){
     if(ch.isRadio){
       radioOv.classList.add("active");
@@ -1857,16 +1887,11 @@ function playByIndex(idx, opts){
         radioOvImg.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
       }
       if(radioOvName) radioOvName.textContent = (ch.name || "").toUpperCase();
-      startVisualizer();
     } else {
       radioOv.classList.remove("active");
       stopVisualizer();
     }
   }
-
-  // Switch media element based on channel type
-  const prevMediaEl = mediaEl;
-  mediaEl = ch.isRadio ? audioEl : video;
   // Pause & clean up previous element
   prevMediaEl.pause();
   if(prevMediaEl !== mediaEl){
@@ -2065,6 +2090,10 @@ function bindMediaEvents(el){
     if(nowBar) nowBar.classList.add("live");
     retryCount = 0;
     resetStallTimer();
+    // Start visualizer once audio is actually flowing
+    if(currentIdx >= 0 && allChannels[currentIdx] && allChannels[currentIdx].isRadio){
+      startVisualizer();
+    }
   });
   el.addEventListener("timeupdate", () => { if(el === mediaEl) resetStallTimerThrottled(); });
   el.addEventListener("waiting", () => { if(el === mediaEl) showToast(t("loading"), 0); });
