@@ -147,1075 +147,8 @@ const LANGS = {
     closeTip: "Close",
     castTip: "Cast",
     castingTip: "Stop casting"
-  },
-  fr: {
-    flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
-    noChannel: "Aucune cha\u00EEne s\u00E9lectionn\u00E9e",
-    sound: "Son",
-    pip: "Mini",
-    newTab: "Nouvel onglet",
-    reload: "Recharger",
-    favHeader: "\u2B50 Favoris",
-    favEmpty: "Aucune cha\u00EEne favorite",
-    sourceToggle: "\uD83D\uDD17 Sources",
-    addPlaceholder: "Collez un lien M3U ici...",
-    addBtn: "+ Ajouter",
-    fileBtn: "\uD83D\uDCC1 Fichier",
-    searchPlaceholder: "Rechercher des cha\u00EEnes...",
-    checkBtn: "V\u00E9rifier",
-    showAll: "Tout afficher",
-    scrollTop: "Haut",
-    defaultBadge: "par d\u00E9faut",
-    renameTip: "Renommer",
-    deleteTip: "Supprimer cette source",
-    renamed: "Renomm\u00E9",
-    pipNotSupported: "PiP non pris en charge",
-    reloading: "Rechargement...",
-    channelN: "Cha\u00EEne ",
-    networkError: "Erreur r\u00E9seau \u2014 nouvelle tentative...",
-    mediaError: "Erreur m\u00E9dia \u2014 r\u00E9cup\u00E9ration...",
-    playErrorRetry: "Erreur de lecture \u2014 nouvelle tentative",
-    playErrorFinal: "Erreur de lecture \u2014 appuyez sur Recharger",
-    reconnecting: "Reconnexion...",
-    loading: "Chargement...",
-    checking: "V\u00E9rification",
-    selectSource: "S\u00E9lectionnez une source ci-dessous",
-    invalidUrl: "Le lien doit commencer par http:// ou https://",
-    addedSource: "Source ajout\u00E9e : ",
-    noChannelInFile: "Aucune cha\u00EEne trouv\u00E9e dans le fichier",
-    addedFile: "Ajout\u00E9 : ",
-    channelUnit: " cha\u00EEnes",
-    loadingSources: "Chargement de {n} sources...",
-    cantLoadSource: "Impossible de charger les sources",
-    noChannelFound: "Aucune cha\u00EEne trouv\u00E9e",
-    sourceError: "{e} sources en erreur, {n} cha\u00EEnes charg\u00E9es",
-    sourceOk: "{n} cha\u00EEnes de {s} sources",
-    checkTitle: "V\u00E9rifier quelles cha\u00EEnes fonctionnent",
-    showAllTitle: "R\u00E9afficher toutes les cha\u00EEnes masqu\u00E9es",
-    fileTitle: "Choisir un fichier M3U",
-    cinemaMode: "Cin\u00E9ma",
-    pinChannel: "\u00C9pingler",
-    pinChannelTip: "\u00C9pingler la cha\u00EEne (lecture auto au d\u00E9marrage)",
-    favChannel: "Favori",
-    hideChannel: "Masquer",
-    pinnedToast: "Cha\u00EEne \u00E9pingl\u00E9e",
-    unpinnedToast: "Cha\u00EEne d\u00E9s\u00E9pingl\u00E9e",
-    shortcutsTitle: "Raccourcis",
-    playPause: "Lecture / Pause",
-    seekBack: "Reculer 10s",
-    seekForward: "Avancer 10s",
-    prevChannel: "Cha\u00EEne pr\u00E9c\u00E9dente",
-    nextChannel: "Cha\u00EEne suivante",
-    fullscreen: "Plein \u00E9cran",
-    epgLoaded: "EPG charg\u00E9",
-    retryProxy: "Nouvelle tentative via proxy\u2026",
-    epgLoadFailed: "\u00C9chec du chargement EPG",
-    epgTitle: "Guide des programmes",
-    epgNoData: "Aucune donn\u00E9e EPG charg\u00E9e",
-    epgNoProgram: "Aucune donn\u00E9e de programme",
-    epgNoUpcoming: "Aucun programme \u00E0 venir",
-    channelListTitle: "Liste des cha\u00EEnes",
-    channelListTitle: "Liste des cha\u00EEnes",
-    closeTip: "Fermer",
-    castTip: "Diffuser",
-    castingTip: "Arr\u00EAter la diffusion"
-  },
-  de: {
-    flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
-    noChannel: "Kein Kanal ausgew\u00E4hlt",
-    sound: "Ton",
-    pip: "Mini",
-    newTab: "Neuer Tab",
-    reload: "Neu laden",
-    favHeader: "\u2B50 Favoriten",
-    favEmpty: "Noch keine Lieblingskan\u00E4le",
-    sourceToggle: "\uD83D\uDD17 Quellen",
-    addPlaceholder: "M3U-Link hier einf\u00FCgen...",
-    addBtn: "+ Hinzuf\u00FCgen",
-    fileBtn: "\uD83D\uDCC1 Datei",
-    searchPlaceholder: "Kan\u00E4le suchen...",
-    checkBtn: "Kan\u00E4le pr\u00FCfen",
-    showAll: "Alle anzeigen",
-    scrollTop: "Nach oben",
-    defaultBadge: "Standard",
-    renameTip: "Umbenennen",
-    deleteTip: "Diese Quelle l\u00F6schen",
-    renamed: "Umbenannt",
-    pipNotSupported: "PiP nicht unterst\u00FCtzt",
-    reloading: "Wird neu geladen...",
-    channelN: "Kanal ",
-    networkError: "Netzwerkfehler \u2014 erneuter Versuch...",
-    mediaError: "Medienfehler \u2014 Wiederherstellung...",
-    playErrorRetry: "Wiedergabefehler \u2014 automatischer Neuversuch",
-    playErrorFinal: "Wiedergabefehler \u2014 Neu laden dr\u00FCcken",
-    reconnecting: "Verbindung wird wiederhergestellt...",
-    loading: "Wird geladen...",
-    checking: "Pr\u00FCfung",
-    selectSource: "W\u00E4hlen Sie unten eine Quelle aus",
-    invalidUrl: "Link muss mit http:// oder https:// beginnen",
-    addedSource: "Quelle hinzugef\u00FCgt: ",
-    noChannelInFile: "Keine Kan\u00E4le in Datei gefunden",
-    addedFile: "Hinzugef\u00FCgt: ",
-    channelUnit: " Kan\u00E4le",
-    loadingSources: "{n} Quellen werden geladen...",
-    cantLoadSource: "Quellen konnten nicht geladen werden",
-    noChannelFound: "Keine Kan\u00E4le gefunden",
-    sourceError: "{e} Quellenfehler, {n} Kan\u00E4le geladen",
-    sourceOk: "{n} Kan\u00E4le aus {s} Quellen",
-    checkTitle: "Pr\u00FCfen welche Kan\u00E4le funktionieren",
-    showAllTitle: "Alle ausgeblendeten Kan\u00E4le anzeigen",
-    fileTitle: "M3U-Datei vom Ger\u00E4t w\u00E4hlen",
-    cinemaMode: "Kino",
-    pinChannel: "Anheften",
-    pinChannelTip: "Kanal anheften (Auto-Start)",
-    favChannel: "Favorit",
-    hideChannel: "Ausblenden",
-    pinnedToast: "Kanal angeheftet",
-    unpinnedToast: "Kanal losgel\u00F6st",
-    shortcutsTitle: "Tastaturk\u00FCrzel",
-    playPause: "Wiedergabe / Pause",
-    seekBack: "10s zurück",
-    seekForward: "10s vor",
-    prevChannel: "Vorheriger Kanal",
-    nextChannel: "N\u00E4chster Kanal",
-    fullscreen: "Vollbild",
-    epgLoaded: "EPG geladen",
-    retryProxy: "Erneuter Versuch über Proxy…",
-    epgLoadFailed: "EPG konnte nicht geladen werden",
-    epgTitle: "Programmf\u00FChrer",
-    epgNoData: "Keine EPG-Daten geladen",
-    epgNoProgram: "Keine Programmdaten",
-    epgNoUpcoming: "Keine kommenden Programme",
-    channelListTitle: "Kanalliste",
-    closeTip: "Schlie\u00DFen",
-    castTip: "\u00DCbertragen",
-    castingTip: "\u00DCbertragung beenden"
-  },
-  ru: {
-    flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
-    noChannel: "\u041A\u0430\u043D\u0430\u043B \u043D\u0435 \u0432\u044B\u0431\u0440\u0430\u043D",
-    sound: "\u0417\u0432\u0443\u043A",
-    pip: "\u041C\u0438\u043D\u0438",
-    newTab: "\u041D\u043E\u0432\u0430\u044F \u0432\u043A\u043B.",
-    reload: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440.",
-    favHeader: "\u2B50 \u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435",
-    favEmpty: "\u041D\u0435\u0442 \u0438\u0437\u0431\u0440\u0430\u043D\u043D\u044B\u0445 \u043A\u0430\u043D\u0430\u043B\u043E\u0432",
-    sourceToggle: "\uD83D\uDD17 \u0418\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0438",
-    addPlaceholder: "\u0412\u0441\u0442\u0430\u0432\u044C\u0442\u0435 M3U \u0441\u0441\u044B\u043B\u043A\u0443...",
-    addBtn: "+ \u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C",
-    fileBtn: "\uD83D\uDCC1 \u0424\u0430\u0439\u043B",
-    searchPlaceholder: "\u041F\u043E\u0438\u0441\u043A \u043A\u0430\u043D\u0430\u043B\u043E\u0432...",
-    checkBtn: "\u041F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C",
-    showAll: "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0432\u0441\u0435",
-    scrollTop: "\u0412\u0432\u0435\u0440\u0445",
-    defaultBadge: "\u043F\u043E \u0443\u043C\u043E\u043B\u0447.",
-    renameTip: "\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u0442\u044C",
-    deleteTip: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A",
-    renamed: "\u041F\u0435\u0440\u0435\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u043E",
-    pipNotSupported: "PiP \u043D\u0435 \u043F\u043E\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442\u0441\u044F",
-    reloading: "\u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0430...",
-    channelN: "\u041A\u0430\u043D\u0430\u043B ",
-    networkError: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u0435\u0442\u0438 \u2014 \u043F\u043E\u0432\u0442\u043E\u0440...",
-    mediaError: "\u041E\u0448\u0438\u0431\u043A\u0430 \u043C\u0435\u0434\u0438\u0430 \u2014 \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435...",
-    playErrorRetry: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0432\u043E\u0441\u043F\u0440. \u2014 \u0430\u0432\u0442\u043E\u043F\u043E\u0432\u0442\u043E\u0440",
-    playErrorFinal: "\u041E\u0448\u0438\u0431\u043A\u0430 \u0432\u043E\u0441\u043F\u0440. \u2014 \u043D\u0430\u0436\u043C\u0438\u0442\u0435 \u041F\u0435\u0440\u0435\u0437\u0430\u0433\u0440.",
-    reconnecting: "\u041F\u0435\u0440\u0435\u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0435\u043D\u0438\u0435...",
-    loading: "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430...",
-    checking: "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430",
-    selectSource: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A \u043D\u0438\u0436\u0435",
-    invalidUrl: "\u0421\u0441\u044B\u043B\u043A\u0430 \u0434\u043E\u043B\u0436\u043D\u0430 \u043D\u0430\u0447\u0438\u043D\u0430\u0442\u044C\u0441\u044F \u0441 http:// \u0438\u043B\u0438 https://",
-    addedSource: "\u0418\u0441\u0442\u043E\u0447\u043D\u0438\u043A \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D: ",
-    noChannelInFile: "\u041A\u0430\u043D\u0430\u043B\u044B \u0432 \u0444\u0430\u0439\u043B\u0435 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u044B",
-    addedFile: "\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u043E: ",
-    channelUnit: " \u043A\u0430\u043D\u0430\u043B\u043E\u0432",
-    loadingSources: "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 {n} \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432...",
-    cantLoadSource: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0438",
-    noChannelFound: "\u041A\u0430\u043D\u0430\u043B\u044B \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u044B",
-    sourceError: "{e} \u043E\u0448\u0438\u0431\u043E\u043A, {n} \u043A\u0430\u043D\u0430\u043B\u043E\u0432 \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u043E",
-    sourceOk: "{n} \u043A\u0430\u043D\u0430\u043B\u043E\u0432 \u0438\u0437 {s} \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u043E\u0432",
-    checkTitle: "\u041F\u0440\u043E\u0432\u0435\u0440\u0438\u0442\u044C \u0440\u0430\u0431\u043E\u0447\u0438\u0435 \u043A\u0430\u043D\u0430\u043B\u044B",
-    showAllTitle: "\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u044C \u0432\u0441\u0435 \u0441\u043A\u0440\u044B\u0442\u044B\u0435 \u043A\u0430\u043D\u0430\u043B\u044B",
-    fileTitle: "\u0412\u044B\u0431\u0440\u0430\u0442\u044C M3U \u0444\u0430\u0439\u043B",
-    cinemaMode: "\u041A\u0438\u043D\u043E",
-    pinChannel: "\u0417\u0430\u043A\u0440\u0435\u043F\u0438\u0442\u044C",
-    pinChannelTip: "\u0417\u0430\u043A\u0440\u0435\u043F\u0438\u0442\u044C \u043A\u0430\u043D\u0430\u043B (\u0430\u0432\u0442\u043E\u0437\u0430\u043F\u0443\u0441\u043A)",
-    favChannel: "\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435",
-    hideChannel: "\u0421\u043A\u0440\u044B\u0442\u044C",
-    pinnedToast: "\u041A\u0430\u043D\u0430\u043B \u0437\u0430\u043A\u0440\u0435\u043F\u043B\u0451\u043D",
-    unpinnedToast: "\u041A\u0430\u043D\u0430\u043B \u043E\u0442\u043A\u0440\u0435\u043F\u043B\u0451\u043D",
-    shortcutsTitle: "\u0413\u043E\u0440\u044F\u0447\u0438\u0435 \u043A\u043B\u0430\u0432\u0438\u0448\u0438",
-    playPause: "\u0412\u043E\u0441\u043F\u0440. / \u041F\u0430\u0443\u0437\u0430",
-    seekBack: "\u041D\u0430\u0437\u0430\u0434 10\u0441",
-    seekForward: "\u0412\u043F\u0435\u0440\u0451\u0434 10\u0441",
-    prevChannel: "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
-    nextChannel: "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0439 \u043A\u0430\u043D\u0430\u043B",
-    fullscreen: "\u041F\u043E\u043B\u043D\u044B\u0439 \u044D\u043A\u0440\u0430\u043D",
-    epgLoaded: "EPG \u0437\u0430\u0433\u0440\u0443\u0436\u0435\u043D",
-    retryProxy: "\u041F\u043E\u0432\u0442\u043E\u0440 \u0447\u0435\u0440\u0435\u0437 \u043F\u0440\u043E\u043A\u0441\u0438\u2026",
-    epgLoadFailed: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C EPG",
-    epgTitle: "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043F\u0435\u0440\u0435\u0434\u0430\u0447",
-    epgNoData: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 EPG",
-    epgNoProgram: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 \u043E \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0435",
-    epgNoUpcoming: "\u041D\u0435\u0442 \u043F\u0440\u0435\u0434\u0441\u0442\u043E\u044F\u0449\u0438\u0445 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C",
-    channelListTitle: "\u0421\u043F\u0438\u0441\u043E\u043A \u043A\u0430\u043D\u0430\u043B\u043E\u0432",
-    closeTip: "\u0417\u0430\u043A\u0440\u044B\u0442\u044C",
-    castTip: "\u0422\u0440\u0430\u043D\u0441\u043B\u044F\u0446\u0438\u044F",
-    castingTip: "\u041E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C"
-  },
-  "zh-CN": {
-    flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
-    noChannel: "\u672A\u9009\u62E9\u9891\u9053",
-    sound: "\u58F0\u97F3",
-    pip: "\u5C0F\u7A97",
-    newTab: "\u65B0\u6807\u7B7E",
-    reload: "\u91CD\u65B0\u52A0\u8F7D",
-    favHeader: "\u2B50 \u6536\u85CF\u9891\u9053",
-    favEmpty: "\u8FD8\u6CA1\u6709\u6536\u85CF\u9891\u9053",
-    sourceToggle: "\uD83D\uDD17 \u9891\u9053\u6E90",
-    addPlaceholder: "\u7C98\u8D34M3U\u94FE\u63A5...",
-    addBtn: "+ \u6DFB\u52A0",
-    fileBtn: "\uD83D\uDCC1 \u6587\u4EF6",
-    searchPlaceholder: "\u641C\u7D22\u9891\u9053...",
-    checkBtn: "\u68C0\u6D4B\u9891\u9053",
-    showAll: "\u663E\u793A\u5168\u90E8",
-    scrollTop: "\u56DE\u5230\u9876\u90E8",
-    defaultBadge: "\u9ED8\u8BA4",
-    renameTip: "\u91CD\u547D\u540D",
-    deleteTip: "\u5220\u9664\u6B64\u6E90",
-    renamed: "\u5DF2\u91CD\u547D\u540D",
-    pipNotSupported: "\u4E0D\u652F\u6301\u753B\u4E2D\u753B",
-    reloading: "\u91CD\u65B0\u52A0\u8F7D\u4E2D...",
-    channelN: "\u9891\u9053 ",
-    networkError: "\u7F51\u7EDC\u9519\u8BEF \u2014 \u6B63\u5728\u91CD\u8BD5...",
-    mediaError: "\u5A92\u4F53\u9519\u8BEF \u2014 \u6B63\u5728\u4FEE\u590D...",
-    playErrorRetry: "\u64AD\u653E\u9519\u8BEF \u2014 \u81EA\u52A8\u91CD\u8BD5",
-    playErrorFinal: "\u64AD\u653E\u9519\u8BEF \u2014 \u8BF7\u6309\u91CD\u65B0\u52A0\u8F7D",
-    reconnecting: "\u6B63\u5728\u91CD\u65B0\u8FDE\u63A5...",
-    loading: "\u52A0\u8F7D\u4E2D...",
-    checking: "\u68C0\u6D4B\u4E2D",
-    selectSource: "\u8BF7\u5728\u4E0B\u65B9\u9009\u62E9\u9891\u9053\u6E90",
-    invalidUrl: "\u94FE\u63A5\u5FC5\u987B\u4EE5 http:// \u6216 https:// \u5F00\u5934",
-    addedSource: "\u5DF2\u6DFB\u52A0\u6E90\uFF1A",
-    noChannelInFile: "\u6587\u4EF6\u4E2D\u672A\u627E\u5230\u9891\u9053",
-    addedFile: "\u5DF2\u6DFB\u52A0\uFF1A",
-    channelUnit: " \u4E2A\u9891\u9053",
-    loadingSources: "\u6B63\u5728\u52A0\u8F7D {n} \u4E2A\u6E90...",
-    cantLoadSource: "\u65E0\u6CD5\u52A0\u8F7D\u9891\u9053\u6E90",
-    noChannelFound: "\u672A\u627E\u5230\u9891\u9053",
-    sourceError: "{e} \u4E2A\u6E90\u9519\u8BEF\uFF0C{n} \u4E2A\u9891\u9053\u5DF2\u52A0\u8F7D",
-    sourceOk: "\u6765\u81EA {s} \u4E2A\u6E90\u7684 {n} \u4E2A\u9891\u9053",
-    checkTitle: "\u68C0\u6D4B\u54EA\u4E9B\u9891\u9053\u53EF\u7528",
-    showAllTitle: "\u663E\u793A\u6240\u6709\u9690\u85CF\u9891\u9053",
-    fileTitle: "\u4ECE\u8BBE\u5907\u9009\u62E9M3U\u6587\u4EF6",
-    cinemaMode: "\u5F71\u9662",
-    pinChannel: "\u7F6E\u9876",
-    pinChannelTip: "\u7F6E\u9876\u9891\u9053\uFF08\u542F\u52A8\u65F6\u81EA\u52A8\u64AD\u653E\uFF09",
-    favChannel: "\u6536\u85CF",
-    hideChannel: "\u9690\u85CF",
-    pinnedToast: "\u5DF2\u7F6E\u9876\u9891\u9053",
-    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9876",
-    shortcutsTitle: "\u5FEB\u6377\u952E",
-    playPause: "\u64AD\u653E / \u6682\u505C",
-    seekBack: "\u540E\u9000 10\u79D2",
-    seekForward: "\u524D\u8FDB 10\u79D2",
-    prevChannel: "\u4E0A\u4E00\u4E2A\u9891\u9053",
-    nextChannel: "\u4E0B\u4E00\u4E2A\u9891\u9053",
-    fullscreen: "\u5168\u5C4F",
-    epgLoaded: "EPG \u5DF2\u52A0\u8F7D",
-    retryProxy: "\u6B63\u5728\u901A\u8FC7\u4EE3\u7406\u91CD\u8BD5\u2026",
-    epgLoadFailed: "EPG \u52A0\u8F7D\u5931\u8D25",
-    epgTitle: "\u8282\u76EE\u6307\u5357",
-    epgNoData: "\u672A\u52A0\u8F7D EPG \u6570\u636E",
-    epgNoProgram: "\u6CA1\u6709\u8282\u76EE\u6570\u636E",
-    epgNoUpcoming: "\u6CA1\u6709\u5373\u5C06\u64AD\u51FA\u7684\u8282\u76EE",
-    channelListTitle: "\u9891\u9053\u5217\u8868",
-    closeTip: "\u5173\u95ED",
-    castTip: "\u6295\u5C4F",
-    castingTip: "\u505C\u6B62\u6295\u5C4F"
-  },
-  "zh-TW": {
-    flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
-    noChannel: "\u672A\u9078\u64C7\u983B\u9053",
-    sound: "\u8072\u97F3",
-    pip: "\u5C0F\u8996\u7A97",
-    newTab: "\u65B0\u5206\u9801",
-    reload: "\u91CD\u65B0\u8F09\u5165",
-    favHeader: "\u2B50 \u6536\u85CF\u983B\u9053",
-    favEmpty: "\u9084\u6C92\u6709\u6536\u85CF\u983B\u9053",
-    sourceToggle: "\uD83D\uDD17 \u983B\u9053\u6E90",
-    addPlaceholder: "\u8CBB\u8CBC M3U \u9023\u7D50...",
-    addBtn: "+ \u65B0\u589E",
-    fileBtn: "\uD83D\uDCC1 \u6A94\u6848",
-    searchPlaceholder: "\u641C\u5C0B\u983B\u9053...",
-    checkBtn: "\u6AA2\u6E2C\u983B\u9053",
-    showAll: "\u986F\u793A\u5168\u90E8",
-    scrollTop: "\u56DE\u5230\u9802\u90E8",
-    defaultBadge: "\u9810\u8A2D",
-    renameTip: "\u91CD\u65B0\u547D\u540D",
-    deleteTip: "\u522A\u9664\u6B64\u6E90",
-    renamed: "\u5DF2\u91CD\u65B0\u547D\u540D",
-    pipNotSupported: "\u4E0D\u652F\u63F4\u5B50\u6BCD\u756B\u9762",
-    reloading: "\u91CD\u65B0\u8F09\u5165\u4E2D...",
-    channelN: "\u983B\u9053 ",
-    networkError: "\u7DB2\u8DEF\u932F\u8AA4 \u2014 \u6B63\u5728\u91CD\u8A66...",
-    mediaError: "\u5A92\u9AD4\u932F\u8AA4 \u2014 \u6B63\u5728\u4FEE\u5FA9...",
-    playErrorRetry: "\u64AD\u653E\u932F\u8AA4 \u2014 \u81EA\u52D5\u91CD\u8A66",
-    playErrorFinal: "\u64AD\u653E\u932F\u8AA4 \u2014 \u8ACB\u6309\u91CD\u65B0\u8F09\u5165",
-    reconnecting: "\u6B63\u5728\u91CD\u65B0\u9023\u7DDA...",
-    loading: "\u8F09\u5165\u4E2D...",
-    checking: "\u6AA2\u6E2C\u4E2D",
-    selectSource: "\u8ACB\u5728\u4E0B\u65B9\u9078\u64C7\u983B\u9053\u6E90",
-    invalidUrl: "\u9023\u7D50\u5FC5\u9808\u4EE5 http:// \u6216 https:// \u958B\u982D",
-    addedSource: "\u5DF2\u65B0\u589E\u6E90\uFF1A",
-    noChannelInFile: "\u6A94\u6848\u4E2D\u672A\u627E\u5230\u983B\u9053",
-    addedFile: "\u5DF2\u65B0\u589E\uFF1A",
-    channelUnit: " \u500B\u983B\u9053",
-    loadingSources: "\u6B63\u5728\u8F09\u5165 {n} \u500B\u6E90...",
-    cantLoadSource: "\u7121\u6CD5\u8F09\u5165\u983B\u9053\u6E90",
-    noChannelFound: "\u672A\u627E\u5230\u983B\u9053",
-    sourceError: "{e} \u500B\u6E90\u932F\u8AA4\uFF0C{n} \u500B\u983B\u9053\u5DF2\u8F09\u5165",
-    sourceOk: "\u4F86\u81EA {s} \u500B\u6E90\u7684 {n} \u500B\u983B\u9053",
-    checkTitle: "\u6AA2\u6E2C\u54EA\u4E9B\u983B\u9053\u53EF\u7528",
-    showAllTitle: "\u986F\u793A\u6240\u6709\u96B1\u85CF\u983B\u9053",
-    fileTitle: "\u5F9E\u88DD\u7F6E\u9078\u64C7M3U\u6A94\u6848",
-    cinemaMode: "\u5F71\u9662",
-    pinChannel: "\u7F6E\u9802",
-    pinChannelTip: "\u7F6E\u9802\u983B\u9053\uFF08\u555F\u52D5\u6642\u81EA\u52D5\u64AD\u653E\uFF09",
-    favChannel: "\u6536\u85CF",
-    hideChannel: "\u96B1\u85CF",
-    pinnedToast: "\u5DF2\u7F6E\u9802\u983B\u9053",
-    unpinnedToast: "\u5DF2\u53D6\u6D88\u7F6E\u9802",
-    shortcutsTitle: "\u5FEB\u6377\u9375",
-    playPause: "\u64AD\u653E / \u66AB\u505C",
-    seekBack: "\u5F8C\u9000 10\u79D2",
-    seekForward: "\u524D\u9032 10\u79D2",
-    prevChannel: "\u4E0A\u4E00\u500B\u983B\u9053",
-    nextChannel: "\u4E0B\u4E00\u500B\u983B\u9053",
-    fullscreen: "\u5168\u753B\u9762",
-    epgLoaded: "EPG \u5DF2\u8F09\u5165",
-    retryProxy: "\u6B63\u5728\u900F\u904E\u4EE3\u7406\u91CD\u8A66\u2026",
-    epgLoadFailed: "EPG \u8F09\u5165\u5931\u6557",
-    epgTitle: "\u7BC0\u76EE\u6307\u5357",
-    epgNoData: "\u672A\u8F09\u5165 EPG \u8CC7\u6599",
-    epgNoProgram: "\u6C92\u6709\u7BC0\u76EE\u8CC7\u6599",
-    epgNoUpcoming: "\u6C92\u6709\u5373\u5C07\u64AD\u51FA\u7684\u7BC0\u76EE",
-    channelListTitle: "\u983B\u9053\u5217\u8868",
-    closeTip: "\u95DC\u9589",
-    castTip: "\u6295\u653E",
-    castingTip: "\u505C\u6B62\u6295\u653E"
-  },
-  ja: {
-    flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
-    noChannel: "\u30C1\u30E3\u30F3\u30CD\u30EB\u672A\u9078\u629E",
-    sound: "\u97F3\u58F0",
-    pip: "\u30DF\u30CB",
-    newTab: "\u65B0\u30BF\u30D6",
-    reload: "\u518D\u8AAD\u8FBC",
-    favHeader: "\u2B50 \u304A\u6C17\u306B\u5165\u308A",
-    favEmpty: "\u304A\u6C17\u306B\u5165\u308A\u306A\u3057",
-    sourceToggle: "\uD83D\uDD17 \u30BD\u30FC\u30B9",
-    addPlaceholder: "M3U\u30EA\u30F3\u30AF\u3092\u8CBC\u308A\u4ED8\u3051...",
-    addBtn: "+ \u8FFD\u52A0",
-    fileBtn: "\uD83D\uDCC1 \u30D5\u30A1\u30A4\u30EB",
-    searchPlaceholder: "\u30C1\u30E3\u30F3\u30CD\u30EB\u691C\u7D22...",
-    checkBtn: "\u30C1\u30E3\u30F3\u30CD\u30EB\u78BA\u8A8D",
-    showAll: "\u3059\u3079\u3066\u8868\u793A",
-    scrollTop: "\u30C8\u30C3\u30D7",
-    defaultBadge: "\u30C7\u30D5\u30A9\u30EB\u30C8",
-    renameTip: "\u540D\u524D\u5909\u66F4",
-    deleteTip: "\u3053\u306E\u30BD\u30FC\u30B9\u3092\u524A\u9664",
-    renamed: "\u540D\u524D\u5909\u66F4\u6E08\u307F",
-    pipNotSupported: "PiP\u975E\u5BFE\u5FDC",
-    reloading: "\u518D\u8AAD\u8FBC\u4E2D...",
-    channelN: "\u30C1\u30E3\u30F3\u30CD\u30EB ",
-    networkError: "\u30CD\u30C3\u30C8\u30EF\u30FC\u30AF\u30A8\u30E9\u30FC \u2014 \u30EA\u30C8\u30E9\u30A4\u4E2D...",
-    mediaError: "\u30E1\u30C7\u30A3\u30A2\u30A8\u30E9\u30FC \u2014 \u5FA9\u65E7\u4E2D...",
-    playErrorRetry: "\u518D\u751F\u30A8\u30E9\u30FC \u2014 \u81EA\u52D5\u30EA\u30C8\u30E9\u30A4",
-    playErrorFinal: "\u518D\u751F\u30A8\u30E9\u30FC \u2014 \u518D\u8AAD\u8FBC\u3092\u62BC\u3057\u3066\u304F\u3060\u3055\u3044",
-    reconnecting: "\u518D\u63A5\u7D9A\u4E2D...",
-    loading: "\u8AAD\u8FBC\u4E2D...",
-    checking: "\u78BA\u8A8D\u4E2D",
-    selectSource: "\u4E0B\u306E\u30BD\u30FC\u30B9\u3092\u9078\u629E\u3057\u3066\u304F\u3060\u3055\u3044",
-    invalidUrl: "\u30EA\u30F3\u30AF\u306F http:// \u307E\u305F\u306F https:// \u3067\u59CB\u3081\u3066\u304F\u3060\u3055\u3044",
-    addedSource: "\u30BD\u30FC\u30B9\u8FFD\u52A0\uFF1A",
-    noChannelInFile: "\u30D5\u30A1\u30A4\u30EB\u306B\u30C1\u30E3\u30F3\u30CD\u30EB\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093",
-    addedFile: "\u8FFD\u52A0\uFF1A",
-    channelUnit: " \u30C1\u30E3\u30F3\u30CD\u30EB",
-    loadingSources: "{n} \u30BD\u30FC\u30B9\u3092\u8AAD\u8FBC\u4E2D...",
-    cantLoadSource: "\u30BD\u30FC\u30B9\u3092\u8AAD\u307F\u8FBC\u3081\u307E\u305B\u3093",
-    noChannelFound: "\u30C1\u30E3\u30F3\u30CD\u30EB\u304C\u898B\u3064\u304B\u308A\u307E\u305B\u3093",
-    sourceError: "{e} \u30BD\u30FC\u30B9\u30A8\u30E9\u30FC\u3001{n} \u30C1\u30E3\u30F3\u30CD\u30EB\u8AAD\u8FBC\u6E08",
-    sourceOk: "{s} \u30BD\u30FC\u30B9\u304B\u3089 {n} \u30C1\u30E3\u30F3\u30CD\u30EB",
-    checkTitle: "\u52D5\u4F5C\u4E2D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB\u3092\u78BA\u8A8D",
-    showAllTitle: "\u975E\u8868\u793A\u30C1\u30E3\u30F3\u30CD\u30EB\u3092\u3059\u3079\u3066\u8868\u793A",
-    fileTitle: "\u30C7\u30D0\u30A4\u30B9\u304B\u3089M3U\u30D5\u30A1\u30A4\u30EB\u3092\u9078\u629E",
-    cinemaMode: "\u30B7\u30CD\u30DE",
-    pinChannel: "\u30D4\u30F3\u7559\u3081",
-    pinChannelTip: "\u30C1\u30E3\u30F3\u30CD\u30EB\u3092\u30D4\u30F3\u7559\u3081\uFF08\u8D77\u52D5\u6642\u306B\u81EA\u52D5\u518D\u751F\uFF09",
-    favChannel: "\u304A\u6C17\u306B\u5165\u308A",
-    hideChannel: "\u975E\u8868\u793A",
-    pinnedToast: "\u30C1\u30E3\u30F3\u30CD\u30EB\u3092\u30D4\u30F3\u7559\u3081\u3057\u307E\u3057\u305F",
-    unpinnedToast: "\u30D4\u30F3\u7559\u3081\u3092\u89E3\u9664\u3057\u307E\u3057\u305F",
-    shortcutsTitle: "\u30B7\u30E7\u30FC\u30C8\u30AB\u30C3\u30C8",
-    playPause: "\u518D\u751F / \u4E00\u6642\u505C\u6B62",
-    seekBack: "10\u79D2\u623B\u308B",
-    seekForward: "10\u79D2\u9032\u3080",
-    prevChannel: "\u524D\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
-    nextChannel: "\u6B21\u306E\u30C1\u30E3\u30F3\u30CD\u30EB",
-    fullscreen: "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3",
-    epgLoaded: "EPG \u8AAD\u8FBC\u5B8C\u4E86",
-    retryProxy: "\u30D7\u30ED\u30AD\u30B7\u7D4C\u7531\u3067\u30EA\u30C8\u30E9\u30A4\u4E2D\u2026",
-    epgLoadFailed: "EPG \u306E\u8AAD\u307F\u8FBC\u307F\u306B\u5931\u6557",
-    epgTitle: "\u756A\u7D44\u8868",
-    epgNoData: "EPG \u30C7\u30FC\u30BF\u306A\u3057",
-    epgNoProgram: "\u756A\u7D44\u30C7\u30FC\u30BF\u306A\u3057",
-    epgNoUpcoming: "\u4ECA\u5F8C\u306E\u756A\u7D44\u306A\u3057",
-    channelListTitle: "\u30C1\u30E3\u30F3\u30CD\u30EB\u30EA\u30B9\u30C8",
-    closeTip: "\u9589\u3058\u308B",
-    castTip: "\u30AD\u30E3\u30B9\u30C8",
-    castingTip: "\u30AD\u30E3\u30B9\u30C8\u3092\u505C\u6B62"
-  },
-  ko: {
-    flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
-    noChannel: "\uCC44\uB110 \uBBF8\uC120\uD0DD",
-    sound: "\uC18C\uB9AC",
-    pip: "\uBBF8\uB2C8",
-    newTab: "\uC0C8 \uD0ED",
-    reload: "\uC0C8\uB85C\uACE0\uCE68",
-    favHeader: "\u2B50 \uC990\uACA8\uCC3E\uAE30",
-    favEmpty: "\uC990\uACA8\uCC3E\uAE30\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4",
-    sourceToggle: "\uD83D\uDD17 \uC18C\uC2A4",
-    addPlaceholder: "M3U \uB9C1\uD06C\uB97C \uBD99\uC5EC\uB123\uC73C\uC138\uC694...",
-    addBtn: "+ \uCD94\uAC00",
-    fileBtn: "\uD83D\uDCC1 \uD30C\uC77C",
-    searchPlaceholder: "\uCC44\uB110 \uAC80\uC0C9...",
-    checkBtn: "\uCC44\uB110 \uD655\uC778",
-    showAll: "\uBAA8\uB450 \uD45C\uC2DC",
-    scrollTop: "\uB9E8 \uC704\uB85C",
-    defaultBadge: "\uAE30\uBCF8",
-    renameTip: "\uC774\uB984 \uBCC0\uACBD",
-    deleteTip: "\uC774 \uC18C\uC2A4 \uC0AD\uC81C",
-    renamed: "\uC774\uB984 \uBCC0\uACBD\uB428",
-    pipNotSupported: "PiP \uBBF8\uC9C0\uC6D0",
-    reloading: "\uC0C8\uB85C\uACE0\uCE68 \uC911...",
-    channelN: "\uCC44\uB110 ",
-    networkError: "\uB124\uD2B8\uC6CC\uD06C \uC624\uB958 \u2014 \uC7AC\uC2DC\uB3C4 \uC911...",
-    mediaError: "\uBBF8\uB514\uC5B4 \uC624\uB958 \u2014 \uBCF5\uAD6C \uC911...",
-    playErrorRetry: "\uC7AC\uC0DD \uC624\uB958 \u2014 \uC790\uB3D9 \uC7AC\uC2DC\uB3C4",
-    playErrorFinal: "\uC7AC\uC0DD \uC624\uB958 \u2014 \uC0C8\uB85C\uACE0\uCE68\uC744 \uB204\uB974\uC138\uC694",
-    reconnecting: "\uC7AC\uC5F0\uACB0 \uC911...",
-    loading: "\uB85C\uB529 \uC911...",
-    checking: "\uD655\uC778 \uC911",
-    selectSource: "\uC544\uB798\uC5D0\uC11C \uC18C\uC2A4\uB97C \uC120\uD0DD\uD558\uC138\uC694",
-    invalidUrl: "\uB9C1\uD06C\uB294 http:// \uB610\uB294 https://\uB85C \uC2DC\uC791\uD574\uC57C \uD569\uB2C8\uB2E4",
-    addedSource: "\uC18C\uC2A4 \uCD94\uAC00\uB428: ",
-    noChannelInFile: "\uD30C\uC77C\uC5D0\uC11C \uCC44\uB110\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4",
-    addedFile: "\uCD94\uAC00\uB428: ",
-    channelUnit: " \uCC44\uB110",
-    loadingSources: "{n}\uAC1C \uC18C\uC2A4 \uB85C\uB529 \uC911...",
-    cantLoadSource: "\uC18C\uC2A4\uB97C \uB85C\uB4DC\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4",
-    noChannelFound: "\uCC44\uB110\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4",
-    sourceError: "{e}\uAC1C \uC18C\uC2A4 \uC624\uB958, {n}\uAC1C \uCC44\uB110 \uB85C\uB4DC\uB428",
-    sourceOk: "{s}\uAC1C \uC18C\uC2A4\uC5D0\uC11C {n}\uAC1C \uCC44\uB110",
-    checkTitle: "\uC791\uB3D9 \uC911\uC778 \uCC44\uB110 \uD655\uC778",
-    showAllTitle: "\uC228\uACA8\uC9C4 \uCC44\uB110 \uBAA8\uB450 \uD45C\uC2DC",
-    fileTitle: "\uAE30\uAE30\uC5D0\uC11C M3U \uD30C\uC77C \uC120\uD0DD",
-    cinemaMode: "\uC2DC\uB124\uB9C8",
-    pinChannel: "\uACE0\uC815",
-    pinChannelTip: "\uCC44\uB110 \uACE0\uC815 (\uC2DC\uC791 \uC2DC \uC790\uB3D9 \uC7AC\uC0DD)",
-    favChannel: "\uC990\uACA8\uCC3E\uAE30",
-    hideChannel: "\uC228\uAE30\uAE30",
-    pinnedToast: "\uCC44\uB110 \uACE0\uC815\uB428",
-    unpinnedToast: "\uCC44\uB110 \uACE0\uC815 \uD574\uC81C",
-    shortcutsTitle: "\uB2E8\uCD95\uD0A4",
-    playPause: "\uC7AC\uC0DD / \uC77C\uC2DC\uC815\uC9C0",
-    seekBack: "10\uCD08 \uB418\uAC10\uAE30",
-    seekForward: "10\uCD08 \uC55E\uC73C\uB85C",
-    prevChannel: "\uC774\uC804 \uCC44\uB110",
-    nextChannel: "\uB2E4\uC74C \uCC44\uB110",
-    fullscreen: "\uC804\uCCB4 \uD654\uBA74",
-    epgLoaded: "EPG \uB85C\uB4DC\uB428",
-    retryProxy: "\uD504\uB85D\uC2DC\uB97C \uD1B5\uD574 \uC7AC\uC2DC\uB3C4 \uC911\u2026",
-    epgLoadFailed: "EPG \uB85C\uB4DC \uC2E4\uD328",
-    epgTitle: "\uD504\uB85C\uADF8\uB7A8 \uAC00\uC774\uB4DC",
-    epgNoData: "EPG \uB370\uC774\uD130 \uC5C6\uC74C",
-    epgNoProgram: "\uD504\uB85C\uADF8\uB7A8 \uB370\uC774\uD130 \uC5C6\uC74C",
-    epgNoUpcoming: "\uC608\uC815\uB41C \uD504\uB85C\uADF8\uB7A8 \uC5C6\uC74C",
-    channelListTitle: "\uCC44\uB110 \uBAA9\uB85D",
-    closeTip: "\uB2EB\uAE30",
-    castTip: "\uCE90\uC2A4\uD2B8",
-    castingTip: "\uCE90\uC2A4\uD2B8 \uC911\uC9C0"
-  },
-  es: {
-    flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
-    noChannel: "Ning\u00FAn canal seleccionado",
-    sound: "Sonido",
-    pip: "Mini",
-    newTab: "Nueva pesta\u00F1a",
-    reload: "Recargar",
-    favHeader: "\u2B50 Favoritos",
-    favEmpty: "Sin canales favoritos",
-    sourceToggle: "\uD83D\uDD17 Fuentes",
-    addPlaceholder: "Pegar enlace M3U aqu\u00ED...",
-    addBtn: "+ A\u00F1adir",
-    fileBtn: "\uD83D\uDCC1 Archivo",
-    searchPlaceholder: "Buscar canales...",
-    checkBtn: "Verificar canales",
-    showAll: "Mostrar todo",
-    scrollTop: "Arriba",
-    defaultBadge: "por defecto",
-    renameTip: "Renombrar",
-    deleteTip: "Eliminar esta fuente",
-    renamed: "Renombrado",
-    pipNotSupported: "PiP no soportado",
-    reloading: "Recargando...",
-    channelN: "Canal ",
-    networkError: "Error de red \u2014 reintentando...",
-    mediaError: "Error de medios \u2014 recuperando...",
-    playErrorRetry: "Error de reproducci\u00F3n \u2014 reintento autom\u00E1tico",
-    playErrorFinal: "Error de reproducci\u00F3n \u2014 pulse Recargar",
-    reconnecting: "Reconectando...",
-    loading: "Cargando...",
-    checking: "Verificando",
-    selectSource: "Seleccione una fuente abajo",
-    invalidUrl: "El enlace debe comenzar con http:// o https://",
-    addedSource: "Fuente a\u00F1adida: ",
-    noChannelInFile: "No se encontraron canales en el archivo",
-    addedFile: "A\u00F1adido: ",
-    channelUnit: " canales",
-    loadingSources: "Cargando {n} fuentes...",
-    cantLoadSource: "No se pueden cargar las fuentes",
-    noChannelFound: "No se encontraron canales",
-    sourceError: "{e} fuentes con error, {n} canales cargados",
-    sourceOk: "{n} canales de {s} fuentes",
-    checkTitle: "Verificar qu\u00E9 canales funcionan",
-    showAllTitle: "Mostrar todos los canales ocultos",
-    fileTitle: "Elegir archivo M3U del dispositivo",
-    cinemaMode: "Cine",
-    pinChannel: "Fijar",
-    pinChannelTip: "Fijar canal (autoreproducir al iniciar)",
-    favChannel: "Favorito",
-    hideChannel: "Ocultar",
-    pinnedToast: "Canal fijado",
-    unpinnedToast: "Canal desfijado",
-    shortcutsTitle: "Atajos",
-    playPause: "Reproducir / Pausa",
-    seekBack: "Retroceder 10s",
-    seekForward: "Adelantar 10s",
-    prevChannel: "Canal anterior",
-    nextChannel: "Canal siguiente",
-    fullscreen: "Pantalla completa",
-    epgLoaded: "EPG cargado",
-    retryProxy: "Reintentando vía proxy…",
-    epgLoadFailed: "Error al cargar EPG",
-    epgTitle: "Gu\u00EDa de programas",
-    epgNoData: "No hay datos EPG cargados",
-    epgNoProgram: "Sin datos de programa",
-    epgNoUpcoming: "No hay programas pr\u00F3ximos",
-    channelListTitle: "Lista de canales",
-    closeTip: "Cerrar",
-    castTip: "Transmitir",
-    castingTip: "Detener transmisión"
-  },
-  pt: {
-    flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
-    noChannel: "Nenhum canal selecionado",
-    sound: "Som",
-    pip: "Mini",
-    newTab: "Nova aba",
-    reload: "Recarregar",
-    favHeader: "\u2B50 Favoritos",
-    favEmpty: "Sem canais favoritos",
-    sourceToggle: "\uD83D\uDD17 Fontes",
-    addPlaceholder: "Colar link M3U aqui...",
-    addBtn: "+ Adicionar",
-    fileBtn: "\uD83D\uDCC1 Arquivo",
-    searchPlaceholder: "Pesquisar canais...",
-    checkBtn: "Verificar canais",
-    showAll: "Mostrar tudo",
-    scrollTop: "Topo",
-    defaultBadge: "padr\u00E3o",
-    renameTip: "Renomear",
-    deleteTip: "Excluir esta fonte",
-    renamed: "Renomeado",
-    pipNotSupported: "PiP n\u00E3o suportado",
-    reloading: "Recarregando...",
-    channelN: "Canal ",
-    networkError: "Erro de rede \u2014 tentando novamente...",
-    mediaError: "Erro de m\u00EDdia \u2014 recuperando...",
-    playErrorRetry: "Erro de reprodu\u00E7\u00E3o \u2014 tentativa autom\u00E1tica",
-    playErrorFinal: "Erro de reprodu\u00E7\u00E3o \u2014 pressione Recarregar",
-    reconnecting: "Reconectando...",
-    loading: "Carregando...",
-    checking: "Verificando",
-    selectSource: "Selecione uma fonte abaixo",
-    invalidUrl: "O link deve come\u00E7ar com http:// ou https://",
-    addedSource: "Fonte adicionada: ",
-    noChannelInFile: "Nenhum canal encontrado no arquivo",
-    addedFile: "Adicionado: ",
-    channelUnit: " canais",
-    loadingSources: "Carregando {n} fontes...",
-    cantLoadSource: "N\u00E3o foi poss\u00EDvel carregar as fontes",
-    noChannelFound: "Nenhum canal encontrado",
-    sourceError: "{e} fontes com erro, {n} canais carregados",
-    sourceOk: "{n} canais de {s} fontes",
-    checkTitle: "Verificar quais canais est\u00E3o funcionando",
-    showAllTitle: "Mostrar todos os canais ocultos",
-    fileTitle: "Escolher arquivo M3U do dispositivo",
-    cinemaMode: "Cinema",
-    pinChannel: "Fixar",
-    pinChannelTip: "Fixar canal (reprodu\u00E7\u00E3o autom\u00E1tica ao iniciar)",
-    favChannel: "Favorito",
-    hideChannel: "Ocultar",
-    pinnedToast: "Canal fixado",
-    unpinnedToast: "Canal desfixado",
-    shortcutsTitle: "Atalhos",
-    playPause: "Reproduzir / Pausa",
-    seekBack: "Voltar 10s",
-    seekForward: "Avançar 10s",
-    prevChannel: "Canal anterior",
-    nextChannel: "Pr\u00F3ximo canal",
-    fullscreen: "Tela cheia",
-    epgLoaded: "EPG carregado",
-    retryProxy: "Tentando novamente via proxy…",
-    epgLoadFailed: "Falha ao carregar EPG",
-    epgTitle: "Guia de programas",
-    epgNoData: "Nenhum dado EPG carregado",
-    epgNoProgram: "Sem dados de programa",
-    epgNoUpcoming: "Nenhum programa pr\u00F3ximo",
-    channelListTitle: "Lista de canais",
-    closeTip: "Fechar",
-    castTip: "Transmitir",
-    castingTip: "Parar transmissão"
-  },
-  ar: {
-    flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
-    noChannel: "\u0644\u0645 \u064A\u062A\u0645 \u0627\u062E\u062A\u064A\u0627\u0631 \u0642\u0646\u0627\u0629",
-    sound: "\u0627\u0644\u0635\u0648\u062A",
-    pip: "\u0645\u0635\u063A\u0631",
-    newTab: "\u062A\u0628\u0648\u064A\u0628 \u062C\u062F\u064A\u062F",
-    reload: "\u0625\u0639\u0627\u062F\u0629 \u062A\u062D\u0645\u064A\u0644",
-    favHeader: "\u2B50 \u0627\u0644\u0645\u0641\u0636\u0644\u0629",
-    favEmpty: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0642\u0646\u0648\u0627\u062A \u0645\u0641\u0636\u0644\u0629",
-    sourceToggle: "\uD83D\uDD17 \u0627\u0644\u0645\u0635\u0627\u062F\u0631",
-    addPlaceholder: "\u0623\u0644\u0635\u0642 \u0631\u0627\u0628\u0637 M3U \u0647\u0646\u0627...",
-    addBtn: "+ \u0625\u0636\u0627\u0641\u0629",
-    fileBtn: "\uD83D\uDCC1 \u0645\u0644\u0641",
-    searchPlaceholder: "\u0628\u062D\u062B \u0639\u0646 \u0627\u0644\u0642\u0646\u0648\u0627\u062A...",
-    checkBtn: "\u0641\u062D\u0635 \u0627\u0644\u0642\u0646\u0648\u0627\u062A",
-    showAll: "\u0625\u0638\u0647\u0627\u0631 \u0627\u0644\u0643\u0644",
-    scrollTop: "\u0623\u0639\u0644\u0649",
-    defaultBadge: "\u0627\u0641\u062A\u0631\u0627\u0636\u064A",
-    renameTip: "\u0625\u0639\u0627\u062F\u0629 \u062A\u0633\u0645\u064A\u0629",
-    deleteTip: "\u062D\u0630\u0641 \u0647\u0630\u0627 \u0627\u0644\u0645\u0635\u062F\u0631",
-    renamed: "\u062A\u0645\u062A \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u062A\u0633\u0645\u064A\u0629",
-    pipNotSupported: "PiP \u063A\u064A\u0631 \u0645\u062F\u0639\u0648\u0645",
-    reloading: "\u062C\u0627\u0631\u064D \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u062A\u062D\u0645\u064A\u0644...",
-    channelN: "\u0642\u0646\u0627\u0629 ",
-    networkError: "\u062E\u0637\u0623 \u0641\u064A \u0627\u0644\u0634\u0628\u0643\u0629 \u2014 \u062C\u0627\u0631\u064D \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0645\u062D\u0627\u0648\u0644\u0629...",
-    mediaError: "\u062E\u0637\u0623 \u0648\u0633\u0627\u0626\u0637 \u2014 \u062C\u0627\u0631\u064D \u0627\u0644\u0627\u0633\u062A\u0631\u062F\u0627\u062F...",
-    playErrorRetry: "\u062E\u0637\u0623 \u062A\u0634\u063A\u064A\u0644 \u2014 \u0625\u0639\u0627\u062F\u0629 \u0645\u062D\u0627\u0648\u0644\u0629 \u062A\u0644\u0642\u0627\u0626\u064A\u0629",
-    playErrorFinal: "\u062E\u0637\u0623 \u062A\u0634\u063A\u064A\u0644 \u2014 \u0627\u0636\u063A\u0637 \u0625\u0639\u0627\u062F\u0629 \u062A\u062D\u0645\u064A\u0644",
-    reconnecting: "\u062C\u0627\u0631\u064D \u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0627\u062A\u0635\u0627\u0644...",
-    loading: "\u062C\u0627\u0631\u064D \u0627\u0644\u062A\u062D\u0645\u064A\u0644...",
-    checking: "\u0641\u062D\u0635",
-    selectSource: "\u0627\u062E\u062A\u0631 \u0645\u0635\u062F\u0631\u0627\u064B \u0623\u062F\u0646\u0627\u0647",
-    invalidUrl: "\u064A\u062C\u0628 \u0623\u0646 \u064A\u0628\u062F\u0623 \u0627\u0644\u0631\u0627\u0628\u0637 \u0628\u0640 http:// \u0623\u0648 https://",
-    addedSource: "\u062A\u0645\u062A \u0625\u0636\u0627\u0641\u0629 \u0627\u0644\u0645\u0635\u062F\u0631: ",
-    noChannelInFile: "\u0644\u0645 \u064A\u062A\u0645 \u0627\u0644\u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0642\u0646\u0648\u0627\u062A \u0641\u064A \u0627\u0644\u0645\u0644\u0641",
-    addedFile: "\u062A\u0645\u062A \u0627\u0644\u0625\u0636\u0627\u0641\u0629: ",
-    channelUnit: " \u0642\u0646\u0648\u0627\u062A",
-    loadingSources: "\u062C\u0627\u0631\u064D \u062A\u062D\u0645\u064A\u0644 {n} \u0645\u0635\u0627\u062F\u0631...",
-    cantLoadSource: "\u062A\u0639\u0630\u0631 \u062A\u062D\u0645\u064A\u0644 \u0627\u0644\u0645\u0635\u0627\u062F\u0631",
-    noChannelFound: "\u0644\u0645 \u064A\u062A\u0645 \u0627\u0644\u0639\u062B\u0648\u0631 \u0639\u0644\u0649 \u0642\u0646\u0648\u0627\u062A",
-    sourceError: "{e} \u0645\u0635\u0627\u062F\u0631 \u062E\u0627\u0637\u0626\u0629\u060C {n} \u0642\u0646\u0648\u0627\u062A \u0645\u062D\u0645\u0644\u0629",
-    sourceOk: "{n} \u0642\u0646\u0648\u0627\u062A \u0645\u0646 {s} \u0645\u0635\u0627\u062F\u0631",
-    checkTitle: "\u062A\u062D\u0642\u0642 \u0645\u0646 \u0627\u0644\u0642\u0646\u0648\u0627\u062A \u0627\u0644\u0639\u0627\u0645\u0644\u0629",
-    showAllTitle: "\u0625\u0638\u0647\u0627\u0631 \u062C\u0645\u064A\u0639 \u0627\u0644\u0642\u0646\u0648\u0627\u062A \u0627\u0644\u0645\u062E\u0641\u064A\u0629",
-    fileTitle: "\u0627\u062E\u062A\u064A\u0627\u0631 \u0645\u0644\u0641 M3U \u0645\u0646 \u0627\u0644\u062C\u0647\u0627\u0632",
-    cinemaMode: "\u0633\u064A\u0646\u0645\u0627",
-    pinChannel: "\u062A\u062B\u0628\u064A\u062A",
-    pinChannelTip: "\u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629 (\u062A\u0634\u063A\u064A\u0644 \u062A\u0644\u0642\u0627\u0626\u064A \u0639\u0646\u062F \u0627\u0644\u0628\u062F\u0621)",
-    favChannel: "\u0645\u0641\u0636\u0644\u0629",
-    hideChannel: "\u0625\u062E\u0641\u0627\u0621",
-    pinnedToast: "\u062A\u0645 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629",
-    unpinnedToast: "\u062A\u0645 \u0625\u0644\u063A\u0627\u0621 \u062A\u062B\u0628\u064A\u062A \u0627\u0644\u0642\u0646\u0627\u0629",
-    shortcutsTitle: "\u0627\u062E\u062A\u0635\u0627\u0631\u0627\u062A",
-    playPause: "\u062A\u0634\u063A\u064A\u0644 / \u0625\u064A\u0642\u0627\u0641",
-    seekBack: "\u0631\u062C\u0648\u0639 10 \u062B\u0648\u0627\u0646\u064A",
-    seekForward: "\u062A\u0642\u062F\u0645 10 \u062B\u0648\u0627\u0646\u064A",
-    prevChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u0633\u0627\u0628\u0642\u0629",
-    nextChannel: "\u0627\u0644\u0642\u0646\u0627\u0629 \u0627\u0644\u062A\u0627\u0644\u064A\u0629",
-    fullscreen: "\u0645\u0644\u0621 \u0627\u0644\u0634\u0627\u0634\u0629",
-    epgLoaded: "\u062A\u0645 \u062A\u062D\u0645\u064A\u0644 EPG",
-    retryProxy: "\u0625\u0639\u0627\u062F\u0629 \u0627\u0644\u0645\u062D\u0627\u0648\u0644\u0629 \u0639\u0628\u0631 \u0627\u0644\u0648\u0643\u064A\u0644\u2026",
-    epgLoadFailed: "\u0641\u0634\u0644 \u062A\u062D\u0645\u064A\u0644 EPG",
-    epgTitle: "\u062F\u0644\u064A\u0644 \u0627\u0644\u0628\u0631\u0627\u0645\u062C",
-    epgNoData: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A EPG",
-    epgNoProgram: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A \u0628\u0631\u0646\u0627\u0645\u062C",
-    epgNoUpcoming: "\u0644\u0627 \u0628\u0631\u0627\u0645\u062C \u0642\u0627\u062F\u0645\u0629",
-    channelListTitle: "\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0642\u0646\u0648\u0627\u062A",
-    closeTip: "\u0625\u063A\u0644\u0627\u0642",
-    castTip: "\u0628\u062B",
-    castingTip: "\u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u0628\u062B"
-  },
-  hi: {
-    flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
-    noChannel: "\u0915\u094B\u0908 \u091A\u0948\u0928\u0932 \u0928\u0939\u0940\u0902 \u091A\u0941\u0928\u093E",
-    sound: "\u0927\u094D\u0935\u0928\u093F",
-    pip: "\u092E\u093F\u0928\u0940",
-    newTab: "\u0928\u092F\u093E \u091F\u0948\u092C",
-    reload: "\u0930\u0940\u0932\u094B\u0921",
-    favHeader: "\u2B50 \u092A\u0938\u0902\u0926\u0940\u0926\u093E",
-    favEmpty: "\u0915\u094B\u0908 \u092A\u0938\u0902\u0926\u0940\u0926\u093E \u091A\u0948\u0928\u0932 \u0928\u0939\u0940\u0902",
-    sourceToggle: "\uD83D\uDD17 \u0938\u094D\u0930\u094B\u0924",
-    addPlaceholder: "M3U \u0932\u093F\u0902\u0915 \u092F\u0939\u093E\u0901 \u091A\u093F\u092A\u0915\u093E\u090F\u0901...",
-    addBtn: "+ \u091C\u094B\u0921\u093C\u0947\u0902",
-    fileBtn: "\uD83D\uDCC1 \u092B\u093C\u093E\u0907\u0932",
-    searchPlaceholder: "\u091A\u0948\u0928\u0932 \u0916\u094B\u091C\u0947\u0902...",
-    checkBtn: "\u091A\u0948\u0928\u0932 \u091C\u093E\u0901\u091A\u0947\u0902",
-    showAll: "\u0938\u092D\u0940 \u0926\u093F\u0916\u093E\u090F\u0902",
-    scrollTop: "\u0936\u0940\u0930\u094D\u0937",
-    defaultBadge: "\u0921\u093F\u092B\u093C\u0949\u0932\u094D\u091F",
-    renameTip: "\u0928\u093E\u092E \u092C\u0926\u0932\u0947\u0902",
-    deleteTip: "\u092F\u0939 \u0938\u094D\u0930\u094B\u0924 \u0939\u091F\u093E\u090F\u0902",
-    renamed: "\u0928\u093E\u092E \u092C\u0926\u0932\u093E \u0917\u092F\u093E",
-    pipNotSupported: "PiP \u0938\u092E\u0930\u094D\u0925\u093F\u0924 \u0928\u0939\u0940\u0902",
-    reloading: "\u0930\u0940\u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...",
-    channelN: "\u091A\u0948\u0928\u0932 ",
-    networkError: "\u0928\u0947\u091F\u0935\u0930\u094D\u0915 \u0924\u094D\u0930\u0941\u091F\u093F \u2014 \u092A\u0941\u0928\u0903\u092A\u094D\u0930\u092F\u093E\u0938...",
-    mediaError: "\u092E\u0940\u0921\u093F\u092F\u093E \u0924\u094D\u0930\u0941\u091F\u093F \u2014 \u092A\u0941\u0928\u0930\u094D\u092A\u094D\u0930\u093E\u092A\u094D\u0924\u093F...",
-    playErrorRetry: "\u092A\u094D\u0932\u0947\u092C\u0948\u0915 \u0924\u094D\u0930\u0941\u091F\u093F \u2014 \u0938\u094D\u0935\u0924\u0903 \u092A\u0941\u0928\u0903\u092A\u094D\u0930\u092F\u093E\u0938",
-    playErrorFinal: "\u092A\u094D\u0932\u0947\u092C\u0948\u0915 \u0924\u094D\u0930\u0941\u091F\u093F \u2014 \u0930\u0940\u0932\u094B\u0921 \u0926\u092C\u093E\u090F\u0902",
-    reconnecting: "\u092A\u0941\u0928\u0903 \u0915\u0928\u0947\u0915\u094D\u091F \u0939\u094B \u0930\u0939\u093E \u0939\u0948...",
-    loading: "\u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...",
-    checking: "\u091C\u093E\u0901\u091A \u0930\u0939\u093E \u0939\u0948",
-    selectSource: "\u0936\u0941\u0930\u0942 \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0928\u0940\u091A\u0947 \u0938\u094D\u0930\u094B\u0924 \u091A\u0941\u0928\u0947\u0902",
-    invalidUrl: "\u0932\u093F\u0902\u0915 http:// \u092F\u093E https:// \u0938\u0947 \u0936\u0941\u0930\u0942 \u0939\u094B\u0928\u093E \u091A\u093E\u0939\u093F\u090F",
-    addedSource: "\u0938\u094D\u0930\u094B\u0924 \u091C\u094B\u0921\u093C\u093E \u0917\u092F\u093E: ",
-    noChannelInFile: "\u092B\u093C\u093E\u0907\u0932 \u092E\u0947\u0902 \u0915\u094B\u0908 \u091A\u0948\u0928\u0932 \u0928\u0939\u0940\u0902 \u092E\u093F\u0932\u093E",
-    addedFile: "\u091C\u094B\u0921\u093C\u093E \u0917\u092F\u093E: ",
-    channelUnit: " \u091A\u0948\u0928\u0932",
-    loadingSources: "{n} \u0938\u094D\u0930\u094B\u0924 \u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u0947 \u0939\u0948\u0902...",
-    cantLoadSource: "\u0938\u094D\u0930\u094B\u0924 \u0932\u094B\u0921 \u0928\u0939\u0940\u0902 \u0939\u094B \u0938\u0915\u0947",
-    noChannelFound: "\u0915\u094B\u0908 \u091A\u0948\u0928\u0932 \u0928\u0939\u0940\u0902 \u092E\u093F\u0932\u093E",
-    sourceError: "{e} \u0938\u094D\u0930\u094B\u0924 \u0924\u094D\u0930\u0941\u091F\u093F, {n} \u091A\u0948\u0928\u0932 \u0932\u094B\u0921 \u0939\u0941\u090F",
-    sourceOk: "{s} \u0938\u094D\u0930\u094B\u0924 \u0938\u0947 {n} \u091A\u0948\u0928\u0932",
-    checkTitle: "\u0915\u093E\u092E \u0915\u0930 \u0930\u0939\u0947 \u091A\u0948\u0928\u0932 \u091C\u093E\u0901\u091A\u0947\u0902",
-    showAllTitle: "\u0938\u092D\u0940 \u091B\u093F\u092A\u0947 \u091A\u0948\u0928\u0932 \u0926\u093F\u0916\u093E\u090F\u0902",
-    fileTitle: "\u0921\u093F\u0935\u093E\u0907\u0938 \u0938\u0947 M3U \u092B\u093C\u093E\u0907\u0932 \u091A\u0941\u0928\u0947\u0902",
-    cinemaMode: "\u0938\u093F\u0928\u0947\u092E\u093E",
-    pinChannel: "\u092A\u093F\u0928 \u0915\u0930\u0947\u0902",
-    pinChannelTip: "\u091A\u0948\u0928\u0932 \u092A\u093F\u0928 \u0915\u0930\u0947\u0902 (\u0936\u0941\u0930\u0942 \u092E\u0947\u0902 \u0911\u091F\u094B-\u092A\u094D\u0932\u0947)",
-    favChannel: "\u092A\u0938\u0902\u0926\u0940\u0926\u093E",
-    hideChannel: "\u091B\u093F\u092A\u093E\u090F\u0902",
-    pinnedToast: "\u091A\u0948\u0928\u0932 \u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E",
-    unpinnedToast: "\u091A\u0948\u0928\u0932 \u0905\u0928\u092A\u093F\u0928 \u0915\u093F\u092F\u093E \u0917\u092F\u093E",
-    shortcutsTitle: "\u0936\u0949\u0930\u094D\u091F\u0915\u091F",
-    playPause: "\u091A\u0932\u093E\u090F\u0902 / \u0930\u094B\u0915\u0947\u0902",
-    seekBack: "10\u0938\u0947. \u092A\u0940\u091B\u0947",
-    seekForward: "10\u0938\u0947. \u0906\u0917\u0947",
-    prevChannel: "\u092A\u093F\u091B\u0932\u093E \u091A\u0948\u0928\u0932",
-    nextChannel: "\u0905\u0917\u0932\u093E \u091A\u0948\u0928\u0932",
-    fullscreen: "\u092A\u0942\u0930\u094D\u0923 \u0938\u094D\u0915\u094D\u0930\u0940\u0928",
-    epgLoaded: "EPG \u0932\u094B\u0921 \u0939\u094B \u0917\u092F\u093E",
-    retryProxy: "\u092A\u094D\u0930\u0949\u0915\u094D\u0938\u0940 \u0915\u0947 \u092E\u093E\u0927\u094D\u092F\u092E \u0938\u0947 \u092A\u0941\u0928\u0903 \u092A\u094D\u0930\u092F\u093E\u0938\u2026",
-    epgLoadFailed: "EPG \u0932\u094B\u0921 \u0915\u0930\u0928\u0947 \u092E\u0947\u0902 \u0935\u093F\u092B\u0932",
-    epgTitle: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0917\u093E\u0907\u0921",
-    epgNoData: "EPG \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
-    epgNoProgram: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
-    epgNoUpcoming: "\u0906\u0917\u093E\u092E\u0940 \u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0928\u0939\u0940\u0902",
-    channelListTitle: "\u091A\u0948\u0928\u0932 \u0938\u0942\u091A\u0940",
-    closeTip: "\u092C\u0902\u0926 \u0915\u0930\u0947\u0902",
-    castTip: "\u0915\u093E\u0938\u094D\u091F",
-    castingTip: "\u0915\u093E\u0938\u094D\u091F \u092C\u0902\u0926 \u0915\u0930\u0947\u0902"
-  },
-  th: {
-    flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
-    noChannel: "\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E44\u0E14\u0E49\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E0A\u0E48\u0E2D\u0E07",
-    sound: "\u0E40\u0E2A\u0E35\u0E22\u0E07",
-    pip: "\u0E22\u0E48\u0E2D",
-    newTab: "\u0E41\u0E17\u0E47\u0E1A\u0E43\u0E2B\u0E21\u0E48",
-    reload: "\u0E42\u0E2B\u0E25\u0E14\u0E43\u0E2B\u0E21\u0E48",
-    favHeader: "\u2B50 \u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E42\u0E1B\u0E23\u0E14",
-    favEmpty: "\u0E22\u0E31\u0E07\u0E44\u0E21\u0E48\u0E21\u0E35\u0E0A\u0E48\u0E2D\u0E07\u0E42\u0E1B\u0E23\u0E14",
-    sourceToggle: "\uD83D\uDD17 \u0E41\u0E2B\u0E25\u0E48\u0E07\u0E17\u0E35\u0E48\u0E21\u0E32",
-    addPlaceholder: "\u0E27\u0E32\u0E07\u0E25\u0E34\u0E07\u0E01\u0E4C M3U \u0E17\u0E35\u0E48\u0E19\u0E35\u0E48...",
-    addBtn: "+ \u0E40\u0E1E\u0E34\u0E48\u0E21",
-    fileBtn: "\uD83D\uDCC1 \u0E44\u0E1F\u0E25\u0E4C",
-    searchPlaceholder: "\u0E04\u0E49\u0E19\u0E2B\u0E32\u0E0A\u0E48\u0E2D\u0E07...",
-    checkBtn: "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E0A\u0E48\u0E2D\u0E07",
-    showAll: "\u0E41\u0E2A\u0E14\u0E07\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14",
-    scrollTop: "\u0E02\u0E36\u0E49\u0E19\u0E1A\u0E19",
-    defaultBadge: "\u0E04\u0E48\u0E32\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19",
-    renameTip: "\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E0A\u0E37\u0E48\u0E2D",
-    deleteTip: "\u0E25\u0E1A\u0E41\u0E2B\u0E25\u0E48\u0E07\u0E19\u0E35\u0E49",
-    renamed: "\u0E40\u0E1B\u0E25\u0E35\u0E48\u0E22\u0E19\u0E0A\u0E37\u0E48\u0E2D\u0E41\u0E25\u0E49\u0E27",
-    pipNotSupported: "PiP \u0E44\u0E21\u0E48\u0E23\u0E2D\u0E07\u0E23\u0E31\u0E1A",
-    reloading: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E42\u0E2B\u0E25\u0E14\u0E43\u0E2B\u0E21\u0E48...",
-    channelN: "\u0E0A\u0E48\u0E2D\u0E07 ",
-    networkError: "\u0E02\u0E49\u0E2D\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14\u0E40\u0E04\u0E23\u0E37\u0E2D\u0E02\u0E48\u0E32\u0E22 \u2014 \u0E01\u0E33\u0E25\u0E31\u0E07\u0E25\u0E2D\u0E07\u0E43\u0E2B\u0E21\u0E48...",
-    mediaError: "\u0E02\u0E49\u0E2D\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14\u0E21\u0E35\u0E40\u0E14\u0E35\u0E22 \u2014 \u0E01\u0E33\u0E25\u0E31\u0E07\u0E01\u0E39\u0E49\u0E04\u0E37\u0E19...",
-    playErrorRetry: "\u0E02\u0E49\u0E2D\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14\u0E01\u0E32\u0E23\u0E40\u0E25\u0E48\u0E19 \u2014 \u0E25\u0E2D\u0E07\u0E43\u0E2B\u0E21\u0E48\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34",
-    playErrorFinal: "\u0E02\u0E49\u0E2D\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14\u0E01\u0E32\u0E23\u0E40\u0E25\u0E48\u0E19 \u2014 \u0E01\u0E14\u0E42\u0E2B\u0E25\u0E14\u0E43\u0E2B\u0E21\u0E48",
-    reconnecting: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E40\u0E0A\u0E37\u0E48\u0E2D\u0E21\u0E15\u0E48\u0E2D\u0E43\u0E2B\u0E21\u0E48...",
-    loading: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E42\u0E2B\u0E25\u0E14...",
-    checking: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A",
-    selectSource: "\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E41\u0E2B\u0E25\u0E48\u0E07\u0E17\u0E35\u0E48\u0E21\u0E32\u0E14\u0E49\u0E32\u0E19\u0E25\u0E48\u0E32\u0E07",
-    invalidUrl: "\u0E25\u0E34\u0E07\u0E01\u0E4C\u0E15\u0E49\u0E2D\u0E07\u0E40\u0E23\u0E34\u0E48\u0E21\u0E15\u0E49\u0E19\u0E14\u0E49\u0E27\u0E22 http:// \u0E2B\u0E23\u0E37\u0E2D https://",
-    addedSource: "\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E41\u0E2B\u0E25\u0E48\u0E07\u0E41\u0E25\u0E49\u0E27: ",
-    noChannelInFile: "\u0E44\u0E21\u0E48\u0E1E\u0E1A\u0E0A\u0E48\u0E2D\u0E07\u0E43\u0E19\u0E44\u0E1F\u0E25\u0E4C",
-    addedFile: "\u0E40\u0E1E\u0E34\u0E48\u0E21\u0E41\u0E25\u0E49\u0E27: ",
-    channelUnit: " \u0E0A\u0E48\u0E2D\u0E07",
-    loadingSources: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E42\u0E2B\u0E25\u0E14 {n} \u0E41\u0E2B\u0E25\u0E48\u0E07...",
-    cantLoadSource: "\u0E44\u0E21\u0E48\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E42\u0E2B\u0E25\u0E14\u0E41\u0E2B\u0E25\u0E48\u0E07\u0E44\u0E14\u0E49",
-    noChannelFound: "\u0E44\u0E21\u0E48\u0E1E\u0E1A\u0E0A\u0E48\u0E2D\u0E07",
-    sourceError: "{e} \u0E41\u0E2B\u0E25\u0E48\u0E07\u0E1C\u0E34\u0E14\u0E1E\u0E25\u0E32\u0E14, {n} \u0E0A\u0E48\u0E2D\u0E07\u0E42\u0E2B\u0E25\u0E14\u0E41\u0E25\u0E49\u0E27",
-    sourceOk: "{n} \u0E0A\u0E48\u0E2D\u0E07\u0E08\u0E32\u0E01 {s} \u0E41\u0E2B\u0E25\u0E48\u0E07",
-    checkTitle: "\u0E15\u0E23\u0E27\u0E08\u0E2A\u0E2D\u0E1A\u0E0A\u0E48\u0E2D\u0E07\u0E17\u0E35\u0E48\u0E43\u0E0A\u0E49\u0E07\u0E32\u0E19\u0E44\u0E14\u0E49",
-    showAllTitle: "\u0E41\u0E2A\u0E14\u0E07\u0E0A\u0E48\u0E2D\u0E07\u0E17\u0E35\u0E48\u0E0B\u0E48\u0E2D\u0E19\u0E17\u0E31\u0E49\u0E07\u0E2B\u0E21\u0E14",
-    fileTitle: "\u0E40\u0E25\u0E37\u0E2D\u0E01\u0E44\u0E1F\u0E25\u0E4C M3U \u0E08\u0E32\u0E01\u0E2D\u0E38\u0E1B\u0E01\u0E23\u0E13\u0E4C",
-    cinemaMode: "\u0E42\u0E23\u0E07\u0E2B\u0E19\u0E31\u0E07",
-    pinChannel: "\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14",
-    pinChannelTip: "\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E0A\u0E48\u0E2D\u0E07 (\u0E40\u0E25\u0E48\u0E19\u0E2D\u0E31\u0E15\u0E42\u0E19\u0E21\u0E31\u0E15\u0E34\u0E40\u0E21\u0E37\u0E48\u0E2D\u0E40\u0E23\u0E34\u0E48\u0E21)",
-    favChannel: "\u0E0A\u0E37\u0E48\u0E19\u0E0A\u0E2D\u0E1A",
-    hideChannel: "\u0E0B\u0E48\u0E2D\u0E19",
-    pinnedToast: "\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E0A\u0E48\u0E2D\u0E07\u0E41\u0E25\u0E49\u0E27",
-    unpinnedToast: "\u0E22\u0E01\u0E40\u0E25\u0E34\u0E01\u0E1B\u0E31\u0E01\u0E2B\u0E21\u0E38\u0E14\u0E41\u0E25\u0E49\u0E27",
-    shortcutsTitle: "\u0E17\u0E32\u0E07\u0E25\u0E31\u0E14",
-    playPause: "\u0E40\u0E25\u0E48\u0E19 / \u0E2B\u0E22\u0E38\u0E14",
-    seekBack: "\u0E22\u0E49\u0E2D\u0E19 10\u0E27\u0E34.",
-    seekForward: "\u0E44\u0E1B 10\u0E27\u0E34.",
-    prevChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E01\u0E48\u0E2D\u0E19\u0E2B\u0E19\u0E49\u0E32",
-    nextChannel: "\u0E0A\u0E48\u0E2D\u0E07\u0E16\u0E31\u0E14\u0E44\u0E1B",
-    fullscreen: "\u0E40\u0E15\u0E47\u0E21\u0E2B\u0E19\u0E49\u0E32\u0E08\u0E2D",
-    epgLoaded: "\u0E42\u0E2B\u0E25\u0E14 EPG \u0E41\u0E25\u0E49\u0E27",
-    retryProxy: "\u0E01\u0E33\u0E25\u0E31\u0E07\u0E25\u0E2D\u0E07\u0E43\u0E2B\u0E21\u0E48\u0E1C\u0E48\u0E32\u0E19\u0E1E\u0E23\u0E47\u0E2D\u0E01\u0E0B\u0E35\u2026",
-    epgLoadFailed: "\u0E42\u0E2B\u0E25\u0E14 EPG \u0E44\u0E21\u0E48\u0E2A\u0E33\u0E40\u0E23\u0E47\u0E08",
-    epgTitle: "\u0E1C\u0E31\u0E07\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
-    epgNoData: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25 EPG",
-    epgNoProgram: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
-    epgNoUpcoming: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E16\u0E31\u0E14\u0E44\u0E1B",
-    channelListTitle: "\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E0A\u0E48\u0E2D\u0E07",
-    closeTip: "\u0E1B\u0E34\u0E14",
-    castTip: "\u0E41\u0E04\u0E2A\u0E15\u0E4C",
-    castingTip: "\u0E2B\u0E22\u0E38\u0E14\u0E41\u0E04\u0E2A\u0E15\u0E4C"
-  },
-  id: {
-    flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
-    noChannel: "Belum memilih saluran",
-    sound: "Suara",
-    pip: "Mini",
-    newTab: "Tab baru",
-    reload: "Muat ulang",
-    favHeader: "\u2B50 Favorit",
-    favEmpty: "Belum ada saluran favorit",
-    sourceToggle: "\uD83D\uDD17 Sumber",
-    addPlaceholder: "Tempel tautan M3U di sini...",
-    addBtn: "+ Tambah",
-    fileBtn: "\uD83D\uDCC1 File",
-    searchPlaceholder: "Cari saluran...",
-    checkBtn: "Periksa saluran",
-    showAll: "Tampilkan semua",
-    scrollTop: "Atas",
-    defaultBadge: "bawaan",
-    renameTip: "Ganti nama",
-    deleteTip: "Hapus sumber ini",
-    renamed: "Sudah diganti nama",
-    pipNotSupported: "PiP tidak didukung",
-    reloading: "Memuat ulang...",
-    channelN: "Saluran ",
-    networkError: "Kesalahan jaringan \u2014 mencoba lagi...",
-    mediaError: "Kesalahan media \u2014 memulihkan...",
-    playErrorRetry: "Kesalahan putar \u2014 coba ulang otomatis",
-    playErrorFinal: "Kesalahan putar \u2014 tekan Muat ulang",
-    reconnecting: "Menghubungkan kembali...",
-    loading: "Memuat...",
-    checking: "Memeriksa",
-    selectSource: "Pilih sumber di bawah untuk memulai",
-    invalidUrl: "Tautan harus dimulai dengan http:// atau https://",
-    addedSource: "Sumber ditambahkan: ",
-    noChannelInFile: "Tidak ada saluran ditemukan dalam file",
-    addedFile: "Ditambahkan: ",
-    channelUnit: " saluran",
-    loadingSources: "Memuat {n} sumber...",
-    cantLoadSource: "Tidak dapat memuat sumber",
-    noChannelFound: "Tidak ada saluran ditemukan",
-    sourceError: "{e} sumber error, {n} saluran dimuat",
-    sourceOk: "{n} saluran dari {s} sumber",
-    checkTitle: "Periksa saluran mana yang berfungsi",
-    showAllTitle: "Tampilkan semua saluran tersembunyi",
-    fileTitle: "Pilih file M3U dari perangkat",
-    cinemaMode: "Bioskop",
-    pinChannel: "Sematkan",
-    pinChannelTip: "Sematkan saluran (putar otomatis saat mulai)",
-    favChannel: "Favorit",
-    hideChannel: "Sembunyikan",
-    pinnedToast: "Saluran disematkan",
-    unpinnedToast: "Saluran tidak disematkan",
-    shortcutsTitle: "Pintasan",
-    playPause: "Putar / Jeda",
-    seekBack: "Mundur 10d",
-    seekForward: "Maju 10d",
-    prevChannel: "Saluran sebelumnya",
-    nextChannel: "Saluran berikutnya",
-    fullscreen: "Layar penuh",
-    epgLoaded: "EPG dimuat",
-    retryProxy: "Mencoba ulang via proxy…",
-    epgLoadFailed: "Gagal memuat EPG",
-    epgTitle: "Panduan Program",
-    epgNoData: "Tidak ada data EPG",
-    epgNoProgram: "Tidak ada data program",
-    epgNoUpcoming: "Tidak ada program mendatang",
-    channelListTitle: "Daftar saluran",
-    closeTip: "Tutup",
-    castTip: "Cast",
-    castingTip: "Hentikan cast"
-  },
-  it: {
-    flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
-    noChannel: "Nessun canale selezionato",
-    sound: "Audio",
-    pip: "Mini",
-    newTab: "Nuova scheda",
-    reload: "Ricarica",
-    favHeader: "\u2B50 Preferiti",
-    favEmpty: "Nessun canale preferito",
-    sourceToggle: "\uD83D\uDD17 Fonti",
-    addPlaceholder: "Incolla link M3U qui...",
-    addBtn: "+ Aggiungi",
-    fileBtn: "\uD83D\uDCC1 File",
-    searchPlaceholder: "Cerca canali...",
-    checkBtn: "Controlla canali",
-    showAll: "Mostra tutto",
-    scrollTop: "Su",
-    defaultBadge: "predefinito",
-    renameTip: "Rinomina",
-    deleteTip: "Elimina questa fonte",
-    renamed: "Rinominato",
-    pipNotSupported: "PiP non supportato",
-    reloading: "Ricaricamento...",
-    channelN: "Canale ",
-    networkError: "Errore di rete \u2014 nuovo tentativo...",
-    mediaError: "Errore media \u2014 ripristino...",
-    playErrorRetry: "Errore riproduzione \u2014 tentativo automatico",
-    playErrorFinal: "Errore riproduzione \u2014 premi Ricarica",
-    reconnecting: "Riconnessione...",
-    loading: "Caricamento...",
-    checking: "Controllo",
-    selectSource: "Seleziona una fonte qui sotto",
-    invalidUrl: "Il link deve iniziare con http:// o https://",
-    addedSource: "Fonte aggiunta: ",
-    noChannelInFile: "Nessun canale trovato nel file",
-    addedFile: "Aggiunto: ",
-    channelUnit: " canali",
-    loadingSources: "Caricamento di {n} fonti...",
-    cantLoadSource: "Impossibile caricare le fonti",
-    noChannelFound: "Nessun canale trovato",
-    sourceError: "{e} fonti con errore, {n} canali caricati",
-    sourceOk: "{n} canali da {s} fonti",
-    checkTitle: "Verifica quali canali funzionano",
-    showAllTitle: "Mostra tutti i canali nascosti",
-    fileTitle: "Scegli file M3U dal dispositivo",
-    cinemaMode: "Cinema",
-    pinChannel: "Fissa",
-    pinChannelTip: "Fissa canale (riproduzione automatica all'avvio)",
-    favChannel: "Preferito",
-    hideChannel: "Nascondi",
-    pinnedToast: "Canale fissato",
-    unpinnedToast: "Canale rimosso",
-    shortcutsTitle: "Scorciatoie",
-    playPause: "Riproduci / Pausa",
-    seekBack: "Indietro 10s",
-    seekForward: "Avanti 10s",
-    prevChannel: "Canale precedente",
-    nextChannel: "Canale successivo",
-    fullscreen: "Schermo intero",
-    epgLoaded: "EPG caricato",
-    retryProxy: "Nuovo tentativo via proxy…",
-    epgLoadFailed: "Impossibile caricare EPG",
-    epgTitle: "Guida programmi",
-    epgNoData: "Nessun dato EPG caricato",
-    epgNoProgram: "Nessun dato di programma",
-    epgNoUpcoming: "Nessun programma in arrivo",
-    channelListTitle: "Lista canali",
-    closeTip: "Chiudi",
-    castTip: "Trasmetti",
-    castingTip: "Interrompi trasmissione"
-  },
-  tr: {
-    flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
-    noChannel: "Kanal se\u00E7ilmedi",
-    sound: "Ses",
-    pip: "Mini",
-    newTab: "Yeni sekme",
-    reload: "Yenile",
-    favHeader: "\u2B50 Favoriler",
-    favEmpty: "Hen\u00FCz favori kanal yok",
-    sourceToggle: "\uD83D\uDD17 Kaynaklar",
-    addPlaceholder: "M3U ba\u011Flant\u0131s\u0131n\u0131 buraya yap\u0131\u015Ft\u0131r\u0131n...",
-    addBtn: "+ Ekle",
-    fileBtn: "\uD83D\uDCC1 Dosya",
-    searchPlaceholder: "Kanal ara...",
-    checkBtn: "Kanallar\u0131 kontrol et",
-    showAll: "T\u00FCm\u00FCn\u00FC g\u00F6ster",
-    scrollTop: "Yukar\u0131",
-    defaultBadge: "varsay\u0131lan",
-    renameTip: "Yeniden adland\u0131r",
-    deleteTip: "Bu kayna\u011F\u0131 sil",
-    renamed: "Yeniden adland\u0131r\u0131ld\u0131",
-    pipNotSupported: "PiP desteklenmiyor",
-    reloading: "Yenileniyor...",
-    channelN: "Kanal ",
-    networkError: "A\u011F hatas\u0131 \u2014 yeniden deneniyor...",
-    mediaError: "Medya hatas\u0131 \u2014 kurtarma...",
-    playErrorRetry: "Oynatma hatas\u0131 \u2014 otomatik yeniden deneme",
-    playErrorFinal: "Oynatma hatas\u0131 \u2014 Yenile'ye bas\u0131n",
-    reconnecting: "Yeniden ba\u011Flan\u0131yor...",
-    loading: "Y\u00FCkleniyor...",
-    checking: "Kontrol",
-    selectSource: "Ba\u015Flamak i\u00E7in a\u015Fa\u011F\u0131dan bir kaynak se\u00E7in",
-    invalidUrl: "Ba\u011Flant\u0131 http:// veya https:// ile ba\u015Flamal\u0131d\u0131r",
-    addedSource: "Kaynak eklendi: ",
-    noChannelInFile: "Dosyada kanal bulunamad\u0131",
-    addedFile: "Eklendi: ",
-    channelUnit: " kanal",
-    loadingSources: "{n} kaynak y\u00FCkleniyor...",
-    cantLoadSource: "Kaynaklar y\u00FCklenemedi",
-    noChannelFound: "Kanal bulunamad\u0131",
-    sourceError: "{e} kaynak hatas\u0131, {n} kanal y\u00FCklendi",
-    sourceOk: "{s} kaynaktan {n} kanal",
-    checkTitle: "Hangi kanallar\u0131n \u00E7al\u0131\u015Ft\u0131\u011F\u0131n\u0131 kontrol et",
-    showAllTitle: "T\u00FCm gizli kanallar\u0131 g\u00F6ster",
-    fileTitle: "Cihazdan M3U dosyas\u0131 se\u00E7",
-    cinemaMode: "Sinema",
-    pinChannel: "Sabitle",
-    pinChannelTip: "Kanal\u0131 sabitle (ba\u015Flang\u0131\u00E7ta otomatik oynat)",
-    favChannel: "Favori",
-    hideChannel: "Gizle",
-    pinnedToast: "Kanal sabitlendi",
-    unpinnedToast: "Kanal sabitlemesi kald\u0131r\u0131ld\u0131",
-    shortcutsTitle: "K\u0131sayollar",
-    playPause: "Oynat / Duraklat",
-    seekBack: "10sn geri",
-    seekForward: "10sn ileri",
-    prevChannel: "\u00D6nceki kanal",
-    nextChannel: "Sonraki kanal",
-    fullscreen: "Tam ekran",
-    epgLoaded: "EPG yüklendi",
-    retryProxy: "Proxy üzerinden yeniden deneniyor…",
-    epgLoadFailed: "EPG yüklenemedi",
-    epgTitle: "Program rehberi",
-    epgNoData: "EPG verisi yüklenmedi",
-    epgNoProgram: "Program verisi yok",
-    epgNoUpcoming: "Gelecek program yok",
-    channelListTitle: "Kanal listesi",
-    closeTip: "Kapat",
-    castTip: "Yayınla",
-    castingTip: "Yayını durdur"
   }
 };
-
 let currentLang = localStorage.getItem("lang") || "en";
 function t(key){ return (LANGS[currentLang] || LANGS.vi)[key] || (LANGS.vi)[key] || key; }
 
@@ -1229,7 +162,6 @@ const audioEl    = document.getElementById("audioPlayer");
 let   mediaEl    = video; // points to video or audioEl depending on channel type
 const nowName    = document.getElementById("nowPlayingName");
 const nowBar     = document.getElementById("nowPlaying");
-const playerTitle = document.getElementById("playerTitle");
 const btnUnmute  = document.getElementById("btnUnmute");
 const btnPiP     = document.getElementById("btnPiP");
 const btnPlayPause = document.getElementById("btnPlayPause");
@@ -1428,7 +360,7 @@ async function _extractProgrammesForId(epgChId){
          const chIdCheck = findEpgChannelId(allChannels[currentIdx].tvgId, allChannels[currentIdx].name);
          if(chIdCheck === epgChId) updateEpgDisplay();
       }
-      if(typeof renderEpgPanel === "function" && document.getElementById("epgPanel")?.classList.contains("open")) {
+      if(typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) {
         renderEpgPanel();
       }
     }
@@ -1764,11 +696,6 @@ document.addEventListener("fullscreenchange", () => {
     btnPlayerFs.innerHTML = document.fullscreenElement
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
       : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
-    if(!document.fullscreenElement) {
-      window.innerWidth <= 1024 ? closeList() : openList();
-    } else {
-      closeList();
-    }
   }
   if (document.fullscreenElement) {
     showFsControls();
@@ -1855,7 +782,6 @@ function playByIndex(idx, opts){
   // update now-playing
   const _chTitle = ch.name || t("channelN") + (idx+1);
   if(nowName) nowName.textContent = _chTitle;
-  if(playerTitle) playerTitle.textContent = _chTitle;
   if(nowBar) nowBar.classList.add("live");
   updateMiniButtons();
 
@@ -1951,17 +877,25 @@ function playByIndex(idx, opts){
         if(useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
       });
 
-      // Flush codec on every discontinuity for radio streams
+      // Handle discontinuities in radio streams: flush old buffer then recover
+      let _lastCC = 0;
       hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
         if(!ch.isRadio) return;
         const frag = data.frag;
-        if(frag && frag.cc > 0){
-          console.log("[HLS] Radio discontinuity (cc=" + frag.cc + ") — flushing buffer");
-          try {
-            hls.swapAudioCodec();
-            hls.recoverMediaError();
-          } catch(e){}
-        }
+        if(!frag || frag.cc === _lastCC) return;
+        const prevCC = _lastCC;
+        _lastCC = frag.cc;
+        if(prevCC === 0 && frag.cc === 0) return;
+        console.log("[HLS] Radio discontinuity (cc " + prevCC + " → " + frag.cc + ") — flushing buffer & recovering");
+        try {
+          // Flush buffered data before the discontinuity point
+          const flushEnd = frag.start;
+          if(flushEnd > 0){
+            hls.trigger(Hls.Events.BUFFER_FLUSHING, { startOffset: 0, endOffset: flushEnd });
+          }
+          // Recover media to handle potential codec change across discontinuity
+          hls.recoverMediaError();
+        } catch(e){}
       });
 
       hls.on(Hls.Events.FRAG_LOADED, () => {
@@ -2036,7 +970,7 @@ function playByIndex(idx, opts){
     if(currentIdx !== idx) return; // user already switched away
     ensureEpgForChannel(ch.tvgId, ch.name);
     updateEpgDisplay();
-    if(typeof renderEpgPanel === "function" && document.getElementById("epgPanel")?.classList.contains("open")) renderEpgPanel();
+    if(typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) renderEpgPanel();
   }, 300);
 
   // Push new channel to Chromecast if casting
@@ -2148,7 +1082,7 @@ function makeCard(ch, idx, container){
 
   div.onclick = () => {
     playByIndex(idx);
-    if(window.innerWidth <= 1024) closeList();
+    closeList();
   };
   div.append(img, name, star);
   container.appendChild(div);
@@ -2304,7 +1238,6 @@ function showEmptyState(){
   clearTimeout(stallTimer);
   if(grid) grid.innerHTML = "";
   if(nowName) nowName.textContent = t("noChannel");
-  if(playerTitle) playerTitle.textContent = "";
   if(nowBar) nowBar.classList.remove("live");
   renderGrid();
   if(emptyState){
@@ -2664,9 +1597,56 @@ if(activeSources.size > 0){
   }
 }
 
+/* ===== COLLAPSE / EXPAND CONTROLS ===== */
+(function(){
+  var ctrlBottom = document.getElementById("controlsBottom");
+  // Right side collapsible
+  var moreBtn = document.getElementById("moreBtn");
+  var collapsible = document.getElementById("ctrlCollapsible");
+  // Left side collapsible
+  var moreBtnL = document.getElementById("moreBtnLeft");
+  var collLeft = document.getElementById("ctrlCollapsibleLeft");
+  var collSeek = document.getElementById("ctrlCollapsibleLeftSeek");
+  var collSeek2 = document.getElementById("ctrlCollapsibleLeftSeek2");
+  if(!ctrlBottom) return;
+
+  var leftCollapsibles = [collLeft, collSeek, collSeek2].filter(Boolean);
+
+  function checkOverflow(){
+    // Temporarily expand everything to measure natural width
+    ctrlBottom.classList.remove("ctrl-overflow");
+    if(collapsible) collapsible.classList.remove("expanded");
+    leftCollapsibles.forEach(function(c){ c.classList.remove("expanded"); });
+    var overflow = ctrlBottom.scrollWidth > ctrlBottom.clientWidth;
+    if(overflow) ctrlBottom.classList.add("ctrl-overflow");
+    else ctrlBottom.classList.remove("ctrl-overflow");
+  }
+
+  if(moreBtn && collapsible){
+    moreBtn.addEventListener("click", function(e){
+      e.stopPropagation();
+      collapsible.classList.toggle("expanded");
+      moreBtn.classList.toggle("active", collapsible.classList.contains("expanded"));
+    });
+  }
+
+  if(moreBtnL && leftCollapsibles.length){
+    moreBtnL.addEventListener("click", function(e){
+      e.stopPropagation();
+      var expanding = !leftCollapsibles[0].classList.contains("expanded");
+      leftCollapsibles.forEach(function(c){ c.classList.toggle("expanded", expanding); });
+      moreBtnL.classList.toggle("active", expanding);
+    });
+  }
+
+  var ro = new ResizeObserver(checkOverflow);
+  ro.observe(ctrlBottom);
+  checkOverflow();
+})();
+
 /* ===== SCROLL TO TOP ===== */
 const scrollBtn = document.getElementById("scrollTop");
-const rightPane = document.getElementById("rightPane");
+const channelDrawer = document.getElementById("channelDrawer");
 const gridEl    = document.getElementById("channelGrid");
 if(scrollBtn){
   let _scrollTicking = false;
@@ -2674,7 +1654,7 @@ if(scrollBtn){
     if(!_scrollTicking){
       _scrollTicking = true;
       requestAnimationFrame(() => {
-        const top = Math.max(window.scrollY, gridEl ? gridEl.scrollTop : 0, rightPane ? rightPane.scrollTop : 0);
+        const top = Math.max(window.scrollY, gridEl ? gridEl.scrollTop : 0, channelDrawer ? channelDrawer.scrollTop : 0);
         scrollBtn.classList.toggle("show", top > 300);
         _scrollTicking = false;
       });
@@ -2682,39 +1662,16 @@ if(scrollBtn){
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   if(gridEl) gridEl.addEventListener("scroll", onScroll, { passive: true });
-  if(rightPane) rightPane.addEventListener("scroll", onScroll, { passive: true });
+  if(channelDrawer) channelDrawer.addEventListener("scroll", onScroll, { passive: true });
 
   scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     if(gridEl) gridEl.scrollTo({ top: 0, behavior: "smooth" });
-    if(rightPane) rightPane.scrollTo({ top: 0, behavior: "smooth" });
+    if(channelDrawer) channelDrawer.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
 /* ===== QUICK SWITCH MODAL ===== */
-/* ===== CINEMA MODE ===== */
-const cinemaBtn = document.getElementById("cinemaBtn");
-const cinemaOverlay = document.getElementById("cinemaOverlay");
-let cinemaMode = false;
-
-function applyCinemaMode(){
-  if(cinemaOverlay) cinemaOverlay.classList.toggle("show", cinemaMode);
-  if(cinemaBtn) cinemaBtn.classList.toggle("active", cinemaMode);
-  document.body.classList.toggle("cinema", cinemaMode);
-}
-
-if(cinemaBtn){
-  cinemaBtn.addEventListener("click", () => {
-    cinemaMode = !cinemaMode;
-    applyCinemaMode();
-  });
-}
-if(cinemaOverlay){
-  cinemaOverlay.addEventListener("click", () => {
-    cinemaMode = false;
-    applyCinemaMode();
-  });
-}
 
 /* ===== PIN / FAV / HIDE MINI BUTTONS ===== */
 function updateMiniButtons(){
@@ -2786,7 +1743,6 @@ function applyLang(){
 
   // Static HTML elements
   if(nowName && currentIdx < 0) nowName.textContent = t("noChannel");
-  if(playerTitle && currentIdx < 0) playerTitle.textContent = "";
   if(btnUnmute){
     btnUnmute.title = t("sound") + " (M)";
   }
@@ -2828,8 +1784,7 @@ function applyLang(){
   }
   if(scrollBtn) scrollBtn.title = t("scrollTop");
 
-  // Cinema & mini buttons (icon-only, tooltips only)
-  if(cinemaBtn) cinemaBtn.title = t("cinemaMode") + " (F)";
+  // Mini buttons (icon-only, tooltips only)
   if(pinBtn) pinBtn.title = t("pinChannelTip");
   if(favBtn) favBtn.title = t("favChannel");
   if(hideBtn) hideBtn.title = t("hideChannel");
@@ -2853,7 +1808,7 @@ function applyLang(){
   const _listBtn = document.getElementById("listBtn");
   const _epgBtn = document.getElementById("epgBtn");
   const _castBtn = document.getElementById("castBtn");
-  const _closeBtn = document.getElementById("rightPaneCloseBtn");
+  const _closeBtn = document.getElementById("channelDrawerCloseBtn");
   if(_listBtn) _listBtn.title = t("channelListTitle");
   if(_epgBtn) _epgBtn.title = t("epgTitle");
   if(_castBtn) _castBtn.title = t("castTip");
@@ -2895,7 +1850,13 @@ function buildLangMenu(){
 if(langBtn){
   langBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+    if(!langMenu) return;
     langMenu.classList.toggle("open");
+    if(langMenu.classList.contains("open")){
+      var r = langBtn.getBoundingClientRect();
+      langMenu.style.left = Math.max(0, r.left + r.width/2 - langMenu.offsetWidth/2) + "px";
+      langMenu.style.top = Math.max(0, r.top - langMenu.offsetHeight - 8) + "px";
+    }
   });
   document.addEventListener("click", () => {
     if(langMenu) langMenu.classList.remove("open");
@@ -2947,22 +1908,26 @@ if(nextChBtn) nextChBtn.addEventListener("click", navigateNext);
 
 /* ===== EPG PANEL ===== */
 var epgBtn       = document.getElementById("epgBtn");
+var epgToggleBtn = document.getElementById("epgToggleBtn");
 var listBtn      = document.getElementById("listBtn");
 var epgPanel     = document.getElementById("epgPanel");
+var guideDrawer  = document.getElementById("guideDrawer");
 var epgListEl    = document.getElementById("epgList");
 var epgPanelTitle = document.getElementById("epgPanelTitle");
 var epgCloseBtn  = document.getElementById("epgCloseBtn");
 
 function openEpgPanel(){
-  if(!epgPanel) return;
-  epgPanel.classList.add("open");
+  if(!guideDrawer) return;
+  guideDrawer.classList.add("open");
   if(epgBtn) epgBtn.classList.add("active");
+  if(epgToggleBtn) epgToggleBtn.classList.add("active");
   renderEpgPanel();
 }
 
 function closeEpgPanel(){
-  if(epgPanel) epgPanel.classList.remove("open");
+  if(guideDrawer) guideDrawer.classList.remove("open");
   if(epgBtn) epgBtn.classList.remove("active");
+  if(epgToggleBtn) epgToggleBtn.classList.remove("active");
 }
 
 function openList(){
@@ -2975,9 +1940,20 @@ function closeList(){
   if(listBtn) listBtn.classList.remove("active");
 }
 
-// Right pane close button (mobile overlay)
-const rightPaneCloseBtn = document.getElementById("rightPaneCloseBtn");
-if(rightPaneCloseBtn) rightPaneCloseBtn.addEventListener("click", closeList);
+// Channel drawer close button
+const channelDrawerCloseBtn = document.getElementById("channelDrawerCloseBtn");
+if(channelDrawerCloseBtn) channelDrawerCloseBtn.addEventListener("click", closeList);
+
+// Close drawers when clicking outside
+document.addEventListener("click", function(e){
+  if(guideDrawer && guideDrawer.classList.contains("open") && !guideDrawer.contains(e.target) && !(epgBtn && epgBtn.contains(e.target)) && !(epgToggleBtn && epgToggleBtn.contains(e.target))){
+    closeEpgPanel();
+  }
+  var cd = document.getElementById("channelDrawer");
+  if(cd && document.body.classList.contains("list-open") && !cd.contains(e.target) && !(listBtn && listBtn.contains(e.target))){
+    closeList();
+  }
+});
 
 function renderEpgPanel(){
   if(!epgListEl) return;
@@ -3076,7 +2052,12 @@ function renderEpgPanel(){
 }
 
 if(epgBtn) epgBtn.addEventListener("click", () => {
-  if(epgPanel && epgPanel.classList.contains("open")) closeEpgPanel();
+  if(guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
+  else openEpgPanel();
+});
+
+if(epgToggleBtn) epgToggleBtn.addEventListener("click", () => {
+  if(guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
   else openEpgPanel();
 });
 
@@ -3087,8 +2068,7 @@ if(listBtn) listBtn.addEventListener("click", () => {
 
 if(epgCloseBtn) epgCloseBtn.addEventListener("click", closeEpgPanel);
 
-// Auto-open EPG panel and channel list on desktop only
-if(window.innerWidth >= 1025){ openEpgPanel(); openList(); }
+// Don't auto-open panels on load — both are overlays now
 
 // Manual EPG URL loading
 const epgUrlInput = document.getElementById("epgUrlInput");
@@ -3129,14 +2109,12 @@ if(savedEpgUrl){
   if(urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
 }
 
-// Channel list is open by default on desktop — mark button active
-if(listBtn && window.innerWidth >= 1025) listBtn.classList.add("active");
-if(epgBtn && window.innerWidth >= 1025) epgBtn.classList.add("active");
+// Panels are overlays — no auto-open on desktop
 
 // Unified EPG refresh — runs every 60s
 function _epgPeriodicRefresh(){
   updateEpgDisplay();
-  if(epgPanel && epgPanel.classList.contains("open")) renderEpgPanel();
+  if(guideDrawer && guideDrawer.classList.contains("open")) renderEpgPanel();
 }
 epgIntervalId = setInterval(_epgPeriodicRefresh, 60000);
 
@@ -3248,10 +2226,10 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       navigateNext();
       break;
-    case "f": // F = cinema mode
+    case "f": // F = toggle EPG panel
     case "F":
       e.preventDefault();
-      if(cinemaBtn) cinemaBtn.click();
+      if(epgToggleBtn) epgToggleBtn.click();
       break;
     case "ArrowLeft": // ArrowLeft = seek back 10s
       e.preventDefault();
@@ -3278,7 +2256,7 @@ function buildShortcutsPanel(){
     { key: "M", desc: t("sound") },
     { key: "\u2191", desc: t("prevChannel") },
     { key: "\u2193", desc: t("nextChannel") },
-    { key: "F", desc: t("cinemaMode") }
+    { key: "F", desc: t("epgTitle") }
   ];
   panel.innerHTML = '<div class="sc-title">\u2328 ' + t("shortcutsTitle") + '</div>' +
     shortcuts.map(function(s){ return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
@@ -3287,7 +2265,13 @@ function buildShortcutsPanel(){
 if(shortcutsBtn){
   shortcutsBtn.addEventListener("click", function(e){
     e.stopPropagation();
-    if(shortcutsPanel) shortcutsPanel.classList.toggle("open");
+    if(!shortcutsPanel) return;
+    shortcutsPanel.classList.toggle("open");
+    if(shortcutsPanel.classList.contains("open")){
+      var r = shortcutsBtn.getBoundingClientRect();
+      shortcutsPanel.style.left = Math.max(0, Math.min(r.left + r.width/2 - shortcutsPanel.offsetWidth/2, window.innerWidth - shortcutsPanel.offsetWidth - 8)) + "px";
+      shortcutsPanel.style.top = Math.max(0, r.top - shortcutsPanel.offsetHeight - 8) + "px";
+    }
   });
 }
 if(shortcutsPanel){
