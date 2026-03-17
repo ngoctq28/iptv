@@ -73,7 +73,9 @@ const LANGS = {
     epgNoProgram: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh",
     epgNoUpcoming: "Kh\u00F4ng c\u00F3 ch\u01B0\u01A1ng tr\u00ECnh s\u1EAFp t\u1EDBi",
     channelListTitle: "Danh s\u00E1ch k\u00EAnh",
-    closeTip: "\u0110\u00F3ng"
+    closeTip: "\u0110\u00F3ng",
+    castTip: "Truy\u1EC1n",
+    castingTip: "D\u1EEBng truy\u1EC1n"
   },
   en: {
     flag: "\uD83C\uDDFA\uD83C\uDDF8", label: "English (US)",
@@ -143,6 +145,8 @@ const LANGS = {
     epgNoUpcoming: "No upcoming programs",
     channelListTitle: "Channel list",
     closeTip: "Close",
+    castTip: "Cast",
+    castingTip: "Stop casting"
   },
   fr: {
     flag: "\uD83C\uDDEB\uD83C\uDDF7", label: "Fran\u00E7ais",
@@ -211,7 +215,10 @@ const LANGS = {
     epgNoProgram: "Aucune donn\u00E9e de programme",
     epgNoUpcoming: "Aucun programme \u00E0 venir",
     channelListTitle: "Liste des cha\u00EEnes",
-    closeTip: "Fermer"
+    channelListTitle: "Liste des cha\u00EEnes",
+    closeTip: "Fermer",
+    castTip: "Diffuser",
+    castingTip: "Arr\u00EAter la diffusion"
   },
   de: {
     flag: "\uD83C\uDDE9\uD83C\uDDEA", label: "Deutsch",
@@ -280,7 +287,9 @@ const LANGS = {
     epgNoProgram: "Keine Programmdaten",
     epgNoUpcoming: "Keine kommenden Programme",
     channelListTitle: "Kanalliste",
-    closeTip: "Schlie\u00DFen"
+    closeTip: "Schlie\u00DFen",
+    castTip: "\u00DCbertragen",
+    castingTip: "\u00DCbertragung beenden"
   },
   ru: {
     flag: "\uD83C\uDDF7\uD83C\uDDFA", label: "\u0420\u0443\u0441\u0441\u043A\u0438\u0439",
@@ -349,7 +358,9 @@ const LANGS = {
     epgNoProgram: "\u041D\u0435\u0442 \u0434\u0430\u043D\u043D\u044B\u0445 \u043E \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0435",
     epgNoUpcoming: "\u041D\u0435\u0442 \u043F\u0440\u0435\u0434\u0441\u0442\u043E\u044F\u0449\u0438\u0445 \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C",
     channelListTitle: "\u0421\u043F\u0438\u0441\u043E\u043A \u043A\u0430\u043D\u0430\u043B\u043E\u0432",
-    closeTip: "\u0417\u0430\u043A\u0440\u044B\u0442\u044C"
+    closeTip: "\u0417\u0430\u043A\u0440\u044B\u0442\u044C",
+    castTip: "\u0422\u0440\u0430\u043D\u0441\u043B\u044F\u0446\u0438\u044F",
+    castingTip: "\u041E\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C"
   },
   "zh-CN": {
     flag: "\uD83C\uDDE8\uD83C\uDDF3", label: "\u4E2D\u6587(\u7B80\u4F53)",
@@ -418,7 +429,9 @@ const LANGS = {
     epgNoProgram: "\u6CA1\u6709\u8282\u76EE\u6570\u636E",
     epgNoUpcoming: "\u6CA1\u6709\u5373\u5C06\u64AD\u51FA\u7684\u8282\u76EE",
     channelListTitle: "\u9891\u9053\u5217\u8868",
-    closeTip: "\u5173\u95ED"
+    closeTip: "\u5173\u95ED",
+    castTip: "\u6295\u5C4F",
+    castingTip: "\u505C\u6B62\u6295\u5C4F"
   },
   "zh-TW": {
     flag: "\uD83C\uDDF9\uD83C\uDDFC", label: "\u4E2D\u6587(\u7E41\u9AD4)",
@@ -487,7 +500,9 @@ const LANGS = {
     epgNoProgram: "\u6C92\u6709\u7BC0\u76EE\u8CC7\u6599",
     epgNoUpcoming: "\u6C92\u6709\u5373\u5C07\u64AD\u51FA\u7684\u7BC0\u76EE",
     channelListTitle: "\u983B\u9053\u5217\u8868",
-    closeTip: "\u95DC\u9589"
+    closeTip: "\u95DC\u9589",
+    castTip: "\u6295\u653E",
+    castingTip: "\u505C\u6B62\u6295\u653E"
   },
   ja: {
     flag: "\uD83C\uDDEF\uD83C\uDDF5", label: "\u65E5\u672C\u8A9E",
@@ -556,7 +571,9 @@ const LANGS = {
     epgNoProgram: "\u756A\u7D44\u30C7\u30FC\u30BF\u306A\u3057",
     epgNoUpcoming: "\u4ECA\u5F8C\u306E\u756A\u7D44\u306A\u3057",
     channelListTitle: "\u30C1\u30E3\u30F3\u30CD\u30EB\u30EA\u30B9\u30C8",
-    closeTip: "\u9589\u3058\u308B"
+    closeTip: "\u9589\u3058\u308B",
+    castTip: "\u30AD\u30E3\u30B9\u30C8",
+    castingTip: "\u30AD\u30E3\u30B9\u30C8\u3092\u505C\u6B62"
   },
   ko: {
     flag: "\uD83C\uDDF0\uD83C\uDDF7", label: "\uD55C\uAD6D\uC5B4",
@@ -625,7 +642,9 @@ const LANGS = {
     epgNoProgram: "\uD504\uB85C\uADF8\uB7A8 \uB370\uC774\uD130 \uC5C6\uC74C",
     epgNoUpcoming: "\uC608\uC815\uB41C \uD504\uB85C\uADF8\uB7A8 \uC5C6\uC74C",
     channelListTitle: "\uCC44\uB110 \uBAA9\uB85D",
-    closeTip: "\uB2EB\uAE30"
+    closeTip: "\uB2EB\uAE30",
+    castTip: "\uCE90\uC2A4\uD2B8",
+    castingTip: "\uCE90\uC2A4\uD2B8 \uC911\uC9C0"
   },
   es: {
     flag: "\uD83C\uDDEA\uD83C\uDDF8", label: "Espa\u00F1ol",
@@ -694,7 +713,9 @@ const LANGS = {
     epgNoProgram: "Sin datos de programa",
     epgNoUpcoming: "No hay programas pr\u00F3ximos",
     channelListTitle: "Lista de canales",
-    closeTip: "Cerrar"
+    closeTip: "Cerrar",
+    castTip: "Transmitir",
+    castingTip: "Detener transmisión"
   },
   pt: {
     flag: "\uD83C\uDDE7\uD83C\uDDF7", label: "Portugu\u00EAs",
@@ -763,7 +784,9 @@ const LANGS = {
     epgNoProgram: "Sem dados de programa",
     epgNoUpcoming: "Nenhum programa pr\u00F3ximo",
     channelListTitle: "Lista de canais",
-    closeTip: "Fechar"
+    closeTip: "Fechar",
+    castTip: "Transmitir",
+    castingTip: "Parar transmissão"
   },
   ar: {
     flag: "\uD83C\uDDF8\uD83C\uDDE6", label: "\u0627\u0644\u0639\u0631\u0628\u064A\u0629",
@@ -832,7 +855,9 @@ const LANGS = {
     epgNoProgram: "\u0644\u0627 \u062A\u0648\u062C\u062F \u0628\u064A\u0627\u0646\u0627\u062A \u0628\u0631\u0646\u0627\u0645\u062C",
     epgNoUpcoming: "\u0644\u0627 \u0628\u0631\u0627\u0645\u062C \u0642\u0627\u062F\u0645\u0629",
     channelListTitle: "\u0642\u0627\u0626\u0645\u0629 \u0627\u0644\u0642\u0646\u0648\u0627\u062A",
-    closeTip: "\u0625\u063A\u0644\u0627\u0642"
+    closeTip: "\u0625\u063A\u0644\u0627\u0642",
+    castTip: "\u0628\u062B",
+    castingTip: "\u0625\u064A\u0642\u0627\u0641 \u0627\u0644\u0628\u062B"
   },
   hi: {
     flag: "\uD83C\uDDEE\uD83C\uDDF3", label: "\u0939\u093F\u0928\u094D\u0926\u0940",
@@ -901,7 +926,9 @@ const LANGS = {
     epgNoProgram: "\u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902",
     epgNoUpcoming: "\u0906\u0917\u093E\u092E\u0940 \u0915\u093E\u0930\u094D\u092F\u0915\u094D\u0930\u092E \u0928\u0939\u0940\u0902",
     channelListTitle: "\u091A\u0948\u0928\u0932 \u0938\u0942\u091A\u0940",
-    closeTip: "\u092C\u0902\u0926 \u0915\u0930\u0947\u0902"
+    closeTip: "\u092C\u0902\u0926 \u0915\u0930\u0947\u0902",
+    castTip: "\u0915\u093E\u0938\u094D\u091F",
+    castingTip: "\u0915\u093E\u0938\u094D\u091F \u092C\u0902\u0926 \u0915\u0930\u0947\u0902"
   },
   th: {
     flag: "\uD83C\uDDF9\uD83C\uDDED", label: "\u0E44\u0E17\u0E22",
@@ -970,7 +997,9 @@ const LANGS = {
     epgNoProgram: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E02\u0E49\u0E2D\u0E21\u0E39\u0E25\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23",
     epgNoUpcoming: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E16\u0E31\u0E14\u0E44\u0E1B",
     channelListTitle: "\u0E23\u0E32\u0E22\u0E01\u0E32\u0E23\u0E0A\u0E48\u0E2D\u0E07",
-    closeTip: "\u0E1B\u0E34\u0E14"
+    closeTip: "\u0E1B\u0E34\u0E14",
+    castTip: "\u0E41\u0E04\u0E2A\u0E15\u0E4C",
+    castingTip: "\u0E2B\u0E22\u0E38\u0E14\u0E41\u0E04\u0E2A\u0E15\u0E4C"
   },
   id: {
     flag: "\uD83C\uDDEE\uD83C\uDDE9", label: "Bahasa Indonesia",
@@ -1039,7 +1068,9 @@ const LANGS = {
     epgNoProgram: "Tidak ada data program",
     epgNoUpcoming: "Tidak ada program mendatang",
     channelListTitle: "Daftar saluran",
-    closeTip: "Tutup"
+    closeTip: "Tutup",
+    castTip: "Cast",
+    castingTip: "Hentikan cast"
   },
   it: {
     flag: "\uD83C\uDDEE\uD83C\uDDF9", label: "Italiano",
@@ -1108,7 +1139,9 @@ const LANGS = {
     epgNoProgram: "Nessun dato di programma",
     epgNoUpcoming: "Nessun programma in arrivo",
     channelListTitle: "Lista canali",
-    closeTip: "Chiudi"
+    closeTip: "Chiudi",
+    castTip: "Trasmetti",
+    castingTip: "Interrompi trasmissione"
   },
   tr: {
     flag: "\uD83C\uDDF9\uD83C\uDDF7", label: "T\u00FCrk\u00E7e",
@@ -1177,7 +1210,9 @@ const LANGS = {
     epgNoProgram: "Program verisi yok",
     epgNoUpcoming: "Gelecek program yok",
     channelListTitle: "Kanal listesi",
-    closeTip: "Kapat"
+    closeTip: "Kapat",
+    castTip: "Yayınla",
+    castingTip: "Yayını durdur"
   }
 };
 
@@ -1954,6 +1989,9 @@ function playByIndex(idx, opts){
     updateEpgDisplay();
     if(typeof renderEpgPanel === "function" && document.getElementById("epgPanel")?.classList.contains("open")) renderEpgPanel();
   }, 300);
+
+  // Push new channel to Chromecast if casting
+  if(typeof window.__castLoadMedia === "function") window.__castLoadMedia();
 }
 
 function doRetry(){
@@ -2755,12 +2793,14 @@ function applyLang(){
   const _scBtn = document.getElementById("shortcutsBtn");
   if(_scBtn) _scBtn.title = t("shortcutsTitle");
 
-  // List, EPG & close buttons
+  // List, EPG, Cast & close buttons
   const _listBtn = document.getElementById("listBtn");
   const _epgBtn = document.getElementById("epgBtn");
+  const _castBtn = document.getElementById("castBtn");
   const _closeBtn = document.getElementById("rightPaneCloseBtn");
   if(_listBtn) _listBtn.title = t("channelListTitle");
   if(_epgBtn) _epgBtn.title = t("epgTitle");
+  if(_castBtn) _castBtn.title = t("castTip");
   if(_closeBtn) _closeBtn.title = t("closeTip");
 
   // Re-render dynamic content
@@ -2809,20 +2849,45 @@ if(langBtn){
 applyLang();
 
 /* ===== PREV / NEXT CHANNEL BUTTONS ===== */
+
+/** Return indices of channels visible in the active tab (respects search + hidden). */
+function getVisibleIndices(){
+  const q = (searchIn ? searchIn.value : "").toLowerCase();
+  const isFavCat = currentCategory === "fav";
+  const isRadioCat = currentCategory === "radio";
+  const indices = [];
+  allChannels.forEach((ch, i) => {
+    if(hidden.has(ch.url)) return;
+    const isFav = favorites.some(f => f.url === ch.url);
+    if(isFavCat){ if(!isFav) return; }
+    else { if(!!ch.isRadio !== isRadioCat) return; }
+    if(q && !ch.name.toLowerCase().includes(q)) return;
+    indices.push(i);
+  });
+  return indices;
+}
+
+function navigatePrev(){
+  const vis = getVisibleIndices();
+  if(vis.length === 0) return;
+  const pos = vis.indexOf(currentIdx);
+  const next = pos <= 0 ? vis[vis.length - 1] : vis[pos - 1];
+  playByIndex(next, { noScroll: true });
+}
+
+function navigateNext(){
+  const vis = getVisibleIndices();
+  if(vis.length === 0) return;
+  const pos = vis.indexOf(currentIdx);
+  const next = pos < 0 || pos >= vis.length - 1 ? vis[0] : vis[pos + 1];
+  playByIndex(next, { noScroll: true });
+}
+
 const prevChBtn = document.getElementById("prevChBtn");
 const nextChBtn = document.getElementById("nextChBtn");
 
-if(prevChBtn) prevChBtn.addEventListener("click", () => {
-  if(allChannels.length === 0) return;
-  if(currentIdx <= 0) playByIndex(allChannels.length - 1, { noScroll: true });
-  else playByIndex(currentIdx - 1, { noScroll: true });
-});
-
-if(nextChBtn) nextChBtn.addEventListener("click", () => {
-  if(allChannels.length === 0) return;
-  if(currentIdx >= allChannels.length - 1) playByIndex(0, { noScroll: true });
-  else playByIndex(currentIdx + 1, { noScroll: true });
-});
+if(prevChBtn) prevChBtn.addEventListener("click", navigatePrev);
+if(nextChBtn) nextChBtn.addEventListener("click", navigateNext);
 
 /* ===== EPG PANEL ===== */
 var epgBtn       = document.getElementById("epgBtn");
@@ -3120,16 +3185,12 @@ document.addEventListener("keydown", (e) => {
     case "ArrowUp": // Previous channel
     case "MediaTrackPrevious":
       e.preventDefault();
-      if(allChannels.length === 0) break;
-      if(currentIdx <= 0) playByIndex(allChannels.length - 1, { noScroll: true });
-      else playByIndex(currentIdx - 1, { noScroll: true });
+      navigatePrev();
       break;
     case "ArrowDown": // Next channel
     case "MediaTrackNext":
       e.preventDefault();
-      if(allChannels.length === 0) break;
-      if(currentIdx >= allChannels.length - 1) playByIndex(0, { noScroll: true });
-      else playByIndex(currentIdx + 1, { noScroll: true });
+      navigateNext();
       break;
     case "f": // F = cinema mode
     case "F":
@@ -3181,3 +3242,80 @@ document.addEventListener("click", function(){
 });
 
 buildShortcutsPanel();
+
+/* ===== CHROMECAST (Cast Application Framework) ===== */
+window.__initChromecast = function(){
+  if(typeof cast === "undefined" || !cast.framework){
+    // SDK not fully loaded yet — retry shortly
+    setTimeout(window.__initChromecast, 500);
+    return;
+  }
+  var castBtn = document.getElementById("castBtn");
+  var context = cast.framework.CastContext.getInstance();
+
+  context.setOptions({
+    receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+    autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+  });
+
+  function isCasting(){
+    return context.getCurrentSession() !== null;
+  }
+
+  function updateCastBtn(){
+    if(!castBtn) return;
+    castBtn.classList.toggle("casting", isCasting());
+    castBtn.title = isCasting() ? t("castingTip") : t("castTip");
+  }
+
+  function loadMedia(){
+    var session = context.getCurrentSession();
+    if(!session || !currentUrl) return;
+    var contentType = isHlsUrl(currentUrl) ? "application/x-mpegurl" : "video/mp4";
+    var mediaInfo = new chrome.cast.media.MediaInfo(currentUrl, contentType);
+    mediaInfo.streamType = chrome.cast.media.StreamType.LIVE;
+    if(currentIdx >= 0 && allChannels[currentIdx]){
+      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+      mediaInfo.metadata.title = allChannels[currentIdx].name || "";
+      var logo = allChannels[currentIdx].logo;
+      if(logo) mediaInfo.metadata.images = [new chrome.cast.Image(logo)];
+    }
+    var request = new chrome.cast.media.LoadRequest(mediaInfo);
+    request.autoplay = true;
+    session.loadMedia(request).then(
+      function(){ console.log("Cast: media loaded"); },
+      function(err){ console.warn("Cast loadMedia error:", err); }
+    );
+  }
+
+  // Listen for session state changes
+  context.addEventListener(
+    cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
+    function(event){
+      updateCastBtn();
+      if(event.sessionState === cast.framework.SessionState.SESSION_STARTED ||
+         event.sessionState === cast.framework.SessionState.SESSION_RESUMED){
+        if(currentUrl) loadMedia();
+      }
+    }
+  );
+
+  if(castBtn){
+    castBtn.addEventListener("click", function(){
+      if(isCasting()){
+        context.getCurrentSession().endSession(true);
+      } else {
+        // Opens the native Chrome cast device picker
+        context.requestSession().then(
+          function(){ /* session started — handled by event listener */ },
+          function(err){ if(err.code !== "cancel") console.warn("Cast request error:", err); }
+        );
+      }
+    });
+  }
+
+  // Expose so channel switches push to cast device
+  window.__castLoadMedia = function(){ if(isCasting()) setTimeout(loadMedia, 500); };
+
+  updateCastBtn();
+};
