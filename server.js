@@ -3,6 +3,8 @@ const cors = require('cors');
 const axios = require('axios');
 const zlib = require('zlib');
 const path = require('path');
+const dns = require('dns');
+const { URL } = require('url');
 const { XMLParser } = require('fast-xml-parser');
 const app = express();
 
@@ -34,6 +36,105 @@ app.get('/', (req, res) => res.sendFile(path.join(staticDir, 'index.html')));
 const epgCache = {}; // { url: { timestamp, channelMap, programMap } }
 const CACHE_TTL = 1000 * 60 * 60 * 2; // 2 hours
 
+// ===== SSRF Protection =====
+// Block requests to private/internal networks, cloud metadata endpoints, and non-HTTP protocols.
+function isPrivateIP(ip) {
+  // IPv4-mapped IPv6 (::ffff:x.x.x.x)
+  const v4match = ip.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
+  const addr = v4match ? v4match[1] : ip;
+
+  const parts = addr.split('.').map(Number);
+  if (parts.length === 4 && parts.every(p => p >= 0 && p <= 255)) {
+    // 10.0.0.0/8
+    if (parts[0] === 10) return true;
+    // 172.16.0.0/12
+    if (parts[0] === 172 && parts[1] >= 16 && parts[1] <= 31) return true;
+    // 192.168.0.0/16
+    if (parts[0] === 192 && parts[1] === 168) return true;
+    // 127.0.0.0/8 (loopback)
+    if (parts[0] === 127) return true;
+    // 0.0.0.0/8
+    if (parts[0] === 0) return true;
+    // 169.254.0.0/16 (link-local / cloud metadata)
+    if (parts[0] === 169 && parts[1] === 254) return true;
+    // 100.64.0.0/10 (carrier-grade NAT)
+    if (parts[0] === 100 && parts[1] >= 64 && parts[1] <= 127) return true;
+    return false;
+  }
+
+  // IPv6 loopback
+  if (addr === '::1' || addr === '::') return true;
+  // IPv6 link-local
+  if (addr.startsWith('fe80:')) return true;
+  // IPv6 unique local
+  if (addr.startsWith('fc') || addr.startsWith('fd')) return true;
+
+  return false;
+}
+
+function validateUrl(urlStr) {
+  let parsed;
+  try {
+    parsed = new URL(urlStr);
+  } catch (_) {
+    return 'Invalid URL';
+  }
+
+  // Only allow http/https protocols
+  if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+    return 'Only http and https protocols are allowed';
+  }
+
+  // Block credentials in URL
+  if (parsed.username || parsed.password) {
+    return 'URLs with credentials are not allowed';
+  }
+
+  const hostname = parsed.hostname.toLowerCase();
+
+  // Block localhost and common internal hostnames
+  if (hostname === 'localhost' || hostname === '0.0.0.0' ||
+      hostname.endsWith('.local') || hostname.endsWith('.internal') ||
+      hostname === 'metadata.google.internal') {
+    return 'Requests to internal hosts are not allowed';
+  }
+
+  // Block bare IP addresses that are private
+  if (isPrivateIP(hostname)) {
+    return 'Requests to private IP addresses are not allowed';
+  }
+
+  return null; // valid
+}
+
+async function validateUrlWithDNS(urlStr) {
+  const err = validateUrl(urlStr);
+  if (err) return err;
+
+  const hostname = new URL(urlStr).hostname;
+
+  // If it's already an IP, we already checked above
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(hostname) || hostname.includes(':')) {
+    return null;
+  }
+
+  // Resolve hostname and check all IPs
+  try {
+    const addresses = await dns.promises.resolve4(hostname).catch(() => []);
+    const addresses6 = await dns.promises.resolve6(hostname).catch(() => []);
+    const all = [...addresses, ...addresses6];
+    for (const ip of all) {
+      if (isPrivateIP(ip)) {
+        return `DNS resolved to private IP (${ip})`;
+      }
+    }
+  } catch (_) {
+    // DNS resolution failed — allow the request, axios will fail naturally
+  }
+
+  return null;
+}
+
 // normalize channel name (similar to frontend)
 function normalizeChName(s) {
   if(!s) return "";
@@ -55,6 +156,9 @@ function parseXMLTVDate(s) {
 }
 
 async function fetchAndParseEPG(url) {
+  const ssrfErr = await validateUrlWithDNS(url);
+  if (ssrfErr) throw new Error(`Blocked: ${ssrfErr}`);
+
   const now = Date.now();
   if (epgCache[url] && (now - epgCache[url].timestamp < CACHE_TTL)) {
     return epgCache[url];
@@ -186,6 +290,9 @@ app.get('/api/hls', async (req, res) => {
   const url = req.query.url;
   if (!url) return res.status(400).json({ error: 'Missing url parameter' });
 
+  const ssrfErr = await validateUrlWithDNS(url);
+  if (ssrfErr) return res.status(403).json({ error: ssrfErr });
+
   try {
     console.log(`[HLS Proxy] Fetching manifest: ${url}`);
     const headers = {
@@ -278,6 +385,9 @@ app.get('/api/hls', async (req, res) => {
 app.get('/api/proxy', async (req, res) => {
   const url = req.query.url;
   if (!url) return res.status(400).json({ error: 'Missing url parameter' });
+
+  const ssrfErr = await validateUrlWithDNS(url);
+  if (ssrfErr) return res.status(403).json({ error: ssrfErr });
 
   try {
     console.log(`[Proxy] Fetching: ${url}`);
