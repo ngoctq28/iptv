@@ -1939,7 +1939,6 @@ function playByIndex(idx, opts){
 
       let hlsMediaRecoveryAttempts = 0;
       let hlsNetworkRetries = 0;
-      let _lastDiscontinuity = -1;
 
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
         hls.loadSource(sourceUrl);
@@ -1952,19 +1951,16 @@ function playByIndex(idx, opts){
         if(useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
       });
 
-      // Detect discontinuities in radio streams and force codec reset
+      // Flush codec on every discontinuity for radio streams
       hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
         if(!ch.isRadio) return;
         const frag = data.frag;
-        if(frag && frag.cc !== undefined && frag.cc !== _lastDiscontinuity){
-          if(_lastDiscontinuity >= 0){
-            console.log("[HLS] Radio discontinuity crossed:", _lastDiscontinuity, "->", frag.cc, "— flushing buffer");
-            try {
-              hls.swapAudioCodec();
-              hls.recoverMediaError();
-            } catch(e){}
-          }
-          _lastDiscontinuity = frag.cc;
+        if(frag && frag.cc > 0){
+          console.log("[HLS] Radio discontinuity (cc=" + frag.cc + ") — flushing buffer");
+          try {
+            hls.swapAudioCodec();
+            hls.recoverMediaError();
+          } catch(e){}
         }
       });
 
