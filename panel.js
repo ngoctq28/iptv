@@ -306,7 +306,7 @@ const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
 let currentCategory = "tv"; // 'tv', 'radio' or 'fav'
-const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232d2d2d' stroke='%2360a5fa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='6' width='20' height='15' rx='3' ry='3'/%3E%3Cpolygon points='10 10 16 13.5 10 17 10 10' fill='%2360a5fa'/%3E%3Cpath d='M8 2 L12 6 L16 2'/%3E%3C/svg%3E";
+const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231a1a2e'/%3E%3Cstop offset='100%25' stop-color='%2316213e'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='120' height='120' rx='16' fill='url(%23bg)'/%3E%3Ccircle cx='60' cy='52' r='28' fill='none' stroke='url(%23ac)' stroke-width='2.5' opacity='.6'/%3E%3Cpolygon points='52 40 52 64 72 52' fill='url(%23ac)' opacity='.85'/%3E%3Crect x='30' y='88' width='60' height='3' rx='1.5' fill='%2360a5fa' opacity='.25'/%3E%3Crect x='40' y='95' width='40' height='3' rx='1.5' fill='%23a78bfa' opacity='.18'/%3E%3C/svg%3E";
 
 /* ===== EPG (Electronic Program Guide) ===== */
 let epgData = {}; // { channelId: [ {start, stop, title} ] }  — lazily populated per channel
@@ -787,8 +787,8 @@ function playByIndex(idx, opts){
 
   // radio overlay
   const radioOv = document.getElementById("radioOverlay");
-  const radioOvImg = document.getElementById("radioOverlayImg");
-  const radioOvName = document.getElementById("radioOverlayName");
+  const radioOvCover = document.getElementById("radioOverlayCoverDark");
+  const radioDiscLabel = document.getElementById("radioDiscLabel");
   // Switch media element based on channel type
   // Radio channels use <audio> for direct URLs, <video> for HLS
   // (HLS.js requires a video element for TS demuxing)
@@ -799,11 +799,21 @@ function playByIndex(idx, opts){
   if(radioOv){
     if(ch.isRadio){
       radioOv.classList.add("active");
-      if(radioOvImg){
-        radioOvImg.src = ch.logo || fallbackImg;
-        radioOvImg.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
+      if(radioOvCover){
+        const _thumb = radioOvCover.querySelector('#radioOverlayThumb');
+        const _title = radioOvCover.querySelector('#radioOverlayTitle');
+        if(_thumb){
+          _thumb.src = ch.logo || fallbackImg;
+          _thumb.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
+        }
+        if(_title) _title.textContent = ch.name || '';
       }
-      if(radioOvName) radioOvName.textContent = (ch.name || "").toUpperCase();
+      if(radioDiscLabel){
+        const discImg = new Image();
+        discImg.onload = function(){ radioDiscLabel.style.backgroundImage = `url(${this.src})`; };
+        discImg.onerror = function(){ radioDiscLabel.style.backgroundImage = 'none'; };
+        discImg.src = ch.logo || fallbackImg;
+      }
     } else {
       radioOv.classList.remove("active");
       stopVisualizer();
@@ -1840,27 +1850,10 @@ function buildLangMenu(){
       e.stopPropagation();
       currentLang = code;
       localStorage.setItem("lang", code);
-      langMenu.classList.remove("open");
       applyLang();
     });
     langMenu.appendChild(btn);
   }
-}
-
-if(langBtn){
-  langBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if(!langMenu) return;
-    langMenu.classList.toggle("open");
-    if(langMenu.classList.contains("open")){
-      var r = langBtn.getBoundingClientRect();
-      langMenu.style.left = Math.max(0, r.left + r.width/2 - langMenu.offsetWidth/2) + "px";
-      langMenu.style.top = Math.max(0, r.top - langMenu.offsetHeight - 8) + "px";
-    }
-  });
-  document.addEventListener("click", () => {
-    if(langMenu) langMenu.classList.remove("open");
-  });
 }
 
 applyLang();
@@ -2226,10 +2219,15 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       navigateNext();
       break;
-    case "f": // F = toggle EPG panel
-    case "F":
+    case "p": // P = toggle EPG panel
+    case "P":
       e.preventDefault();
       if(epgToggleBtn) epgToggleBtn.click();
+      break;
+    case "l": // L = toggle channel list
+    case "L":
+      e.preventDefault();
+      if(listBtn) listBtn.click();
       break;
     case "ArrowLeft": // ArrowLeft = seek back 10s
       e.preventDefault();
@@ -2256,30 +2254,12 @@ function buildShortcutsPanel(){
     { key: "M", desc: t("sound") },
     { key: "\u2191", desc: t("prevChannel") },
     { key: "\u2193", desc: t("nextChannel") },
-    { key: "F", desc: t("epgTitle") }
+    { key: "P", desc: t("epgTitle") },
+    { key: "L", desc: t("channelListTitle") }
   ];
   panel.innerHTML = '<div class="sc-title">\u2328 ' + t("shortcutsTitle") + '</div>' +
     shortcuts.map(function(s){ return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
 }
-
-if(shortcutsBtn){
-  shortcutsBtn.addEventListener("click", function(e){
-    e.stopPropagation();
-    if(!shortcutsPanel) return;
-    shortcutsPanel.classList.toggle("open");
-    if(shortcutsPanel.classList.contains("open")){
-      var r = shortcutsBtn.getBoundingClientRect();
-      shortcutsPanel.style.left = Math.max(0, Math.min(r.left + r.width/2 - shortcutsPanel.offsetWidth/2, window.innerWidth - shortcutsPanel.offsetWidth - 8)) + "px";
-      shortcutsPanel.style.top = Math.max(0, r.top - shortcutsPanel.offsetHeight - 8) + "px";
-    }
-  });
-}
-if(shortcutsPanel){
-  shortcutsPanel.addEventListener("click", function(e){ e.stopPropagation(); });
-}
-document.addEventListener("click", function(){
-  if(shortcutsPanel) shortcutsPanel.classList.remove("open");
-});
 
 buildShortcutsPanel();
 

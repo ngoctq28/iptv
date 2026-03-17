@@ -24,15 +24,14 @@
     <div id="radioOverlay">
       <div id="radioVinylWrap">
         <div id="radioDisc">
-          <svg id="radioDiscText" viewBox="0 0 200 200">
-            <defs><path id="discTextArc" d="M 100,100 m -85,0 a 85,85 0 1,1 170,0 a 85,85 0 1,1 -170,0" fill="none"/></defs>
-            <text><textPath id="radioOverlayName" href="#discTextArc" startOffset="50%" text-anchor="middle"></textPath></text>
-          </svg>
           <div id="radioDiscLabel"></div>
         </div>
-        <img id="radioOverlayImg" alt="" />
+        <div id="radioOverlayCoverDark">
+          <div id="radioOverlayTitle"></div>
+          <img id="radioOverlayThumb" alt="" />
+          <canvas id="radioVisualizer"></canvas>
+        </div>
       </div>
-      <canvas id="radioVisualizer"></canvas>
     </div>
     <div id="controlsTop">
       <div id="nowPlaying">
