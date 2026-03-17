@@ -1225,6 +1225,8 @@ const DEFAULT_SOURCES = [
 
 /* ===== DOM ===== */
 const video      = document.getElementById("player");
+const audioEl    = document.getElementById("audioPlayer");
+let   mediaEl    = video; // points to video or audioEl depending on channel type
 const nowName    = document.getElementById("nowPlayingName");
 const nowBar     = document.getElementById("nowPlaying");
 const playerTitle = document.getElementById("playerTitle");
@@ -1263,7 +1265,7 @@ function initAudioVisualizer(){
   _analyser = _audioCtx.createAnalyser();
   _analyser.fftSize = 1024;
   _analyser.smoothingTimeConstant = 0.7;
-  _audioSrc = _audioCtx.createMediaElementSource(video);
+  _audioSrc = _audioCtx.createMediaElementSource(audioEl);
   _audioSrc.connect(_analyser);
   _analyser.connect(_audioCtx.destination);
 }
@@ -1628,8 +1630,8 @@ function hideToast(){ if(toast){ toast.classList.remove("show"); clearTimeout(to
 /* ===== MUTE / UNMUTE ===== */
 function updateMuteIcon(){
   if(!btnUnmute) return;
-  const v = video.volume;
-  const m = video.muted;
+  const v = mediaEl.volume;
+  const m = mediaEl.muted;
   let svg;
   if(m || v === 0) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
   else if(v < 0.5) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
@@ -1638,8 +1640,8 @@ function updateMuteIcon(){
   btnUnmute.classList.toggle("active", !m && v > 0);
 }
 if(btnUnmute) btnUnmute.addEventListener("click", () => {
-  video.muted = !video.muted;
-  if(!video.muted && video.volume === 0) video.volume = 0.5;
+  mediaEl.muted = !mediaEl.muted;
+  if(!mediaEl.muted && mediaEl.volume === 0) mediaEl.volume = 0.5;
   updateMuteIcon();
 });
 
@@ -1648,8 +1650,8 @@ if(volumeSlider){
   volumeSlider.value = Math.round(video.volume * 100);
   volumeSlider.addEventListener("input", () => {
     const val = parseInt(volumeSlider.value, 10) / 100;
-    video.volume = val;
-    video.muted = val === 0;
+    mediaEl.volume = val;
+    mediaEl.muted = val === 0;
     updateMuteIcon();
   });
 }
@@ -1665,14 +1667,17 @@ if(btnPiP) btnPiP.addEventListener("click", async () => {
   } catch(e){ console.warn("PiP error:", e); showToast(t("pipNotSupported"), 2000); }
 });
 
+function onVolumeChange(){
+  updateMuteIcon();
+  if(volumeSlider) volumeSlider.value = Math.round(mediaEl.muted ? 0 : mediaEl.volume * 100);
+}
 if(video){
   video.addEventListener("leavepictureinpicture", () => { if(btnPiP) btnPiP.classList.remove("active"); });
   video.addEventListener("enterpictureinpicture", () => { if(btnPiP) btnPiP.classList.add("active"); });
-  // keep mute button & volume slider in sync with native controls
-  video.addEventListener("volumechange", () => {
-    updateMuteIcon();
-    if(volumeSlider) volumeSlider.value = Math.round(video.muted ? 0 : video.volume * 100);
-  });
+  video.addEventListener("volumechange", onVolumeChange);
+}
+if(audioEl){
+  audioEl.addEventListener("volumechange", onVolumeChange);
 }
 
 /* ===== PLAY/PAUSE & SEEK CENTER CONTROLS ===== */
@@ -1680,7 +1685,7 @@ function updatePlayPauseIcon(){
   if(!btnPlayPause) return;
   const icon = document.getElementById("playPauseIcon");
   if(!icon) return;
-  if(video.paused){
+  if(mediaEl.paused){
     icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
   } else {
     icon.innerHTML = '<line x1="10" y1="6" x2="10" y2="18"/><line x1="14" y1="6" x2="14" y2="18"/>';
@@ -1688,16 +1693,20 @@ function updatePlayPauseIcon(){
 }
 if(btnPlayPause){
   btnPlayPause.addEventListener("click", () => {
-    if(video.paused) video.play().catch(() => {});
-    else video.pause();
+    if(mediaEl.paused) mediaEl.play().catch(() => {});
+    else mediaEl.pause();
   });
 }
 if(video){
   video.addEventListener("play", updatePlayPauseIcon);
   video.addEventListener("pause", updatePlayPauseIcon);
 }
-if(btnSeekBack) btnSeekBack.addEventListener("click", () => { video.currentTime = Math.max(0, video.currentTime - 10); });
-if(btnSeekFwd) btnSeekFwd.addEventListener("click", () => { video.currentTime += 10; });
+if(audioEl){
+  audioEl.addEventListener("play", updatePlayPauseIcon);
+  audioEl.addEventListener("pause", updatePlayPauseIcon);
+}
+if(btnSeekBack) btnSeekBack.addEventListener("click", () => { mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10); });
+if(btnSeekFwd) btnSeekFwd.addEventListener("click", () => { mediaEl.currentTime += 10; });
 
 /* ===== FULLSCREEN (open stream in new tab) ===== */
 if(btnFull) btnFull.addEventListener("click", () => {
@@ -1773,18 +1782,18 @@ function destroyHls(){
 
 let _wasAutoMuted = false;
 function safePlay() {
-  const p = video.play();
+  const p = mediaEl.play();
   if (p !== undefined) {
     p.catch(err => {
       // Browser blocked autoplay with sound
       if (err.name === 'NotAllowedError') {
-        video.muted = true;
+        mediaEl.muted = true;
         _wasAutoMuted = true;
         if(btnUnmute) {
           btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
           btnUnmute.classList.remove("active");
         }
-        video.play().catch(()=>{});
+        mediaEl.play().catch(()=>{});
       }
     });
   }
@@ -1792,8 +1801,8 @@ function safePlay() {
 
 // Automatically unmute on first user interaction if the browser forced it muted
 function autoUnmuteHandler() {
-  if (_wasAutoMuted && video && video.muted) {
-    video.muted = false;
+  if (_wasAutoMuted && mediaEl && mediaEl.muted) {
+    mediaEl.muted = false;
     _wasAutoMuted = false;
     if(btnUnmute) {
       btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
@@ -1855,8 +1864,19 @@ function playByIndex(idx, opts){
     }
   }
 
-  // cleanup previous
-  video.pause();
+  // Switch media element based on channel type
+  const prevMediaEl = mediaEl;
+  mediaEl = ch.isRadio ? audioEl : video;
+  // Pause & clean up previous element
+  prevMediaEl.pause();
+  if(prevMediaEl !== mediaEl){
+    prevMediaEl.removeAttribute("src");
+    prevMediaEl.load();
+  }
+  // Sync volume from previous element
+  mediaEl.volume = prevMediaEl.volume;
+  mediaEl.muted = prevMediaEl.muted;
+
   destroyHls();
   clearTimeout(retryTimer);
   clearTimeout(stallTimer);
@@ -1933,7 +1953,7 @@ function playByIndex(idx, opts){
                 console.warn("[HLS] Switching to HLS proxy for:", ch.url);
                 const proxiedUrl = "/api/hls?url=" + encodeURIComponent(ch.url);
                 buildHlsInstance(proxiedUrl, true);
-                hls.attachMedia(video);
+                hls.attachMedia(mediaEl);
               } else {
                 hlsNetworkRetries++;
                 if(hlsNetworkRetries > MAX_RETRIES){
@@ -1972,11 +1992,11 @@ function playByIndex(idx, opts){
     }
 
     buildHlsInstance(ch.url, false);
-    hls.attachMedia(video);
+    hls.attachMedia(mediaEl);
   } else {
     // ---- Native path (direct .ts / .mp4 / Safari HLS) ----
-    video.src = ch.url;
-    video.load();
+    mediaEl.src = ch.url;
+    mediaEl.load();
     safePlay();
   }
 
@@ -2038,26 +2058,29 @@ function resetStallTimerThrottled(){
 }
 
 /* ===== VIDEO EVENTS ===== */
-if(video){
-  video.addEventListener("playing", () => {
+function bindMediaEvents(el){
+  el.addEventListener("playing", () => {
+    if(el !== mediaEl) return;
     hideToast();
     if(nowBar) nowBar.classList.add("live");
     retryCount = 0;
     resetStallTimer();
   });
-  video.addEventListener("timeupdate", resetStallTimerThrottled);
-  video.addEventListener("waiting", () => { showToast(t("loading"), 0); });
-  video.addEventListener("error", () => {
+  el.addEventListener("timeupdate", () => { if(el === mediaEl) resetStallTimerThrottled(); });
+  el.addEventListener("waiting", () => { if(el === mediaEl) showToast(t("loading"), 0); });
+  el.addEventListener("error", () => {
+    if(el !== mediaEl) return;
     if(nowBar) nowBar.classList.remove("live");
     clearTimeout(stallTimer);
     if(currentIdx < 0 || _playbackStopped) return;
-    // If hls.js is handling this stream, let it manage errors
     if(hls) return;
     doRetry();
   });
-  video.addEventListener("stalled", () => { /* watchdog handles it */ });
-  video.addEventListener("canplay", () => { hideToast(); retryCount = 0; clearTimeout(retryTimer); });
+  el.addEventListener("stalled", () => { /* watchdog handles it */ });
+  el.addEventListener("canplay", () => { if(el === mediaEl){ hideToast(); retryCount = 0; clearTimeout(retryTimer); } });
 }
+if(video) bindMediaEvents(video);
+if(audioEl) bindMediaEvents(audioEl);
 
 /* ===== TOGGLE FAVORITE ===== */
 function toggleFav(ch){
@@ -2240,10 +2263,10 @@ function showEmptyState(){
   currentUrl = "";
   hidden.clear();
   saveHidden();
-  video.pause();
+  mediaEl.pause();
   destroyHls();
-  video.removeAttribute("src");
-  video.load();
+  mediaEl.removeAttribute("src");
+  mediaEl.load();
   clearTimeout(retryTimer);
   clearTimeout(stallTimer);
   if(grid) grid.innerHTML = "";
@@ -2812,9 +2835,9 @@ function applyLang(){
   buildLangMenu();
   
   // Sync mute button with video state
-  if (video && btnUnmute) {
-    btnUnmute.querySelector("#muteIcon").innerHTML = video.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-    btnUnmute.classList.toggle("active", !video.muted);
+  if (mediaEl && btnUnmute) {
+    btnUnmute.querySelector("#muteIcon").innerHTML = mediaEl.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+    btnUnmute.classList.toggle("active", !mediaEl.muted);
   }
 }
 
@@ -3174,8 +3197,8 @@ document.addEventListener("keydown", (e) => {
   switch(e.key){
     case " ": // Space = play/pause
       e.preventDefault();
-      if(video.paused) video.play().catch(() => {});
-      else video.pause();
+      if(mediaEl.paused) mediaEl.play().catch(() => {});
+      else mediaEl.pause();
       break;
     case "m": // M = mute toggle
     case "M":
@@ -3199,11 +3222,11 @@ document.addEventListener("keydown", (e) => {
       break;
     case "ArrowLeft": // ArrowLeft = seek back 10s
       e.preventDefault();
-      video.currentTime = Math.max(0, video.currentTime - 10);
+      mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10);
       break;
     case "ArrowRight": // ArrowRight = seek forward 10s
       e.preventDefault();
-      video.currentTime += 10;
+      mediaEl.currentTime += 10;
       break;
   }
 });
