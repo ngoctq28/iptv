@@ -158,8 +158,7 @@ const DEFAULT_SOURCES = [
 
 /* ===== DOM ===== */
 const video      = document.getElementById("player");
-const audioEl    = document.getElementById("audioPlayer");
-let   mediaEl    = video; // points to video or audioEl depending on channel type
+let   mediaEl    = video;
 const nowName    = document.getElementById("nowPlayingName");
 const nowBar     = document.getElementById("nowPlaying");
 const btnUnmute  = document.getElementById("btnUnmute");
@@ -208,12 +207,7 @@ function initAudioVisualizer(){
       vs.connect(_analyser);
     } catch(e){}
   }
-  if(audioEl){
-    try {
-      var as = _audioCtx.createMediaElementSource(audioEl);
-      as.connect(_analyser);
-    } catch(e){}
-  }
+
 }
 
 function startVisualizer(){
@@ -223,30 +217,40 @@ function startVisualizer(){
   cancelAnimationFrame(_vizRAF);
   var binCount = _analyser.frequencyBinCount;
   var dataArr = new Uint8Array(binCount);
-  var numBars = 90;
-  var trimLo = 2, trimHi = 2; // trim low and high frequencies that are often just noise
-  var useBars = numBars - trimLo - trimHi;
-  /* build log-spaced bin ranges */
-  var logBands = [];
-  var minF = 1, maxF = binCount;
-  for(var i = 0; i < numBars; i++){
-    var lo = Math.floor(minF * Math.pow(maxF / minF, i / numBars));
-    var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / numBars));
-    if(hi <= lo) hi = lo + 1;
-    logBands.push([lo, Math.min(hi, binCount)]);
+  var trimLo = 2, trimHi = 2;
+
+  // Mutable state that rebuilds when canvas width changes
+  var _prevCanvasW = 0;
+  var numBars = 0, useBars = 0;
+  var logBands = [], smoothBars, drawOrder;
+
+  function rebuildBands(canvasW){
+    _prevCanvasW = canvasW;
+    numBars = Math.max(20, Math.min(90, Math.floor(canvasW / 4)));
+    useBars = numBars - trimLo - trimHi;
+    logBands = [];
+    var minF = 1, maxF = binCount;
+    for(var i = 0; i < numBars; i++){
+      var lo = Math.floor(minF * Math.pow(maxF / minF, i / numBars));
+      var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / numBars));
+      if(hi <= lo) hi = lo + 1;
+      logBands.push([lo, Math.min(hi, binCount)]);
+    }
+    smoothBars = new Float32Array(numBars);
+    drawOrder = new Array(useBars);
+    var half = Math.ceil(useBars / 2);
+    for(var i = 0; i < useBars; i++){
+      if(i % 2 === 0) drawOrder[half - 1 - (i >> 1)] = i + trimLo;
+      else drawOrder[half + (i >> 1)] = i + trimLo;
+    }
   }
-  var smoothBars = new Float32Array(numBars);
-  /* reorder: high frequencies center, low frequencies edges (mirrored) */
-  var drawOrder = new Array(useBars);
-  var half = Math.ceil(useBars / 2);
-  for(var i = 0; i < useBars; i++){
-    if(i % 2 === 0) drawOrder[half - 1 - (i >> 1)] = i + trimLo;
-    else drawOrder[half + (i >> 1)] = i + trimLo;
-  }
+
   (function draw(){
     _vizRAF = requestAnimationFrame(draw);
+    var curW = _vizCanvas.offsetWidth;
+    if(curW !== _prevCanvasW) rebuildBands(curW);
     var dpr = window.devicePixelRatio || 1;
-    var w = _vizCanvas.width = _vizCanvas.offsetWidth * dpr;
+    var w = _vizCanvas.width = curW * dpr;
     var h = _vizCanvas.height = _vizCanvas.offsetHeight * dpr;
     _vizCtx.clearRect(0,0,w,h);
     _analyser.getByteFrequencyData(dataArr);
@@ -255,7 +259,6 @@ function startVisualizer(){
     var barW = Math.max(1.5, (w - gap * (useBars + 1)) / useBars);
     var r = barW / 2;
     _vizCtx.fillStyle = "#fff";
-    /* compute bar heights */
     var barHeights = new Float32Array(numBars);
     for(var i = 0; i < numBars; i++){
       var lo = logBands[i][0], hi = logBands[i][1];
@@ -265,7 +268,6 @@ function startVisualizer(){
       smoothBars[i] += (val - smoothBars[i]) * 0.45;
       barHeights[i] = Math.max(2 * dpr, smoothBars[i] * midY * 0.92);
     }
-    /* draw in reordered position: high freq center */
     for(var d = 0; d < useBars; d++){
       var srcIdx = drawOrder[d];
       var barH = barHeights[srcIdx];
@@ -287,6 +289,39 @@ function stopVisualizer(){
     _vizCtx.clearRect(0, 0, _vizCanvas.width, _vizCanvas.height);
   }
 }
+
+/* ===== MARQUEE for overflowing text ===== */
+let _marqueeEl = null;
+let _marqueeText = "";
+function setupMarquee(el, text){
+  _marqueeEl = el;
+  _marqueeText = text;
+  _applyMarquee(el, text);
+}
+function _applyMarquee(el, text){
+  el.classList.remove("marquee");
+  el.textContent = text;
+  requestAnimationFrame(() => {
+    if(el.scrollWidth > el.clientWidth){
+      el.classList.add("marquee");
+      const sep = "\u00A0\u00A0\u00A0\u2022\u00A0\u00A0\u00A0";
+      const span = document.createElement("span");
+      span.textContent = text + sep + text + sep;
+      el.textContent = "";
+      el.appendChild(span);
+      // Duration scales with content width for consistent speed
+      const dur = Math.max(span.offsetWidth / 2 * 0.04, 6);
+      el.style.setProperty("--marquee-dur", dur + "s");
+    }
+  });
+}
+let _marqueeResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(_marqueeResizeTimer);
+  _marqueeResizeTimer = setTimeout(() => {
+    if(_marqueeEl && _marqueeText) _applyMarquee(_marqueeEl, _marqueeText);
+  }, 200);
+});
 
 /* ===== STATE ===== */
 let allChannels  = [];
@@ -622,9 +657,7 @@ if(video){
   video.addEventListener("enterpictureinpicture", () => { if(btnPiP) btnPiP.classList.add("active"); });
   video.addEventListener("volumechange", onVolumeChange);
 }
-if(audioEl){
-  audioEl.addEventListener("volumechange", onVolumeChange);
-}
+
 
 /* ===== PLAY/PAUSE & SEEK CENTER CONTROLS ===== */
 function updatePlayPauseIcon(){
@@ -647,10 +680,7 @@ if(video){
   video.addEventListener("play", updatePlayPauseIcon);
   video.addEventListener("pause", updatePlayPauseIcon);
 }
-if(audioEl){
-  audioEl.addEventListener("play", updatePlayPauseIcon);
-  audioEl.addEventListener("pause", updatePlayPauseIcon);
-}
+
 if(btnSeekBack) btnSeekBack.addEventListener("click", () => { mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10); });
 if(btnSeekFwd) btnSeekFwd.addEventListener("click", () => { mediaEl.currentTime += 10; });
 
@@ -708,7 +738,7 @@ document.addEventListener("fullscreenchange", () => {
 /* ===== RETRY ===== */
 if(btnRetry) btnRetry.addEventListener("click", () => {
   if(currentIdx < 0) return;
-  playByIndex(currentIdx);
+  playByIndex(currentIdx, { noScroll: true });
   showToast(t("reloading"), 1500);
 });
 
@@ -723,10 +753,11 @@ function destroyHls(){
 
 let _wasAutoMuted = false;
 function safePlay() {
+  mediaEl.muted = false;
   const p = mediaEl.play();
   if (p !== undefined) {
     p.catch(err => {
-      // Browser blocked autoplay with sound
+      // Browser blocked autoplay with sound — mute and retry, unmute on first interaction
       if (err.name === 'NotAllowedError') {
         mediaEl.muted = true;
         _wasAutoMuted = true;
@@ -750,15 +781,17 @@ function autoUnmuteHandler() {
       btnUnmute.classList.add("active");
     }
   }
-  // Remove listener after first interaction
   document.removeEventListener('click', autoUnmuteHandler);
   document.removeEventListener('keydown', autoUnmuteHandler);
+  document.removeEventListener('touchstart', autoUnmuteHandler);
 }
 document.addEventListener('click', autoUnmuteHandler);
 document.addEventListener('keydown', autoUnmuteHandler);
+document.addEventListener('touchstart', autoUnmuteHandler);
 
 function playByIndex(idx, opts){
   if(idx < 0 || idx >= allChannels.length) return;
+  opts = opts || {};
   const prevIdx = currentIdx;
   currentIdx = idx;
   const ch = allChannels[idx];
@@ -777,6 +810,8 @@ function playByIndex(idx, opts){
   const card = grid && grid.querySelector('.ch-card[data-idx="' + idx + '"]');
   if(card){
     card.classList.add("active");
+    // Auto-scroll to the playing item
+    if(!opts.noScroll) card.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
   // update now-playing
@@ -785,15 +820,31 @@ function playByIndex(idx, opts){
   if(nowBar) nowBar.classList.add("live");
   updateMiniButtons();
 
+  // Update Media Session (mobile lock screen / notification controls)
+  if("mediaSession" in navigator){
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: _chTitle,
+      artist: ch.isRadio ? "Radio" : "Live TV",
+      artwork: ch.logo ? [{ src: ch.logo, sizes: "512x512", type: "image/png" }] : []
+    });
+    navigator.mediaSession.setActionHandler("play", () => { mediaEl.play().catch(() => {}); });
+    navigator.mediaSession.setActionHandler("pause", () => { mediaEl.pause(); });
+    navigator.mediaSession.setActionHandler("previoustrack", () => { if(typeof navigatePrev === "function") navigatePrev(); });
+    navigator.mediaSession.setActionHandler("nexttrack", () => { if(typeof navigateNext === "function") navigateNext(); });
+  }
+
   // radio overlay
   const radioOv = document.getElementById("radioOverlay");
   const radioOvCover = document.getElementById("radioOverlayCoverDark");
   const radioDiscLabel = document.getElementById("radioDiscLabel");
   // Switch media element based on channel type
-  // Radio channels use <audio> for direct URLs, <video> for HLS
-  // (HLS.js requires a video element for TS demuxing)
+  // Radio channels use <audio> for direct URLs (works in mobile background).
+  // HLS.js requires <video> for MediaSource/TS demuxing.
   const prevMediaEl = mediaEl;
-  mediaEl = (ch.isRadio && !isHlsUrl(ch.url)) ? audioEl : video;
+  mediaEl = video;
+
+  // Hide PiP for radio (no video to pip)
+  if(btnPiP) btnPiP.style.display = ch.isRadio ? "none" : "";
 
   // radio overlay (after mediaEl is set so visualizer taps the right element)
   if(radioOv){
@@ -806,7 +857,7 @@ function playByIndex(idx, opts){
           _thumb.src = ch.logo || fallbackImg;
           _thumb.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
         }
-        if(_title) _title.textContent = ch.name || '';
+        if(_title) setupMarquee(_title, ch.name || '');
       }
       if(radioDiscLabel){
         const discImg = new Image();
@@ -993,7 +1044,7 @@ function doRetry(){
   if(retryCount <= MAX_RETRIES){
     const delay = Math.min(retryCount * 1500, 5000);
     showToast(t("playErrorRetry"), 0);
-    retryTimer = setTimeout(() => playByIndex(currentIdx), delay);
+    retryTimer = setTimeout(() => playByIndex(currentIdx, { noScroll: true }), delay);
   } else {
     _playbackStopped = true;
     showToast(t("playErrorFinal"), 0);
@@ -1019,7 +1070,7 @@ function resetStallTimer(){
       return;
     }
     showToast(t("reconnecting"), 0);
-    playByIndex(currentIdx);
+    playByIndex(currentIdx, { noScroll: true });
   }, STALL_TIMEOUT);
 }
 /* Throttled version — only resets at most once every 5s from timeupdate */
@@ -1057,7 +1108,7 @@ function bindMediaEvents(el){
   el.addEventListener("canplay", () => { if(el === mediaEl){ hideToast(); retryCount = 0; clearTimeout(retryTimer); } });
 }
 if(video) bindMediaEvents(video);
-if(audioEl) bindMediaEvents(audioEl);
+
 
 /* ===== TOGGLE FAVORITE ===== */
 function toggleFav(ch){
@@ -1563,8 +1614,8 @@ async function loadActiveSources(){
         : t("noChannelFound");
     }
   } else {
-    if(errors > 0) showToast(t("sourceError"), 3000);
-    else showToast(t("sourceOk"), 2000);
+    if(errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
+    else showToast(t("sourceOk").replace("{n}", allChannels.length).replace("{s}", indices.length), 2000);
 
     // Auto-play: URL param > pinned channel > first channel
     const urlCh = new URLSearchParams(window.location.search).get("ch");
@@ -1578,7 +1629,19 @@ async function loadActiveSources(){
     if(autoIdx < 0 && allChannels.length > 0){
       autoIdx = 0;
     }
-    if(autoIdx >= 0) playByIndex(autoIdx);
+    // Auto-switch to the best tab for the playing channel on first load (prefer fav)
+    if(autoIdx >= 0){
+      const _ch = allChannels[autoIdx];
+      const _isFav = favorites.some(f => f.url === _ch.url);
+      const bestTab = _isFav ? "fav" : (_ch.isRadio ? "radio" : "tv");
+      if(currentCategory !== bestTab){
+        currentCategory = bestTab;
+        const _tabs = document.querySelectorAll(".cat-tab");
+        _tabs.forEach(b => b.classList.toggle("active", b.dataset.cat === bestTab));
+        renderGrid();
+      }
+      playByIndex(autoIdx);
+    }
   }
 
   // Load EPG data AFTER playback has started — defer so video gets priority
