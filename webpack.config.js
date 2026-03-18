@@ -53,6 +53,7 @@ module.exports = {
         { from: 'icon.svg', to: 'icon.svg' },
         { from: 'icon-192.png', to: 'icon-192.png' },
         { from: 'icon-512.png', to: 'icon-512.png' },
+        { from: 'env.prod.js', to: 'env.js' },
       ],
     }),
   ],
