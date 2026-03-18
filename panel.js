@@ -256,16 +256,20 @@ function startVisualizer() {
 
   function rebuildBands(canvasW) {
     _prevCanvasW = canvasW;
-    numBars = Math.max(20, Math.min(90, Math.floor(canvasW / 4)));
-    useBars = numBars - trimLo - trimHi;
+    var targetBars = Math.max(20, Math.min(100, Math.floor(canvasW / 4)));
     logBands = [];
     var minF = 1, maxF = binCount;
-    for (var i = 0; i < numBars; i++) {
-      var lo = Math.floor(minF * Math.pow(maxF / minF, i / numBars));
-      var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / numBars));
+    for (var i = 0; i < targetBars; i++) {
+      var lo = Math.floor(minF * Math.pow(maxF / minF, i / targetBars));
+      var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / targetBars));
       if (hi <= lo) hi = lo + 1;
-      logBands.push([lo, Math.min(hi, binCount)]);
+      var band = [lo, Math.min(hi, binCount)];
+      // Skip bands that cover the same bin range as the previous one
+      if (logBands.length > 0 && logBands[logBands.length - 1][0] === band[0] && logBands[logBands.length - 1][1] === band[1]) continue;
+      logBands.push(band);
     }
+    numBars = logBands.length;
+    useBars = Math.max(1, numBars - trimLo - trimHi);
     smoothBars = new Float32Array(numBars);
     drawOrder = new Array(useBars);
     var half = Math.ceil(useBars / 2);
