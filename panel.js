@@ -1,7 +1,7 @@
 /* ===== Production: silence console.log / console.warn ===== */
 if (window.__PROD__) {
-  console.log  = () => {};
-  console.warn = () => {};
+  console.log = () => { };
+  console.warn = () => { };
 }
 
 /* ===== i18n ===== */
@@ -150,70 +150,100 @@ const LANGS = {
   }
 };
 let currentLang = localStorage.getItem("lang") || "en";
-function t(key){ return (LANGS[currentLang] || LANGS.vi)[key] || (LANGS.vi)[key] || key; }
+function t(key) { return (LANGS[currentLang] || LANGS.vi)[key] || (LANGS.vi)[key] || key; }
 
 const DEFAULT_SOURCES = [
   { name: "VietNam IPTV (Default)", url: "https://raw.githubusercontent.com/giangnam0201/All-In-One-IPTV/refs/heads/main/channels.m3u", default: true }
 ];
 
 /* ===== DOM ===== */
-const video      = document.getElementById("player");
-let   mediaEl    = video;
-const nowName    = document.getElementById("nowPlayingName");
-const nowBar     = document.getElementById("nowPlaying");
-const btnUnmute  = document.getElementById("btnUnmute");
-const btnPiP     = document.getElementById("btnPiP");
+const video = document.getElementById("player");
+let mediaEl = video;
+const nowName = document.getElementById("nowPlayingName");
+const nowBar = document.getElementById("nowPlaying");
+const btnUnmute = document.getElementById("btnUnmute");
+const btnPiP = document.getElementById("btnPiP");
 const btnPlayPause = document.getElementById("btnPlayPause");
-const btnSeekBack  = document.getElementById("btnSeekBack");
-const btnSeekFwd   = document.getElementById("btnSeekForward");
-const btnFull    = document.getElementById("btnFullscreen");
+const btnSeekBack = document.getElementById("btnSeekBack");
+const btnSeekFwd = document.getElementById("btnSeekForward");
+const btnFull = document.getElementById("btnFullscreen");
 const btnPlayerFs = document.getElementById("btnPlayerFullscreen");
-const btnRetry   = document.getElementById("btnRetry");
+const btnRetry = document.getElementById("btnRetry");
 const volumeSlider = document.getElementById("volumeSlider");
-const toast      = document.getElementById("statusToast");
-const searchIn   = document.getElementById("searchInput");
-const btnCheck   = document.getElementById("btnCheck");
-const btnReset   = document.getElementById("btnReset");
-const grid       = document.getElementById("channelGrid");
+const toast = document.getElementById("statusToast");
+const searchIn = document.getElementById("searchInput");
+const btnCheck = document.getElementById("btnCheck");
+const btnReset = document.getElementById("btnReset");
+const grid = document.getElementById("channelGrid");
 const emptyState = document.getElementById("emptyState");
 const sourceToggle = document.getElementById("sourceToggle");
-const sourceBody   = document.getElementById("sourceBody");
+const sourceBody = document.getElementById("sourceBody");
 const sourceListEl = document.getElementById("sourceList");
 const addSourceInput = document.getElementById("addSourceInput");
-const addSourceBtn   = document.getElementById("addSourceBtn");
-const pinBtn         = document.getElementById("pinBtn");
-const favBtn         = document.getElementById("favBtn");
-const hideBtn        = document.getElementById("hideBtn");
+const addSourceBtn = document.getElementById("addSourceBtn");
+const pinBtn = document.getElementById("pinBtn");
+const favBtn = document.getElementById("favBtn");
+const hideBtn = document.getElementById("hideBtn");
 
 /* ===== AUDIO VISUALIZER ===== */
-var _audioCtx = null, _analyser = null, _vizRAF = null;
+var _audioCtx = null, _analyser = null, _gainNode = null, _vizRAF = null;
 var _vizCanvas = document.getElementById("radioVisualizer");
 var _vizCtx = _vizCanvas ? _vizCanvas.getContext("2d") : null;
+var _userMuted = false;
+var _userVolume = 1;
+
+// Volume/mute helpers — route through GainNode when available so the
+// AnalyserNode always receives the full audio signal (visualizer keeps working).
+function _applyGain() {
+  if (!_gainNode) return;
+  _gainNode.gain.value = _userMuted ? 0 : _userVolume;
+}
+function setAppVolume(v) {
+  _userVolume = v;
+  if (_gainNode) { _applyGain(); mediaEl.volume = 1; mediaEl.muted = false; }
+  else { mediaEl.volume = v; }
+}
+function setAppMuted(m) {
+  _userMuted = m;
+  if (_gainNode) { _applyGain(); mediaEl.volume = 1; mediaEl.muted = false; }
+  else { mediaEl.muted = m; }
+}
+function getAppVolume() { return _gainNode ? _userVolume : mediaEl.volume; }
+function isAppMuted() { return _gainNode ? _userMuted : mediaEl.muted; }
 
 // Create a single persistent AudioContext and connect both media elements once.
 // createMediaElementSource can only be called once per element for the lifetime
 // of the page, so we set it up once and never tear it down. Both elements feed
 // the same analyser; only one plays at a time so there's no mixing.
-function initAudioVisualizer(){
-  if(_audioCtx) return;
+function initAudioVisualizer() {
+  if (_audioCtx) return;
   _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   _analyser = _audioCtx.createAnalyser();
   _analyser.fftSize = 1024;
   _analyser.smoothingTimeConstant = 0.7;
-  _analyser.connect(_audioCtx.destination);
-  if(video){
+  _gainNode = _audioCtx.createGain();
+  _analyser.connect(_gainNode);
+  _gainNode.connect(_audioCtx.destination);
+  // Capture logical mute/volume from the element before we take over
+  _userVolume = mediaEl.volume;
+  _userMuted = mediaEl.muted;
+  // Keep element at full volume so analyser gets signal; gain node controls output
+  mediaEl.volume = 1;
+  mediaEl.muted = false;
+  _applyGain();
+  if (video) {
     try {
       var vs = _audioCtx.createMediaElementSource(video);
       vs.connect(_analyser);
-    } catch(e){}
+    } catch (e) { }
   }
 
 }
 
-function startVisualizer(){
-  if(!_vizCanvas || !_vizCtx) return;
-  try{ initAudioVisualizer(); } catch(e){ return; }
-  if(_audioCtx.state === "suspended") _audioCtx.resume();
+function startVisualizer() {
+  if (!_vizCanvas || !_vizCtx) return;
+  try { initAudioVisualizer(); } catch (e) { return; }
+  if (_audioCtx.state === "suspended") _audioCtx.resume();
   cancelAnimationFrame(_vizRAF);
   var binCount = _analyser.frequencyBinCount;
   var dataArr = new Uint8Array(binCount);
@@ -224,35 +254,35 @@ function startVisualizer(){
   var numBars = 0, useBars = 0;
   var logBands = [], smoothBars, drawOrder;
 
-  function rebuildBands(canvasW){
+  function rebuildBands(canvasW) {
     _prevCanvasW = canvasW;
     numBars = Math.max(20, Math.min(90, Math.floor(canvasW / 4)));
     useBars = numBars - trimLo - trimHi;
     logBands = [];
     var minF = 1, maxF = binCount;
-    for(var i = 0; i < numBars; i++){
+    for (var i = 0; i < numBars; i++) {
       var lo = Math.floor(minF * Math.pow(maxF / minF, i / numBars));
       var hi = Math.floor(minF * Math.pow(maxF / minF, (i + 1) / numBars));
-      if(hi <= lo) hi = lo + 1;
+      if (hi <= lo) hi = lo + 1;
       logBands.push([lo, Math.min(hi, binCount)]);
     }
     smoothBars = new Float32Array(numBars);
     drawOrder = new Array(useBars);
     var half = Math.ceil(useBars / 2);
-    for(var i = 0; i < useBars; i++){
-      if(i % 2 === 0) drawOrder[half - 1 - (i >> 1)] = i + trimLo;
+    for (var i = 0; i < useBars; i++) {
+      if (i % 2 === 0) drawOrder[half - 1 - (i >> 1)] = i + trimLo;
       else drawOrder[half + (i >> 1)] = i + trimLo;
     }
   }
 
-  (function draw(){
+  (function draw() {
     _vizRAF = requestAnimationFrame(draw);
     var curW = _vizCanvas.offsetWidth;
-    if(curW !== _prevCanvasW) rebuildBands(curW);
+    if (curW !== _prevCanvasW) rebuildBands(curW);
     var dpr = window.devicePixelRatio || 1;
     var w = _vizCanvas.width = curW * dpr;
     var h = _vizCanvas.height = _vizCanvas.offsetHeight * dpr;
-    _vizCtx.clearRect(0,0,w,h);
+    _vizCtx.clearRect(0, 0, w, h);
     _analyser.getByteFrequencyData(dataArr);
     var midY = h / 2;
     var gap = 2 * dpr;
@@ -260,32 +290,32 @@ function startVisualizer(){
     var r = barW / 2;
     _vizCtx.fillStyle = "#fff";
     var barHeights = new Float32Array(numBars);
-    for(var i = 0; i < numBars; i++){
+    for (var i = 0; i < numBars; i++) {
       var lo = logBands[i][0], hi = logBands[i][1];
       var sum = 0;
-      for(var j = lo; j < hi; j++) sum += dataArr[j];
+      for (var j = lo; j < hi; j++) sum += dataArr[j];
       var val = (sum / (hi - lo)) / 255;
       smoothBars[i] += (val - smoothBars[i]) * 0.45;
       barHeights[i] = Math.max(2 * dpr, smoothBars[i] * midY * 0.92);
     }
-    for(var d = 0; d < useBars; d++){
+    for (var d = 0; d < useBars; d++) {
       var srcIdx = drawOrder[d];
       var barH = barHeights[srcIdx];
       var x = gap + d * (barW + gap);
       _vizCtx.beginPath();
-      _vizCtx.roundRect(x, midY - barH, barW, barH, [r,r,0,0]);
+      _vizCtx.roundRect(x, midY - barH, barW, barH, [r, r, 0, 0]);
       _vizCtx.fill();
       _vizCtx.beginPath();
-      _vizCtx.roundRect(x, midY + 1 * dpr, barW, barH, [0,0,r,r]);
+      _vizCtx.roundRect(x, midY + 1 * dpr, barW, barH, [0, 0, r, r]);
       _vizCtx.fill();
     }
   })();
 }
 
-function stopVisualizer(){
+function stopVisualizer() {
   cancelAnimationFrame(_vizRAF);
   _vizRAF = null;
-  if(_vizCanvas && _vizCtx){
+  if (_vizCanvas && _vizCtx) {
     _vizCtx.clearRect(0, 0, _vizCanvas.width, _vizCanvas.height);
   }
 }
@@ -293,16 +323,16 @@ function stopVisualizer(){
 /* ===== MARQUEE for overflowing text ===== */
 let _marqueeEl = null;
 let _marqueeText = "";
-function setupMarquee(el, text){
+function setupMarquee(el, text) {
   _marqueeEl = el;
   _marqueeText = text;
   _applyMarquee(el, text);
 }
-function _applyMarquee(el, text){
+function _applyMarquee(el, text) {
   el.classList.remove("marquee");
   el.textContent = text;
   requestAnimationFrame(() => {
-    if(el.scrollWidth > el.clientWidth){
+    if (el.scrollWidth > el.clientWidth) {
       el.classList.add("marquee");
       const sep = "\u00A0\u00A0\u00A0\u2022\u00A0\u00A0\u00A0";
       const span = document.createElement("span");
@@ -319,27 +349,29 @@ let _marqueeResizeTimer = null;
 window.addEventListener("resize", () => {
   clearTimeout(_marqueeResizeTimer);
   _marqueeResizeTimer = setTimeout(() => {
-    if(_marqueeEl && _marqueeText) _applyMarquee(_marqueeEl, _marqueeText);
+    if (_marqueeEl && _marqueeText) _applyMarquee(_marqueeEl, _marqueeText);
   }, 200);
 });
 
 /* ===== STATE ===== */
-let allChannels  = [];
-let favorites    = JSON.parse(localStorage.getItem("fav") || "[]");
-let sources      = JSON.parse(localStorage.getItem("sources") || "[]");
+let allChannels = [];
+let favorites = JSON.parse(localStorage.getItem("fav") || "[]");
+let sources = JSON.parse(localStorage.getItem("sources") || "[]");
 let activeSources = new Set(JSON.parse(localStorage.getItem("activeSources") || "[0]"));
-let currentIdx   = -1;
-let currentUrl   = "";
-const hidden     = new Set(JSON.parse(localStorage.getItem("hiddenChannels") || "[]"));
-let pinnedUrl    = localStorage.getItem("pinnedChannel") || "";
+let currentIdx = -1;
+let currentUrl = "";
+const hidden = new Set(JSON.parse(localStorage.getItem("hiddenChannels") || "[]"));
+let pinnedUrl = localStorage.getItem("pinnedChannel") || "";
 const MAX_RETRIES = 5;
-let retryCount   = 0;
-let retryTimer   = null;
-let stallTimer   = null;
+let retryCount = 0;
+let retryTimer = null;
+let stallTimer = null;
 let _playbackStopped = false; // set when max retries exhausted to block further retries
 const STALL_TIMEOUT = 15000;
 let hls = null; // hls.js instance
 let hlsLevels = []; // available quality levels
+let _nativeHlsUseProxy = false; // native HLS proxy escalation flag
+let _nativeHlsProxyRetried = false; // guard: only escalate native HLS to proxy once
 let currentCategory = "tv"; // 'tv', 'radio' or 'fav'
 const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%231a1a2e'/%3E%3Cstop offset='100%25' stop-color='%2316213e'/%3E%3C/linearGradient%3E%3ClinearGradient id='ac' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2360a5fa'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='120' height='120' rx='16' fill='url(%23bg)'/%3E%3Ccircle cx='60' cy='52' r='28' fill='none' stroke='url(%23ac)' stroke-width='2.5' opacity='.6'/%3E%3Cpolygon points='52 40 52 64 72 52' fill='url(%23ac)' opacity='.85'/%3E%3Crect x='30' y='88' width='60' height='3' rx='1.5' fill='%2360a5fa' opacity='.25'/%3E%3Crect x='40' y='95' width='40' height='3' rx='1.5' fill='%23a78bfa' opacity='.18'/%3E%3C/svg%3E";
 
@@ -351,8 +383,8 @@ let _epgLoadedIds = new Set(); // EPG channel IDs whose programmes are already p
 const nowProgram = document.getElementById("nowProgram");
 
 /* Normalize a channel name for fuzzy matching */
-function normalizeChName(s){
-  if(!s) return "";
+function normalizeChName(s) {
+  if (!s) return "";
   return s
     .toLowerCase()
     .replace(/\s*\(\d+p\)\s*/g, "")        // remove (720p), (1080p) etc.
@@ -363,61 +395,61 @@ function normalizeChName(s){
 }
 
 /* Yield to main thread so UI stays responsive */
-function _yieldToMain(){ return new Promise(r => setTimeout(r, 0)); }
+function _yieldToMain() { return new Promise(r => setTimeout(r, 0)); }
 
-async function _extractProgrammesForId(epgChId){
-  if(_epgLoadedIds.has(epgChId)) return; // already loaded
+async function _extractProgrammesForId(epgChId) {
+  if (_epgLoadedIds.has(epgChId)) return; // already loaded
   _epgLoadedIds.add(epgChId);
   const pruneCutoff = Date.now() - 2 * 60 * 60 * 1000;
-  
+
   try {
     const resp = await fetch("/api/epg/programmes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ urls: _epgUrlsConfigured, id: epgChId })
     });
-    if(!resp.ok) return;
+    if (!resp.ok) return;
     const data = await resp.json();
-    
+
     let count = 0;
-    if(!epgData[epgChId]) epgData[epgChId] = [];
-    
-    for(const p of data.programmes){
-      if(p.stop && p.stop < pruneCutoff) continue;
+    if (!epgData[epgChId]) epgData[epgChId] = [];
+
+    for (const p of data.programmes) {
+      if (p.stop && p.stop < pruneCutoff) continue;
       epgData[epgChId].push({ start: new Date(p.start), stop: new Date(p.stop), title: p.title });
       count++;
     }
-    
-    if(count > 0){
-      epgData[epgChId].sort((a,b) => a.start - b.start);
+
+    if (count > 0) {
+      epgData[epgChId].sort((a, b) => a.start - b.start);
       console.log("[EPG] Lazy-loaded " + count + " programmes for " + epgChId);
-      if(currentIdx >= 0 && allChannels[currentIdx]){
-         const chIdCheck = findEpgChannelId(allChannels[currentIdx].tvgId, allChannels[currentIdx].name);
-         if(chIdCheck === epgChId) updateEpgDisplay();
+      if (currentIdx >= 0 && allChannels[currentIdx]) {
+        const chIdCheck = findEpgChannelId(allChannels[currentIdx].tvgId, allChannels[currentIdx].name);
+        if (chIdCheck === epgChId) updateEpgDisplay();
       }
-      if(typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) {
+      if (typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) {
         renderEpgPanel();
       }
     }
-  } catch(err){
+  } catch (err) {
     console.warn("[EPG] Fetch programmes error:", err);
   }
 }
 
 /* Ensure EPG data is available for a given channel (lazy load from stored DOMs) */
-function ensureEpgForChannel(tvgId, channelName){
-  if(_epgUrlsConfigured.length === 0) return; // no EPG sources loaded
+function ensureEpgForChannel(tvgId, channelName) {
+  if (_epgUrlsConfigured.length === 0) return; // no EPG sources loaded
   const chId = _findEpgChannelIdUncached(tvgId, channelName);
-  if(!chId) return;
-  if(!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
+  if (!chId) return;
+  if (!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
 }
 
-async function loadEpgData(urls, merge){
-  if(!merge){ epgData = {}; epgChannelMap = {}; _epgUrlsConfigured = []; _epgLoadedIds.clear(); }
-  
+async function loadEpgData(urls, merge) {
+  if (!merge) { epgData = {}; epgChannelMap = {}; _epgUrlsConfigured = []; _epgLoadedIds.clear(); }
+
   // Update configured URLs list
-  for(const u of urls) {
-      if(!_epgUrlsConfigured.includes(u)) _epgUrlsConfigured.push(u);
+  for (const u of urls) {
+    if (!_epgUrlsConfigured.includes(u)) _epgUrlsConfigured.push(u);
   }
 
   // Invalidate lookup cache whenever EPG data changes
@@ -425,11 +457,11 @@ async function loadEpgData(urls, merge){
 
   let totalMapChannels = 0;
   let loadedCount = 0;
-  for(const url of urls){
+  for (const url of urls) {
     try {
       console.log("[EPG] Fetching channel map via proxy:", url);
       const resp = await fetch("/api/epg/channels?url=" + encodeURIComponent(url));
-      if(!resp.ok){ console.warn("[EPG] HTTP proxy failed", url); continue; }
+      if (!resp.ok) { console.warn("[EPG] HTTP proxy failed", url); continue; }
 
       const data = await resp.json();
 
@@ -438,7 +470,7 @@ async function loadEpgData(urls, merge){
       totalMapChannels += data.channelCount || Object.keys(data.channelMap).length;
       loadedCount++;
       console.log("[EPG] Indexed", data.channelCount || Object.keys(data.channelMap).length, "channels from proxy (programmes loaded on demand)");
-    } catch(e){
+    } catch (e) {
       console.warn("[EPG] Proxy load error:", url, e);
     }
   }
@@ -446,7 +478,7 @@ async function loadEpgData(urls, merge){
   _epgIdCache = Object.create(null);
 
   // Eagerly load EPG only for the currently playing channel
-  if(currentIdx >= 0 && currentIdx < allChannels.length){
+  if (currentIdx >= 0 && currentIdx < allChannels.length) {
     const ch = allChannels[currentIdx];
     ensureEpgForChannel(ch.tvgId, ch.name);
   }
@@ -464,10 +496,10 @@ async function loadEpgData(urls, merge){
 let _epgIdCache = Object.create(null);
 
 /* Find the EPG channel id that best matches a given tvgId / channel name */
-function findEpgChannelId(tvgId, channelName){
+function findEpgChannelId(tvgId, channelName) {
   // Build a stable cache key from the two inputs
   const cacheKey = (tvgId || "") + "\0" + (channelName || "");
-  if(cacheKey in _epgIdCache) return _epgIdCache[cacheKey];
+  if (cacheKey in _epgIdCache) return _epgIdCache[cacheKey];
 
   const result = _findEpgChannelIdUncached(tvgId, channelName);
   _epgIdCache[cacheKey] = result;
@@ -477,94 +509,94 @@ function findEpgChannelId(tvgId, channelName){
 // Cached set of known EPG channel IDs — rebuilt when epgChannelMap changes
 let _knownEpgIds = null;
 let _knownEpgIdsMapSize = 0;
-function _getKnownEpgIds(){
+function _getKnownEpgIds() {
   const mapSize = Object.keys(epgChannelMap).length;
-  if(!_knownEpgIds || _knownEpgIdsMapSize !== mapSize){
+  if (!_knownEpgIds || _knownEpgIdsMapSize !== mapSize) {
     _knownEpgIds = new Set(Object.values(epgChannelMap));
     _knownEpgIdsMapSize = mapSize;
   }
   return _knownEpgIds;
 }
 
-function _findEpgChannelIdUncached(tvgId, channelName){
+function _findEpgChannelIdUncached(tvgId, channelName) {
   // With lazy EPG loading, we resolve channel IDs using epgChannelMap only
   // (programmes are NOT pre-loaded into epgData, they're extracted on demand)
 
   const _knownIds = _getKnownEpgIds();
 
   // 1. Direct tvg-id match
-  if(tvgId && _knownIds.has(tvgId)) return tvgId;
+  if (tvgId && _knownIds.has(tvgId)) return tvgId;
 
   // 2. Try tvg-id without @SD/@HD suffix & case-insensitive
-  if(tvgId){
+  if (tvgId) {
     const tvgLower = tvgId.toLowerCase();
     const idBase = tvgId.replace(/@(SD|HD|FHD|Plus\d*|\d+)$/i, "");
     const idBaseLower = idBase.toLowerCase();
     // tvg-id in channelMap
-    if(epgChannelMap[tvgLower]) return epgChannelMap[tvgLower];
-    if(epgChannelMap[idBaseLower]) return epgChannelMap[idBaseLower];
+    if (epgChannelMap[tvgLower]) return epgChannelMap[tvgLower];
+    if (epgChannelMap[idBaseLower]) return epgChannelMap[idBaseLower];
   }
 
   // 3. Map through epgChannelMap using channel name
-  if(channelName){
+  if (channelName) {
     const norm = normalizeChName(channelName);
     const nameLower = channelName.toLowerCase().trim();
 
     // exact display-name match
-    if(epgChannelMap[nameLower]) return epgChannelMap[nameLower];
+    if (epgChannelMap[nameLower]) return epgChannelMap[nameLower];
     // normalized match
-    if(norm && epgChannelMap[norm]) return epgChannelMap[norm];
+    if (norm && epgChannelMap[norm]) return epgChannelMap[norm];
 
     // 3b. Substring / contains matching (e.g. M3U has "VTV3 HD" and EPG has "VTV3")
-    for(const mapKey in epgChannelMap){
+    for (const mapKey in epgChannelMap) {
       const shorter = nameLower.length <= mapKey.length ? nameLower : mapKey;
-      const longer  = nameLower.length >  mapKey.length ? nameLower : mapKey;
-      if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
-      if(longer.includes(shorter)) return epgChannelMap[mapKey];
+      const longer = nameLower.length > mapKey.length ? nameLower : mapKey;
+      if (shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+      if (longer.includes(shorter)) return epgChannelMap[mapKey];
     }
-    if(norm){
-      for(const mapKey in epgChannelMap){
+    if (norm) {
+      for (const mapKey in epgChannelMap) {
         const mapNorm = normalizeChName(mapKey);
-        if(!mapNorm) continue;
+        if (!mapNorm) continue;
         const shorter = norm.length <= mapNorm.length ? norm : mapNorm;
-        const longer  = norm.length >  mapNorm.length ? norm : mapNorm;
-        if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
-        if(longer.includes(shorter)) return epgChannelMap[mapKey];
+        const longer = norm.length > mapNorm.length ? norm : mapNorm;
+        if (shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+        if (longer.includes(shorter)) return epgChannelMap[mapKey];
       }
     }
   }
 
   // 4. Try tvg-id as channel name in the map
-  if(tvgId){
+  if (tvgId) {
     const tvgNorm = normalizeChName(tvgId);
-    if(tvgNorm && epgChannelMap[tvgNorm]) return epgChannelMap[tvgNorm];
+    if (tvgNorm && epgChannelMap[tvgNorm]) return epgChannelMap[tvgNorm];
     const tvgLower = tvgId.toLowerCase();
-    for(const mapKey in epgChannelMap){
+    for (const mapKey in epgChannelMap) {
       const shorter = tvgLower.length <= mapKey.length ? tvgLower : mapKey;
-      const longer  = tvgLower.length >  mapKey.length ? tvgLower : mapKey;
-      if(shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
-      if(longer.includes(shorter)) return epgChannelMap[mapKey];
+      const longer = tvgLower.length > mapKey.length ? tvgLower : mapKey;
+      if (shorter.length < 3 || shorter.length / longer.length < 0.4) continue;
+      if (longer.includes(shorter)) return epgChannelMap[mapKey];
     }
   }
 
   return null;
 }
 
-function getCurrentProgram(tvgId, channelName){
+function getCurrentProgram(tvgId, channelName) {
   const chId = findEpgChannelId(tvgId, channelName);
-  if(!chId) return null;
+  if (!chId) return null;
   // Lazy load programmes for this channel if not yet parsed
-  if(!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
-  if(!epgData[chId]) return null;
+  if (!_epgLoadedIds.has(chId)) _extractProgrammesForId(chId);
+  if (!epgData[chId]) return null;
   const now = Date.now();
   const progs = epgData[chId];
   // Programs are sorted by start. Binary-search-like scan from the end
   // for the last program whose start <= now.
-  for(let i = progs.length - 1; i >= 0; i--){
+  for (let i = progs.length - 1; i >= 0; i--) {
     const p = progs[i];
-    if(p.start.getTime() <= now){
-      if(p.stop && p.stop.getTime() > now) return p;
-      if(!p.stop) return p;
+    if (p.start.getTime() <= now) {
+      if (p.stop && p.stop.getTime() > now) return p;
+      if (!p.stop) return p;
       // This program already ended and all earlier ones started even earlier,
       // so none can be "now". Short-circuit.
       return null;
@@ -573,15 +605,15 @@ function getCurrentProgram(tvgId, channelName){
   return null;
 }
 
-function updateEpgDisplay(){
-  if(!nowProgram) return;
-  if(currentIdx < 0 || currentIdx >= allChannels.length){
+function updateEpgDisplay() {
+  if (!nowProgram) return;
+  if (currentIdx < 0 || currentIdx >= allChannels.length) {
     nowProgram.style.display = "none";
     return;
   }
   const ch = allChannels[currentIdx];
   const prog = getCurrentProgram(ch.tvgId, ch.name);
-  if(prog){
+  if (prog) {
     const timeStr = formatTime(prog.start) + (prog.stop ? " - " + formatTime(prog.stop) : "");
     nowProgram.textContent = "\u25B6 " + timeStr + "  " + prog.title;
     nowProgram.style.display = "block";
@@ -590,8 +622,8 @@ function updateEpgDisplay(){
   }
 }
 
-function formatTime(d){
-  return d.getHours().toString().padStart(2,"0") + ":" + d.getMinutes().toString().padStart(2,"0");
+function formatTime(d) {
+  return d.getHours().toString().padStart(2, "0") + ":" + d.getMinutes().toString().padStart(2, "0");
 }
 
 // Refresh EPG display every 60s so it updates when programs change
@@ -599,100 +631,100 @@ let epgIntervalId = null;
 
 /* ===== TOAST ===== */
 let toastTimer = null;
-function showToast(msg, ms){
-  if(!toast) return;
+function showToast(msg, ms) {
+  if (!toast) return;
   clearTimeout(toastTimer);
   toast.textContent = msg;
   toast.classList.add("show");
-  if(ms) toastTimer = setTimeout(()=> toast.classList.remove("show"), ms);
+  if (ms) toastTimer = setTimeout(() => toast.classList.remove("show"), ms);
 }
-function hideToast(){ if(toast){ toast.classList.remove("show"); clearTimeout(toastTimer); } }
+function hideToast() { if (toast) { toast.classList.remove("show"); clearTimeout(toastTimer); } }
 
 /* ===== MUTE / UNMUTE ===== */
-function updateMuteIcon(){
-  if(!btnUnmute) return;
-  const v = mediaEl.volume;
-  const m = mediaEl.muted;
+function updateMuteIcon() {
+  if (!btnUnmute) return;
+  const v = getAppVolume();
+  const m = isAppMuted();
   let svg;
-  if(m || v === 0) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
-  else if(v < 0.5) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  if (m || v === 0) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+  else if (v < 0.5) svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
   else svg = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
   btnUnmute.querySelector("#muteIcon").innerHTML = svg;
   btnUnmute.classList.toggle("active", !m && v > 0);
 }
-if(btnUnmute) btnUnmute.addEventListener("click", () => {
-  mediaEl.muted = !mediaEl.muted;
-  if(!mediaEl.muted && mediaEl.volume === 0) mediaEl.volume = 0.5;
+if (btnUnmute) btnUnmute.addEventListener("click", () => {
+  setAppMuted(!isAppMuted());
+  if (!isAppMuted() && getAppVolume() === 0) setAppVolume(0.5);
   updateMuteIcon();
 });
 
 /* ===== VOLUME SLIDER ===== */
-if(volumeSlider){
+if (volumeSlider) {
   volumeSlider.value = Math.round(video.volume * 100);
   volumeSlider.addEventListener("input", () => {
     const val = parseInt(volumeSlider.value, 10) / 100;
-    mediaEl.volume = val;
-    mediaEl.muted = val === 0;
+    setAppVolume(val);
+    setAppMuted(val === 0);
     updateMuteIcon();
   });
 }
 
 /* ===== PIP (directly on panel video) ===== */
-if(btnPiP) btnPiP.addEventListener("click", async () => {
+if (btnPiP) btnPiP.addEventListener("click", async () => {
   try {
-    if(document.pictureInPictureElement){
+    if (document.pictureInPictureElement) {
       await document.exitPictureInPicture();
       return;
     }
     await video.requestPictureInPicture();
-  } catch(e){ console.warn("PiP error:", e); showToast(t("pipNotSupported"), 2000); }
+  } catch (e) { console.warn("PiP error:", e); showToast(t("pipNotSupported"), 2000); }
 });
 
-function onVolumeChange(){
+function onVolumeChange() {
   updateMuteIcon();
-  if(volumeSlider) volumeSlider.value = Math.round(mediaEl.muted ? 0 : mediaEl.volume * 100);
+  if (volumeSlider) volumeSlider.value = Math.round(isAppMuted() ? 0 : getAppVolume() * 100);
 }
-if(video){
-  video.addEventListener("leavepictureinpicture", () => { if(btnPiP) btnPiP.classList.remove("active"); });
-  video.addEventListener("enterpictureinpicture", () => { if(btnPiP) btnPiP.classList.add("active"); });
+if (video) {
+  video.addEventListener("leavepictureinpicture", () => { if (btnPiP) btnPiP.classList.remove("active"); });
+  video.addEventListener("enterpictureinpicture", () => { if (btnPiP) btnPiP.classList.add("active"); });
   video.addEventListener("volumechange", onVolumeChange);
 }
 
 
 /* ===== PLAY/PAUSE & SEEK CENTER CONTROLS ===== */
-function updatePlayPauseIcon(){
-  if(!btnPlayPause) return;
+function updatePlayPauseIcon() {
+  if (!btnPlayPause) return;
   const icon = document.getElementById("playPauseIcon");
-  if(!icon) return;
-  if(mediaEl.paused){
+  if (!icon) return;
+  if (mediaEl.paused) {
     icon.innerHTML = '<polygon points="6 3 20 12 6 21 6 3"/>';
   } else {
     icon.innerHTML = '<line x1="10" y1="6" x2="10" y2="18"/><line x1="14" y1="6" x2="14" y2="18"/>';
   }
 }
-if(btnPlayPause){
+if (btnPlayPause) {
   btnPlayPause.addEventListener("click", () => {
-    if(mediaEl.paused) mediaEl.play().catch(() => {});
+    if (mediaEl.paused) mediaEl.play().catch(() => { });
     else mediaEl.pause();
   });
 }
-if(video){
+if (video) {
   video.addEventListener("play", updatePlayPauseIcon);
   video.addEventListener("pause", updatePlayPauseIcon);
 }
 
-if(btnSeekBack) btnSeekBack.addEventListener("click", () => { mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10); });
-if(btnSeekFwd) btnSeekFwd.addEventListener("click", () => { mediaEl.currentTime += 10; });
+if (btnSeekBack) btnSeekBack.addEventListener("click", () => { mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10); });
+if (btnSeekFwd) btnSeekFwd.addEventListener("click", () => { mediaEl.currentTime += 10; });
 
 /* ===== FULLSCREEN (open stream in new tab) ===== */
-if(btnFull) btnFull.addEventListener("click", () => {
-  if(currentIdx < 0 || !currentUrl) return;
+if (btnFull) btnFull.addEventListener("click", () => {
+  if (currentIdx < 0 || !currentUrl) return;
   window.open(currentUrl, "_blank");
 });
 
 /* ===== PLAYER FULLSCREEN ===== */
-if(btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
-  if(document.fullscreenElement){
+if (btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
+  if (document.fullscreenElement) {
     document.exitFullscreen();
   } else {
     document.body.requestFullscreen();
@@ -715,13 +747,13 @@ if (playerSection) {
   playerSection.addEventListener("click", (e) => {
     if (document.fullscreenElement && !e.target.closest(".ctrl-btn,.ctrl-group")) showFsControls();
     if (document.pictureInPictureElement && !e.target.closest(".ctrl-btn,.ctrl-group")) {
-      document.exitPictureInPicture().catch(() => {});
+      document.exitPictureInPicture().catch(() => { });
     }
   });
 }
 
 document.addEventListener("fullscreenchange", () => {
-  if(btnPlayerFs) {
+  if (btnPlayerFs) {
     btnPlayerFs.classList.toggle("active", !!document.fullscreenElement);
     btnPlayerFs.innerHTML = document.fullscreenElement
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
@@ -736,47 +768,54 @@ document.addEventListener("fullscreenchange", () => {
 });
 
 /* ===== RETRY ===== */
-if(btnRetry) btnRetry.addEventListener("click", () => {
-  if(currentIdx < 0) return;
+if (btnRetry) btnRetry.addEventListener("click", () => {
+  if (currentIdx < 0) return;
   playByIndex(currentIdx, { noScroll: true });
   showToast(t("reloading"), 1500);
 });
 
 /* ===== PLAY PREVIEW ===== */
-function isHlsUrl(url){ return /\.m3u8?(\?|$)/i.test(url); }
+function isHlsUrl(url) { return /\.m3u8?(\?|$)/i.test(url); }
 
-function destroyHls(){
-  if(hls){ hls.destroy(); hls = null; }
+function destroyHls() {
+  if (hls) { hls.destroy(); hls = null; }
   hlsLevels = [];
   buildQualityMenu();
 }
 
 let _wasAutoMuted = false;
 function safePlay() {
-  mediaEl.muted = false;
+  var wasMuted = isAppMuted();
+  // Only unmute for autoplay attempt if not manually muted by user
+  if (!wasMuted) setAppMuted(false);
   const p = mediaEl.play();
   if (p !== undefined) {
     p.catch(err => {
       // Browser blocked autoplay with sound — mute and retry, unmute on first interaction
       if (err.name === 'NotAllowedError') {
-        mediaEl.muted = true;
-        _wasAutoMuted = true;
-        if(btnUnmute) {
+        setAppMuted(true);
+        if (!wasMuted) _wasAutoMuted = true;
+        if (btnUnmute) {
           btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
           btnUnmute.classList.remove("active");
         }
-        mediaEl.play().catch(()=>{});
+        mediaEl.muted = true;
       }
+      mediaEl.play().catch(() => {
+        // Last resort: some mobile browsers need load() before play()
+        mediaEl.load();
+        mediaEl.play().catch(() => { });
+      });
     });
   }
 }
 
 // Automatically unmute on first user interaction if the browser forced it muted
 function autoUnmuteHandler() {
-  if (_wasAutoMuted && mediaEl && mediaEl.muted) {
-    mediaEl.muted = false;
+  if (_wasAutoMuted && isAppMuted()) {
+    setAppMuted(false);
     _wasAutoMuted = false;
-    if(btnUnmute) {
+    if (btnUnmute) {
       btnUnmute.querySelector("#muteIcon").innerHTML = '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
       btnUnmute.classList.add("active");
     }
@@ -789,8 +828,8 @@ document.addEventListener('click', autoUnmuteHandler);
 document.addEventListener('keydown', autoUnmuteHandler);
 document.addEventListener('touchstart', autoUnmuteHandler);
 
-function playByIndex(idx, opts){
-  if(idx < 0 || idx >= allChannels.length) return;
+function playByIndex(idx, opts) {
+  if (idx < 0 || idx >= allChannels.length) return;
   opts = opts || {};
   const prevIdx = currentIdx;
   currentIdx = idx;
@@ -803,34 +842,34 @@ function playByIndex(idx, opts){
   history.replaceState(null, "", url);
 
   // highlight — only touch the old and new cards instead of scanning all .ch-card
-  if(prevIdx >= 0){
+  if (prevIdx >= 0) {
     const prev = grid && grid.querySelector('.ch-card[data-idx="' + prevIdx + '"]');
-    if(prev) prev.classList.remove("active");
+    if (prev) prev.classList.remove("active");
   }
   const card = grid && grid.querySelector('.ch-card[data-idx="' + idx + '"]');
-  if(card){
+  if (card) {
     card.classList.add("active");
     // Auto-scroll to the playing item
-    if(!opts.noScroll) card.scrollIntoView({ block: "start", behavior: "smooth" });
+    if (!opts.noScroll) card.scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
   // update now-playing
-  const _chTitle = ch.name || t("channelN") + (idx+1);
-  if(nowName) nowName.textContent = _chTitle;
-  if(nowBar) nowBar.classList.add("live");
+  const _chTitle = ch.name || t("channelN") + (idx + 1);
+  if (nowName) nowName.textContent = _chTitle;
+  if (nowBar) nowBar.classList.add("live");
   updateMiniButtons();
 
   // Update Media Session (mobile lock screen / notification controls)
-  if("mediaSession" in navigator){
+  if ("mediaSession" in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: _chTitle,
       artist: ch.isRadio ? "Radio" : "Live TV",
       artwork: ch.logo ? [{ src: ch.logo, sizes: "512x512", type: "image/png" }] : []
     });
-    navigator.mediaSession.setActionHandler("play", () => { mediaEl.play().catch(() => {}); });
+    navigator.mediaSession.setActionHandler("play", () => { mediaEl.play().catch(() => { }); });
     navigator.mediaSession.setActionHandler("pause", () => { mediaEl.pause(); });
-    navigator.mediaSession.setActionHandler("previoustrack", () => { if(typeof navigatePrev === "function") navigatePrev(); });
-    navigator.mediaSession.setActionHandler("nexttrack", () => { if(typeof navigateNext === "function") navigateNext(); });
+    navigator.mediaSession.setActionHandler("previoustrack", () => { if (typeof navigatePrev === "function") navigatePrev(); });
+    navigator.mediaSession.setActionHandler("nexttrack", () => { if (typeof navigateNext === "function") navigateNext(); });
   }
 
   // radio overlay
@@ -844,25 +883,25 @@ function playByIndex(idx, opts){
   mediaEl = video;
 
   // Hide PiP for radio (no video to pip)
-  if(btnPiP) btnPiP.style.display = ch.isRadio ? "none" : "";
+  if (btnPiP) btnPiP.style.display = ch.isRadio ? "none" : "";
 
   // radio overlay (after mediaEl is set so visualizer taps the right element)
-  if(radioOv){
-    if(ch.isRadio){
+  if (radioOv) {
+    if (ch.isRadio) {
       radioOv.classList.add("active");
-      if(radioOvCover){
+      if (radioOvCover) {
         const _thumb = radioOvCover.querySelector('#radioOverlayThumb');
         const _title = radioOvCover.querySelector('#radioOverlayTitle');
-        if(_thumb){
+        if (_thumb) {
           _thumb.src = ch.logo || fallbackImg;
-          _thumb.onerror = function(){ this.onerror = null; this.src = fallbackImg; };
+          _thumb.onerror = function () { this.onerror = null; this.src = fallbackImg; };
         }
-        if(_title) setupMarquee(_title, ch.name || '');
+        if (_title) setupMarquee(_title, ch.name || '');
       }
-      if(radioDiscLabel){
+      if (radioDiscLabel) {
         const discImg = new Image();
-        discImg.onload = function(){ radioDiscLabel.style.backgroundImage = `url(${this.src})`; };
-        discImg.onerror = function(){ radioDiscLabel.style.backgroundImage = 'none'; };
+        discImg.onload = function () { radioDiscLabel.style.backgroundImage = `url(${this.src})`; };
+        discImg.onerror = function () { radioDiscLabel.style.backgroundImage = 'none'; };
         discImg.src = ch.logo || fallbackImg;
       }
     } else {
@@ -872,27 +911,31 @@ function playByIndex(idx, opts){
   }
   // Pause & clean up previous element
   prevMediaEl.pause();
-  if(prevMediaEl !== mediaEl){
+  if (prevMediaEl !== mediaEl) {
     prevMediaEl.removeAttribute("src");
     prevMediaEl.load();
   }
   // Sync volume from previous element
-  mediaEl.volume = prevMediaEl.volume;
-  mediaEl.muted = prevMediaEl.muted;
+  var prevVol = _gainNode ? _userVolume : prevMediaEl.volume;
+  var prevMut = _gainNode ? _userMuted : prevMediaEl.muted;
+  setAppVolume(prevVol);
+  setAppMuted(prevMut);
 
   destroyHls();
   clearTimeout(retryTimer);
   clearTimeout(stallTimer);
   retryCount = 0;
   _playbackStopped = false;
+  _nativeHlsUseProxy = false;
+  _nativeHlsProxyRetried = false;
   currentUrl = ch.url;
 
-  if(typeof Hls !== "undefined" && Hls.isSupported() && isHlsUrl(ch.url)){
+  if (typeof Hls !== "undefined" && Hls.isSupported() && isHlsUrl(ch.url)) {
     // ---- HLS.js path (most IPTV streams) ----
     let _hlsProxyRetried = false; // guard: only escalate to proxy once per channel
 
-    function buildHlsInstance(sourceUrl, useProxy){
-      if(hls){ hls.destroy(); hls = null; }
+    function buildHlsInstance(sourceUrl, useProxy) {
+      if (hls) { hls.destroy(); hls = null; }
 
       hls = new Hls({
         maxBufferLength: 10,
@@ -916,7 +959,7 @@ function playByIndex(idx, opts){
         levelLoadingMaxRetry: 4,
         levelLoadingRetryDelay: 500,
         startFragPrefetch: true,
-        xhrSetup: function(xhr, url){ xhr.withCredentials = false; },
+        xhrSetup: function (xhr, url) { xhr.withCredentials = false; },
         backBufferLength: 10,
         progressive: true,
         testBandwidth: true,
@@ -935,28 +978,28 @@ function playByIndex(idx, opts){
         hlsLevels = hls.levels || [];
         buildQualityMenu();
         safePlay();
-        if(useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
+        if (useProxy) console.log("[HLS] Playing via proxy:", sourceUrl);
       });
 
       // Handle discontinuities in radio streams: flush old buffer then recover
       let _lastCC = 0;
       hls.on(Hls.Events.FRAG_CHANGED, (event, data) => {
-        if(!ch.isRadio) return;
+        if (!ch.isRadio) return;
         const frag = data.frag;
-        if(!frag || frag.cc === _lastCC) return;
+        if (!frag || frag.cc === _lastCC) return;
         const prevCC = _lastCC;
         _lastCC = frag.cc;
-        if(prevCC === 0 && frag.cc === 0) return;
+        if (prevCC === 0 && frag.cc === 0) return;
         console.log("[HLS] Radio discontinuity (cc " + prevCC + " → " + frag.cc + ") — flushing buffer & recovering");
         try {
           // Flush buffered data before the discontinuity point
           const flushEnd = frag.start;
-          if(flushEnd > 0){
+          if (flushEnd > 0) {
             hls.trigger(Hls.Events.BUFFER_FLUSHING, { startOffset: 0, endOffset: flushEnd });
           }
           // Recover media to handle potential codec change across discontinuity
           hls.recoverMediaError();
-        } catch(e){}
+        } catch (e) { }
       });
 
       hls.on(Hls.Events.FRAG_LOADED, () => {
@@ -965,13 +1008,13 @@ function playByIndex(idx, opts){
       });
 
       hls.on(Hls.Events.ERROR, (event, data) => {
-        if(!data.fatal) return;
+        if (!data.fatal) return;
         console.warn("HLS fatal error:", data.type, data.details);
-        switch(data.type){
+        switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
-            if(data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError"){
+            if (data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError") {
               // First failure on a direct URL → escalate to HLS proxy (handles CORS)
-              if(!_hlsProxyRetried && !useProxy){
+              if (!_hlsProxyRetried && !useProxy) {
                 _hlsProxyRetried = true;
                 showToast(t("retryProxy"), 0);
                 console.warn("[HLS] Switching to HLS proxy for:", ch.url);
@@ -980,7 +1023,7 @@ function playByIndex(idx, opts){
                 hls.attachMedia(mediaEl);
               } else {
                 hlsNetworkRetries++;
-                if(hlsNetworkRetries > MAX_RETRIES){
+                if (hlsNetworkRetries > MAX_RETRIES) {
                   console.warn("[HLS] Max retries reached, stopping playback");
                   _playbackStopped = true;
                   showToast(t("playErrorFinal"), 0);
@@ -989,7 +1032,7 @@ function playByIndex(idx, opts){
                   clearTimeout(retryTimer);
                 } else {
                   showToast(t("networkError"), 0);
-                  setTimeout(() => { if(hls) hls.loadSource(sourceUrl); }, 4000);
+                  setTimeout(() => { if (hls) hls.loadSource(sourceUrl); }, 4000);
                 }
               }
             } else {
@@ -999,7 +1042,7 @@ function playByIndex(idx, opts){
           case Hls.ErrorTypes.MEDIA_ERROR:
             showToast(t("mediaError"), 0);
             hlsMediaRecoveryAttempts++;
-            if(hlsMediaRecoveryAttempts <= 2){
+            if (hlsMediaRecoveryAttempts <= 2) {
               hls.recoverMediaError();
             } else {
               hls.swapAudioCodec();
@@ -1017,9 +1060,20 @@ function playByIndex(idx, opts){
 
     buildHlsInstance(ch.url, false);
     hls.attachMedia(mediaEl);
-  } else {
-    // ---- Native path (direct .ts / .mp4 / Safari HLS) ----
+  } else if (!_nativeHlsUseProxy && typeof Hls !== "undefined" && !Hls.isSupported() && isHlsUrl(ch.url)) {
+    // ---- Native HLS path (iOS Safari / browsers without MSE) ----
+    // Try direct URL first; on error the handler will escalate to proxy
+    _nativeHlsProxyRetried = false;
     mediaEl.src = ch.url;
+    mediaEl.load();
+    safePlay();
+  } else {
+    // ---- Native path (direct .ts / .mp4 / proxy-escalated HLS) ----
+    if (_nativeHlsUseProxy && isHlsUrl(ch.url)) {
+      mediaEl.src = "/api/hls?url=" + encodeURIComponent(ch.url);
+    } else {
+      mediaEl.src = ch.url;
+    }
     mediaEl.load();
     safePlay();
   }
@@ -1028,20 +1082,20 @@ function playByIndex(idx, opts){
 
   // Load EPG for this channel AFTER playback has started (non-blocking)
   setTimeout(() => {
-    if(currentIdx !== idx) return; // user already switched away
+    if (currentIdx !== idx) return; // user already switched away
     ensureEpgForChannel(ch.tvgId, ch.name);
     updateEpgDisplay();
-    if(typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) renderEpgPanel();
+    if (typeof renderEpgPanel === "function" && document.getElementById("guideDrawer")?.classList.contains("open")) renderEpgPanel();
   }, 300);
 
   // Push new channel to Chromecast if casting
-  if(typeof window.__castLoadMedia === "function") window.__castLoadMedia();
+  if (typeof window.__castLoadMedia === "function") window.__castLoadMedia();
 }
 
-function doRetry(){
-  if(currentIdx < 0 || _playbackStopped) return;
+function doRetry() {
+  if (currentIdx < 0 || _playbackStopped) return;
   retryCount++;
-  if(retryCount <= MAX_RETRIES){
+  if (retryCount <= MAX_RETRIES) {
     const delay = Math.min(retryCount * 1500, 5000);
     showToast(t("playErrorRetry"), 0);
     retryTimer = setTimeout(() => playByIndex(currentIdx, { noScroll: true }), delay);
@@ -1051,19 +1105,19 @@ function doRetry(){
     // Stop playback completely after max retries
     clearTimeout(stallTimer);
     clearTimeout(retryTimer);
-    if(hls){ hls.destroy(); hls = null; }
+    if (hls) { hls.destroy(); hls = null; }
   }
 }
 
 /* ===== STALL WATCHDOG ===== */
 let _lastStallReset = 0;
-function resetStallTimer(){
+function resetStallTimer() {
   clearTimeout(stallTimer);
-  if(currentIdx < 0) return;
+  if (currentIdx < 0) return;
   stallTimer = setTimeout(() => {
-    if(currentIdx < 0 || _playbackStopped) return;
+    if (currentIdx < 0 || _playbackStopped) return;
     // If using hls.js, try recovery first
-    if(hls){
+    if (hls) {
       showToast(t("reconnecting"), 0);
       hls.startLoad();
       resetStallTimer();
@@ -1074,60 +1128,72 @@ function resetStallTimer(){
   }, STALL_TIMEOUT);
 }
 /* Throttled version — only resets at most once every 5s from timeupdate */
-function resetStallTimerThrottled(){
+function resetStallTimerThrottled() {
   const now = Date.now();
-  if(now - _lastStallReset < 5000) return;
+  if (now - _lastStallReset < 5000) return;
   _lastStallReset = now;
   resetStallTimer();
 }
 
 /* ===== VIDEO EVENTS ===== */
-function bindMediaEvents(el){
+function bindMediaEvents(el) {
   el.addEventListener("playing", () => {
-    if(el !== mediaEl) return;
+    if (el !== mediaEl) return;
     hideToast();
-    if(nowBar) nowBar.classList.add("live");
+    if (nowBar) nowBar.classList.add("live");
     retryCount = 0;
     resetStallTimer();
     // Start visualizer once audio is actually flowing
-    if(currentIdx >= 0 && allChannels[currentIdx] && allChannels[currentIdx].isRadio){
+    if (currentIdx >= 0 && allChannels[currentIdx] && allChannels[currentIdx].isRadio) {
       startVisualizer();
     }
   });
-  el.addEventListener("timeupdate", () => { if(el === mediaEl) resetStallTimerThrottled(); });
-  el.addEventListener("waiting", () => { if(el === mediaEl) showToast(t("loading"), 0); });
+  el.addEventListener("timeupdate", () => { if (el === mediaEl) resetStallTimerThrottled(); });
+  el.addEventListener("waiting", () => { if (el === mediaEl) showToast(t("loading"), 0); });
   el.addEventListener("error", () => {
-    if(el !== mediaEl) return;
-    if(nowBar) nowBar.classList.remove("live");
+    if (el !== mediaEl) return;
+    if (nowBar) nowBar.classList.remove("live");
     clearTimeout(stallTimer);
-    if(currentIdx < 0 || _playbackStopped) return;
-    if(hls) return;
+    if (currentIdx < 0 || _playbackStopped) return;
+    if (hls) return;
+    // Native HLS: escalate to proxy on first failure (handles CORS on iOS Safari)
+    if (!_nativeHlsProxyRetried && isHlsUrl(currentUrl)) {
+      _nativeHlsProxyRetried = true;
+      _nativeHlsUseProxy = true;
+      console.warn("[Native HLS] Switching to proxy for:", currentUrl);
+      showToast(t("retryProxy"), 0);
+      mediaEl.src = "/api/hls?url=" + encodeURIComponent(currentUrl);
+      mediaEl.load();
+      safePlay();
+      resetStallTimer();
+      return;
+    }
     doRetry();
   });
   el.addEventListener("stalled", () => { /* watchdog handles it */ });
-  el.addEventListener("canplay", () => { if(el === mediaEl){ hideToast(); retryCount = 0; clearTimeout(retryTimer); } });
+  el.addEventListener("canplay", () => { if (el === mediaEl) { hideToast(); retryCount = 0; clearTimeout(retryTimer); } });
 }
-if(video) bindMediaEvents(video);
+if (video) bindMediaEvents(video);
 
 
 /* ===== TOGGLE FAVORITE ===== */
-function toggleFav(ch){
+function toggleFav(ch) {
   const i = favorites.findIndex(f => f.url === ch.url);
-  if(i === -1) favorites.push(ch); else favorites.splice(i, 1);
+  if (i === -1) favorites.push(ch); else favorites.splice(i, 1);
   localStorage.setItem("fav", JSON.stringify(favorites));
   renderGrid();
   updateMiniButtons();
 }
 
 /* ===== RENDER CARD ===== */
-function makeCard(ch, idx, container){
+function makeCard(ch, idx, container) {
   const div = document.createElement("div");
   div.className = "ch-card";
   div.dataset.idx = idx;
 
   const img = document.createElement("img");
   img.src = ch.logo || fallbackImg;
-  img.onerror = function() { this.onerror = null; this.src = fallbackImg; };
+  img.onerror = function () { this.onerror = null; this.src = fallbackImg; };
   img.alt = ch.name;
   img.loading = "lazy";
 
@@ -1150,8 +1216,8 @@ function makeCard(ch, idx, container){
 }
 
 /* ===== RENDER GRID ===== */
-function renderGrid(){
-  if(!grid) return;
+function renderGrid() {
+  if (!grid) return;
   const q = (searchIn ? searchIn.value : "").toLowerCase();
   const frag = document.createDocumentFragment();
   const isFavCat = currentCategory === "fav";
@@ -1161,34 +1227,34 @@ function renderGrid(){
   let radioCount = 0;
   let favCount = 0;
   allChannels.forEach((ch, i) => {
-    if(hidden.has(ch.url)) return;
+    if (hidden.has(ch.url)) return;
     const isFav = favorites.some(f => f.url === ch.url);
-    if(isFav) favCount++;
-    if(ch.isRadio) radioCount++; else tvCount++;
-    if(isFavCat){
-      if(!isFav) return;
+    if (isFav) favCount++;
+    if (ch.isRadio) radioCount++; else tvCount++;
+    if (isFavCat) {
+      if (!isFav) return;
     } else {
-      if(!!ch.isRadio !== isRadioCat) return;
+      if (!!ch.isRadio !== isRadioCat) return;
     }
-    if(q && !ch.name.toLowerCase().includes(q)) return;
+    if (q && !ch.name.toLowerCase().includes(q)) return;
     makeCard(ch, i, frag);
     count++;
   });
   grid.innerHTML = "";
   grid.appendChild(frag);
-  if(emptyState) emptyState.classList.toggle("show", count === 0 && allChannels.length > 0);
-  if(currentIdx >= 0){
+  if (emptyState) emptyState.classList.toggle("show", count === 0 && allChannels.length > 0);
+  if (currentIdx >= 0) {
     const active = grid.querySelector('[data-idx="' + currentIdx + '"]');
-    if(active) active.classList.add("active");
+    if (active) active.classList.add("active");
   }
 
   // Update badges
   const favBadge = document.querySelector('.cat-tab[data-cat="fav"] .badge');
   const tvBadge = document.querySelector('.cat-tab[data-cat="tv"] .badge');
   const radioBadge = document.querySelector('.cat-tab[data-cat="radio"] .badge');
-  if(favBadge) favBadge.textContent = favCount;
-  if(tvBadge) tvBadge.textContent = tvCount;
-  if(radioBadge) radioBadge.textContent = radioCount;
+  if (favBadge) favBadge.textContent = favCount;
+  if (tvBadge) tvBadge.textContent = tvCount;
+  if (radioBadge) radioBadge.textContent = radioCount;
 }
 
 /* ===== CHANNEL CHECK ===== */
@@ -1200,49 +1266,49 @@ const probeV = (() => {
   return v;
 })();
 
-function probeUrl(url, ms){
+function probeUrl(url, ms) {
   ms = ms || 8000;
   return new Promise(resolve => {
     let done = false;
     const v = probeV;
-    function end(ok){ if(done) return; done = true; cleanup(); resolve(ok); }
-    function cleanup(){
+    function end(ok) { if (done) return; done = true; cleanup(); resolve(ok); }
+    function cleanup() {
       v.removeEventListener("canplay", onOk);
       v.removeEventListener("loadedmetadata", onOk);
       v.removeEventListener("error", onFail);
-      try{ v.pause(); v.src = ""; v.load(); }catch(e){}
+      try { v.pause(); v.src = ""; v.load(); } catch (e) { }
     }
-    function onOk(){ end(true); }
-    function onFail(){ end(false); }
+    function onOk() { end(true); }
+    function onFail() { end(false); }
     v.addEventListener("canplay", onOk);
     v.addEventListener("loadedmetadata", onOk);
     v.addEventListener("error", onFail);
-    try{
+    try {
       v.src = url;
       var p = v.play();
-      if(p && p.catch) p.catch(function(){});
-    }catch(e){ end(false); return; }
-    setTimeout(function(){ end(false); }, ms);
+      if (p && p.catch) p.catch(function () { });
+    } catch (e) { end(false); return; }
+    setTimeout(function () { end(false); }, ms);
   });
 }
 
-async function checkAll(){
-  if(!btnCheck) return;
+async function checkAll() {
+  if (!btnCheck) return;
   btnCheck.disabled = true;
   hidden.clear();
   saveHidden();
   renderGrid();
-  for(let i = 0; i < allChannels.length; i++){
+  for (let i = 0; i < allChannels.length; i++) {
     const ch = allChannels[i];
-    if(!ch || !ch.url) continue;
-    btnCheck.querySelector("span:last-child").textContent = t("checking") + " " + (i+1) + "/" + allChannels.length;
+    if (!ch || !ch.url) continue;
+    btnCheck.querySelector("span:last-child").textContent = t("checking") + " " + (i + 1) + "/" + allChannels.length;
     const card = document.querySelector('[data-idx="' + i + '"]');
-    if(card) card.classList.add("checking");
+    if (card) card.classList.add("checking");
     const ok = await probeUrl(ch.url, 8000);
-    if(!ok) hidden.add(ch.url);
-    if(card) card.classList.remove("checking");
+    if (!ok) hidden.add(ch.url);
+    if (card) card.classList.remove("checking");
     // Update individual card visibility instead of full re-render
-    if(!ok && card) card.style.display = "none";
+    if (!ok && card) card.style.display = "none";
     saveHidden();
   }
   renderGrid(); // single re-render at the end
@@ -1250,21 +1316,21 @@ async function checkAll(){
   btnCheck.querySelector("span:last-child").textContent = t("checkBtn");
 }
 
-if(btnCheck) btnCheck.onclick = checkAll;
-if(btnReset) btnReset.onclick = () => { hidden.clear(); saveHidden(); renderGrid(); };
+if (btnCheck) btnCheck.onclick = checkAll;
+if (btnReset) btnReset.onclick = () => { hidden.clear(); saveHidden(); renderGrid(); };
 
 /* ===== SEARCH & TABS ===== */
 let searchTimer = null;
-if(searchIn) searchIn.addEventListener("input", () => {
+if (searchIn) searchIn.addEventListener("input", () => {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(renderGrid, 200);
 });
 
 const catTabs = document.querySelectorAll(".cat-tab");
-if(catTabs.length > 0){
+if (catTabs.length > 0) {
   // Restore active tab from URL hash
   const hashCat = window.location.hash.replace("#", "");
-  if(["tv","radio","fav"].includes(hashCat)){
+  if (["tv", "radio", "fav"].includes(hashCat)) {
     currentCategory = hashCat;
     catTabs.forEach(b => b.classList.toggle("active", b.dataset.cat === hashCat));
   }
@@ -1283,9 +1349,9 @@ if(catTabs.length > 0){
 }
 
 /* ===== SOURCES ===== */
-function getAllSources(){ return [...DEFAULT_SOURCES, ...sources]; }
+function getAllSources() { return [...DEFAULT_SOURCES, ...sources]; }
 
-function showEmptyState(){
+function showEmptyState() {
   allChannels = [];
   currentIdx = -1;
   currentUrl = "";
@@ -1297,27 +1363,27 @@ function showEmptyState(){
   mediaEl.load();
   clearTimeout(retryTimer);
   clearTimeout(stallTimer);
-  if(grid) grid.innerHTML = "";
-  if(nowName) nowName.textContent = t("noChannel");
-  if(nowBar) nowBar.classList.remove("live");
+  if (grid) grid.innerHTML = "";
+  if (nowName) nowName.textContent = t("noChannel");
+  if (nowBar) nowBar.classList.remove("live");
   renderGrid();
-  if(emptyState){
+  if (emptyState) {
     emptyState.classList.add("show");
     emptyState.querySelector(".icon").textContent = "\uD83D\uDCFA";
     emptyState.querySelector("div:last-child").textContent = t("selectSource");
   }
 }
 
-function saveSources(){
+function saveSources() {
   localStorage.setItem("sources", JSON.stringify(sources));
   localStorage.setItem("activeSources", JSON.stringify([...activeSources]));
 }
 
-function startRenameSource(i, div, nameEl){
+function startRenameSource(i, div, nameEl) {
   const srcIdx = i - DEFAULT_SOURCES.length; // index in custom sources array
-  if(srcIdx < 0) return;
+  if (srcIdx < 0) return;
   // Already editing?
-  if(div.querySelector(".src-name-input")) return;
+  if (div.querySelector(".src-name-input")) return;
 
   const oldName = sources[srcIdx].name || sources[srcIdx].url;
   nameEl.style.display = "none";
@@ -1330,29 +1396,29 @@ function startRenameSource(i, div, nameEl){
   input.focus();
   input.select();
 
-  function commit(){
+  function commit() {
     const newName = input.value.trim();
-    if(newName && newName !== oldName){
+    if (newName && newName !== oldName) {
       sources[srcIdx].name = newName;
       saveSources();
       showToast(t("renamed"), 1500);
     }
     renderSources();
   }
-  function cancel(){
+  function cancel() {
     nameEl.style.display = "";
-    if(input.parentNode) input.remove();
+    if (input.parentNode) input.remove();
   }
 
   input.addEventListener("keydown", (e) => {
-    if(e.key === "Enter"){ e.preventDefault(); commit(); }
-    if(e.key === "Escape"){ e.preventDefault(); cancel(); }
+    if (e.key === "Enter") { e.preventDefault(); commit(); }
+    if (e.key === "Escape") { e.preventDefault(); cancel(); }
   });
   input.addEventListener("blur", commit);
 }
 
-function renderSources(){
-  if(!sourceListEl) return;
+function renderSources() {
+  if (!sourceListEl) return;
   sourceListEl.innerHTML = "";
   const all = getAllSources();
   all.forEach((src, i) => {
@@ -1367,7 +1433,7 @@ function renderSources(){
 
     div.appendChild(name);
 
-    if(src.default){
+    if (src.default) {
       const badge = document.createElement("span");
       badge.className = "src-default";
       badge.textContent = t("defaultBadge");
@@ -1400,9 +1466,9 @@ function renderSources(){
         sources.splice(srcIdx, 1);
         // Rebuild activeSources set with adjusted indices
         const newActive = new Set();
-        for(const ai of activeSources){
-          if(ai === i) continue; // removed
-          if(ai > i) newActive.add(ai - 1);
+        for (const ai of activeSources) {
+          if (ai === i) continue; // removed
+          if (ai > i) newActive.add(ai - 1);
           else newActive.add(ai);
         }
         activeSources = newActive;
@@ -1414,7 +1480,7 @@ function renderSources(){
     }
 
     div.addEventListener("click", () => {
-      if(activeSources.has(i)){
+      if (activeSources.has(i)) {
         activeSources.delete(i);
       } else {
         activeSources.add(i);
@@ -1428,12 +1494,12 @@ function renderSources(){
   });
 }
 
-function addSource(){
-  if(!addSourceInput) return;
+function addSource() {
+  if (!addSourceInput) return;
   let url = addSourceInput.value.trim();
-  if(!url) return;
+  if (!url) return;
   // basic validation
-  if(!url.startsWith("http://") && !url.startsWith("https://")){
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
     showToast(t("invalidUrl"), 2500);
     return;
   }
@@ -1442,8 +1508,8 @@ function addSource(){
   try {
     const parts = new URL(url).pathname.split("/");
     const file = parts[parts.length - 1] || parts[parts.length - 2] || "";
-    if(file) name = decodeURIComponent(file.replace(/\.(m3u8?|txt)$/i, ""));
-  } catch(e){}
+    if (file) name = decodeURIComponent(file.replace(/\.(m3u8?|txt)$/i, ""));
+  } catch (e) { }
 
   sources.push({ name: name, url: url });
   activeSources.add(getAllSources().length - 1);
@@ -1455,26 +1521,26 @@ function addSource(){
 }
 
 // Toggle source panel
-if(sourceToggle) sourceToggle.addEventListener("click", () => {
+if (sourceToggle) sourceToggle.addEventListener("click", () => {
   sourceToggle.classList.toggle("open");
-  if(sourceBody) sourceBody.classList.toggle("open");
+  if (sourceBody) sourceBody.classList.toggle("open");
 });
 
-if(addSourceBtn) addSourceBtn.addEventListener("click", addSource);
-if(addSourceInput) addSourceInput.addEventListener("keydown", (e) => {
-  if(e.key === "Enter") addSource();
+if (addSourceBtn) addSourceBtn.addEventListener("click", addSource);
+if (addSourceInput) addSourceInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") addSource();
 });
 
 /* ===== FILE UPLOAD ===== */
 const fileInput = document.getElementById("fileSourceInput");
-if(fileInput) fileInput.addEventListener("change", () => {
+if (fileInput) fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  if(!file) return;
+  if (!file) return;
   const reader = new FileReader();
   reader.onload = () => {
     const text = reader.result;
     const result = parseM3U(text);
-    if(result.channels.length === 0){
+    if (result.channels.length === 0) {
       showToast(t("noChannelInFile"), 2500);
       return;
     }
@@ -1492,25 +1558,25 @@ if(fileInput) fileInput.addEventListener("change", () => {
 });
 
 /* ===== PARSE M3U TEXT ===== */
-function parseM3U(text){
+function parseM3U(text) {
   const channels = [];
   const lines = text.split(/\r?\n/);
   let cur = null;
   let epgUrl = "";
-  for(const raw of lines){
+  for (const raw of lines) {
     const line = raw.trim();
-    if(!line || line.startsWith("#EXTVLCOPT") || line.includes("catchup=")) continue;
-    if(line.startsWith("#EXTM3U")){
+    if (!line || line.startsWith("#EXTVLCOPT") || line.includes("catchup=")) continue;
+    if (line.startsWith("#EXTM3U")) {
       const urlTvg = line.match(/url-tvg="([^"]+)"/);
-      if(urlTvg) epgUrl = urlTvg[1];
+      if (urlTvg) epgUrl = urlTvg[1];
       // Also try x-tvg-url (common alternative)
-      if(!epgUrl){
+      if (!epgUrl) {
         const xTvg = line.match(/x-tvg-url="([^"]+)"/);
-        if(xTvg) epgUrl = xTvg[1];
+        if (xTvg) epgUrl = xTvg[1];
       }
       continue;
     }
-    if(line.startsWith("#EXTINF")){
+    if (line.startsWith("#EXTINF")) {
       const logo = line.match(/tvg-logo="([^"]+)"/);
       const tvgId = line.match(/tvg-id="([^"]+)"/);
       const tvgName = line.match(/tvg-name="([^"]+)"/);
@@ -1522,11 +1588,11 @@ function parseM3U(text){
         .replace(/^\s*\([^)]*\)\s*/, '')             // strip leading (anytext)
         .trim() || rawNm.trim();
       cur = { name: nm, logo: logo ? logo[1] : "", url: "", tvgId: tvgId ? tvgId[1] : (tvgName ? tvgName[1] : ""), isRadio: isRadio };
-    } else if(line.startsWith("http") && cur){
+    } else if (line.startsWith("http") && cur) {
       cur.url = line;
-      if(!cur.isRadio){
+      if (!cur.isRadio) {
         const lowerUrl = line.toLowerCase();
-        if(lowerUrl.includes("radio") || lowerUrl.includes("vov") || lowerUrl.includes("audio")){
+        if (lowerUrl.includes("radio") || lowerUrl.includes("vov") || lowerUrl.includes("audio")) {
           cur.isRadio = true;
         }
       }
@@ -1538,11 +1604,11 @@ function parseM3U(text){
 }
 
 /* ===== LOAD FROM ACTIVE SOURCES ===== */
-async function loadActiveSources(){
+async function loadActiveSources() {
   const all = getAllSources();
-  const indices = [...activeSources].filter(i => i >= 0 && i < all.length).sort((a,b) => a - b);
+  const indices = [...activeSources].filter(i => i >= 0 && i < all.length).sort((a, b) => a - b);
 
-  if(indices.length === 0){
+  if (indices.length === 0) {
     showEmptyState();
     return;
   }
@@ -1552,21 +1618,21 @@ async function loadActiveSources(){
   currentUrl = "";
   hidden.clear();
   saveHidden();
-  if(grid) grid.innerHTML = "";
+  if (grid) grid.innerHTML = "";
 
-  if(emptyState) emptyState.classList.add("show");
-  if(emptyState){
+  if (emptyState) emptyState.classList.add("show");
+  if (emptyState) {
     emptyState.querySelector(".icon").textContent = "\uD83D\uDCE1";
     emptyState.querySelector("div:last-child").textContent = t("loadingSources").replace("{n}", indices.length);
   }
 
   let errors = 0;
   const epgUrls = new Set();
-  for(const idx of indices){
+  for (const idx of indices) {
     const src = all[idx];
     try {
       let result = { channels: [], epgUrl: "" };
-      if(src.local && src.content){
+      if (src.local && src.content) {
         result = parseM3U(src.content);
       } else {
         let text = null;
@@ -1574,31 +1640,31 @@ async function loadActiveSources(){
         // 1st attempt: direct fetch
         try {
           const resp = await fetch(src.url);
-          if(resp && resp.ok) text = await resp.text();
-        } catch(err) {
+          if (resp && resp.ok) text = await resp.text();
+        } catch (err) {
           console.warn("[Source] Direct fetch failed, will try proxy:", err.message);
         }
 
         // 2nd attempt: route through local proxy server as fallback
-        if(text === null){
+        if (text === null) {
           try {
             showToast(t("retryProxy"), 0);
             const proxyResp = await fetch("/api/proxy?url=" + encodeURIComponent(src.url));
-            if(proxyResp && proxyResp.ok){
+            if (proxyResp && proxyResp.ok) {
               text = await proxyResp.text();
               console.log("[Source] Loaded via proxy:", src.url);
             }
-          } catch(proxyErr){
+          } catch (proxyErr) {
             console.warn("[Source] Proxy fetch also failed:", proxyErr.message);
           }
         }
 
-        if(text === null) throw new Error("All fetch attempts failed (direct + proxy)");
+        if (text === null) throw new Error("All fetch attempts failed (direct + proxy)");
         result = parseM3U(text);
       }
       allChannels = allChannels.concat(result.channels);
-      if(result.epgUrl) epgUrls.add(result.epgUrl);
-    } catch(e){
+      if (result.epgUrl) epgUrls.add(result.epgUrl);
+    } catch (e) {
       console.error("L\u1ED7i t\u1EA3i:", src.name || src.url, e);
       errors++;
     }
@@ -1606,35 +1672,35 @@ async function loadActiveSources(){
 
   renderGrid();
 
-  if(allChannels.length === 0){
-    if(emptyState){
+  if (allChannels.length === 0) {
+    if (emptyState) {
       emptyState.querySelector(".icon").textContent = "\u26A0\uFE0F";
       emptyState.querySelector("div:last-child").textContent = errors > 0
         ? t("cantLoadSource")
         : t("noChannelFound");
     }
   } else {
-    if(errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
+    if (errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
     else showToast(t("sourceOk").replace("{n}", allChannels.length).replace("{s}", indices.length), 2000);
 
     // Auto-play: URL param > pinned channel > first channel
     const urlCh = new URLSearchParams(window.location.search).get("ch");
     let autoIdx = -1;
-    if(urlCh){
+    if (urlCh) {
       autoIdx = allChannels.findIndex(c => c.name === urlCh);
     }
-    if(autoIdx < 0 && pinnedUrl){
+    if (autoIdx < 0 && pinnedUrl) {
       autoIdx = allChannels.findIndex(c => c.url === pinnedUrl);
     }
-    if(autoIdx < 0 && allChannels.length > 0){
+    if (autoIdx < 0 && allChannels.length > 0) {
       autoIdx = 0;
     }
     // Auto-switch to the best tab for the playing channel on first load (prefer fav)
-    if(autoIdx >= 0){
+    if (autoIdx >= 0) {
       const _ch = allChannels[autoIdx];
       const _isFav = favorites.some(f => f.url === _ch.url);
       const bestTab = _isFav ? "fav" : (_ch.isRadio ? "radio" : "tv");
-      if(currentCategory !== bestTab){
+      if (currentCategory !== bestTab) {
         currentCategory = bestTab;
         const _tabs = document.querySelectorAll(".cat-tab");
         _tabs.forEach(b => b.classList.toggle("active", b.dataset.cat === bestTab));
@@ -1645,7 +1711,7 @@ async function loadActiveSources(){
   }
 
   // Load EPG data AFTER playback has started — defer so video gets priority
-  if(epgUrls.size > 0){
+  if (epgUrls.size > 0) {
     console.log("[EPG] Found EPG URLs in M3U:", [...epgUrls]);
     setTimeout(() => loadEpgData([...epgUrls]), 3000);
   } else {
@@ -1658,12 +1724,12 @@ async function loadActiveSources(){
 const maxIdx = getAllSources().length;
 activeSources = new Set([...activeSources].filter(i => i >= 0 && i < maxIdx));
 renderSources();
-if(activeSources.size > 0){
+if (activeSources.size > 0) {
   loadActiveSources();
 } else {
   // First boot: show empty, user must pick a source
   renderGrid();
-  if(emptyState){
+  if (emptyState) {
     emptyState.classList.add("show");
     emptyState.querySelector(".icon").textContent = "\uD83D\uDCFA";
     emptyState.querySelector("div:last-child").textContent = t("selectSource");
@@ -1671,7 +1737,7 @@ if(activeSources.size > 0){
 }
 
 /* ===== COLLAPSE / EXPAND CONTROLS ===== */
-(function(){
+(function () {
   var ctrlBottom = document.getElementById("controlsBottom");
   // Right side collapsible
   var moreBtn = document.getElementById("moreBtn");
@@ -1681,33 +1747,33 @@ if(activeSources.size > 0){
   var collLeft = document.getElementById("ctrlCollapsibleLeft");
   var collSeek = document.getElementById("ctrlCollapsibleLeftSeek");
   var collSeek2 = document.getElementById("ctrlCollapsibleLeftSeek2");
-  if(!ctrlBottom) return;
+  if (!ctrlBottom) return;
 
   var leftCollapsibles = [collLeft, collSeek, collSeek2].filter(Boolean);
 
-  function checkOverflow(){
+  function checkOverflow() {
     // Temporarily expand everything to measure natural width
     ctrlBottom.classList.remove("ctrl-overflow");
-    if(collapsible) collapsible.classList.remove("expanded");
-    leftCollapsibles.forEach(function(c){ c.classList.remove("expanded"); });
+    if (collapsible) collapsible.classList.remove("expanded");
+    leftCollapsibles.forEach(function (c) { c.classList.remove("expanded"); });
     var overflow = ctrlBottom.scrollWidth > ctrlBottom.clientWidth;
-    if(overflow) ctrlBottom.classList.add("ctrl-overflow");
+    if (overflow) ctrlBottom.classList.add("ctrl-overflow");
     else ctrlBottom.classList.remove("ctrl-overflow");
   }
 
-  if(moreBtn && collapsible){
-    moreBtn.addEventListener("click", function(e){
+  if (moreBtn && collapsible) {
+    moreBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       collapsible.classList.toggle("expanded");
       moreBtn.classList.toggle("active", collapsible.classList.contains("expanded"));
     });
   }
 
-  if(moreBtnL && leftCollapsibles.length){
-    moreBtnL.addEventListener("click", function(e){
+  if (moreBtnL && leftCollapsibles.length) {
+    moreBtnL.addEventListener("click", function (e) {
       e.stopPropagation();
       var expanding = !leftCollapsibles[0].classList.contains("expanded");
-      leftCollapsibles.forEach(function(c){ c.classList.toggle("expanded", expanding); });
+      leftCollapsibles.forEach(function (c) { c.classList.toggle("expanded", expanding); });
       moreBtnL.classList.toggle("active", expanding);
     });
   }
@@ -1720,11 +1786,11 @@ if(activeSources.size > 0){
 /* ===== SCROLL TO TOP ===== */
 const scrollBtn = document.getElementById("scrollTop");
 const channelDrawer = document.getElementById("channelDrawer");
-const gridEl    = document.getElementById("channelGrid");
-if(scrollBtn){
+const gridEl = document.getElementById("channelGrid");
+if (scrollBtn) {
   let _scrollTicking = false;
   const onScroll = () => {
-    if(!_scrollTicking){
+    if (!_scrollTicking) {
       _scrollTicking = true;
       requestAnimationFrame(() => {
         const top = Math.max(window.scrollY, gridEl ? gridEl.scrollTop : 0, channelDrawer ? channelDrawer.scrollTop : 0);
@@ -1734,42 +1800,42 @@ if(scrollBtn){
     }
   };
   window.addEventListener("scroll", onScroll, { passive: true });
-  if(gridEl) gridEl.addEventListener("scroll", onScroll, { passive: true });
-  if(channelDrawer) channelDrawer.addEventListener("scroll", onScroll, { passive: true });
+  if (gridEl) gridEl.addEventListener("scroll", onScroll, { passive: true });
+  if (channelDrawer) channelDrawer.addEventListener("scroll", onScroll, { passive: true });
 
   scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    if(gridEl) gridEl.scrollTo({ top: 0, behavior: "smooth" });
-    if(channelDrawer) channelDrawer.scrollTo({ top: 0, behavior: "smooth" });
+    if (gridEl) gridEl.scrollTo({ top: 0, behavior: "smooth" });
+    if (channelDrawer) channelDrawer.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
 /* ===== QUICK SWITCH MODAL ===== */
 
 /* ===== PIN / FAV / HIDE MINI BUTTONS ===== */
-function updateMiniButtons(){
+function updateMiniButtons() {
   const ch = currentIdx >= 0 ? allChannels[currentIdx] : null;
   // Pin button
-  if(pinBtn){
+  if (pinBtn) {
     pinBtn.classList.toggle("active", ch && pinnedUrl === ch.url);
   }
   // Fav button
-  if(favBtn){
+  if (favBtn) {
     const isFav = ch && favorites.some(f => f.url === ch.url);
     favBtn.classList.toggle("active", !!isFav);
   }
   // Hide button - only enable when a channel is selected
-  if(hideBtn){
+  if (hideBtn) {
     hideBtn.disabled = !ch;
   }
 }
 
-if(pinBtn){
+if (pinBtn) {
   pinBtn.addEventListener("click", () => {
-    if(currentIdx < 0) return;
+    if (currentIdx < 0) return;
     const ch = allChannels[currentIdx];
-    if(!ch) return;
-    if(pinnedUrl === ch.url){
+    if (!ch) return;
+    if (pinnedUrl === ch.url) {
       pinnedUrl = "";
       localStorage.removeItem("pinnedChannel");
       showToast(t("unpinnedToast"), 2000);
@@ -1782,21 +1848,21 @@ if(pinBtn){
   });
 }
 
-if(favBtn){
+if (favBtn) {
   favBtn.addEventListener("click", () => {
-    if(currentIdx < 0) return;
+    if (currentIdx < 0) return;
     const ch = allChannels[currentIdx];
-    if(!ch) return;
+    if (!ch) return;
     toggleFav(ch);
     updateMiniButtons();
   });
 }
 
-if(hideBtn){
+if (hideBtn) {
   hideBtn.addEventListener("click", () => {
-    if(currentIdx < 0) return;
+    if (currentIdx < 0) return;
     const ch = allChannels[currentIdx];
-    if(!ch) return;
+    if (!ch) return;
     hidden.add(ch.url);
     saveHidden();
     renderGrid();
@@ -1805,87 +1871,87 @@ if(hideBtn){
 }
 
 /* ===== LANGUAGE SWITCHER ===== */
-const langBtn   = document.getElementById("langBtn");
-const langFlag  = document.getElementById("langFlag");
-const langMenu  = document.getElementById("langMenu");
+const langBtn = document.getElementById("langBtn");
+const langFlag = document.getElementById("langFlag");
+const langMenu = document.getElementById("langMenu");
 
-function applyLang(){
+function applyLang() {
   const L = LANGS[currentLang] || LANGS.vi;
   // Update lang button (icon-only: just flag)
-  if(langFlag) langFlag.textContent = L.flag;
+  if (langFlag) langFlag.textContent = L.flag;
 
   // Static HTML elements
-  if(nowName && currentIdx < 0) nowName.textContent = t("noChannel");
-  if(btnUnmute){
+  if (nowName && currentIdx < 0) nowName.textContent = t("noChannel");
+  if (btnUnmute) {
     btnUnmute.title = t("sound") + " (M)";
   }
-  if(btnPiP){
+  if (btnPiP) {
     btnPiP.title = t("pip");
   }
-  if(btnFull){
+  if (btnFull) {
     btnFull.querySelector("span:last-child").textContent = t("newTab");
     btnFull.title = t("newTab");
   }
-  if(btnPlayerFs){
+  if (btnPlayerFs) {
     btnPlayerFs.title = t("fullscreen");
   }
-  if(btnRetry){
+  if (btnRetry) {
     btnRetry.title = t("reload");
   }
 
   const srcToggleLabel = sourceToggle ? sourceToggle.querySelector("span:last-child") : null;
-  if(srcToggleLabel) srcToggleLabel.textContent = t("sourceToggle").replace(/^[\uD83D\uDD17\s]+/, "");
+  if (srcToggleLabel) srcToggleLabel.textContent = t("sourceToggle").replace(/^[\uD83D\uDD17\s]+/, "");
 
-  if(addSourceInput) addSourceInput.placeholder = t("addPlaceholder");
-  if(addSourceBtn) addSourceBtn.textContent = t("addBtn");
+  if (addSourceInput) addSourceInput.placeholder = t("addPlaceholder");
+  if (addSourceBtn) addSourceBtn.textContent = t("addBtn");
 
   const fileLabel = document.getElementById("fileSourceLabel");
-  if(fileLabel){
+  if (fileLabel) {
     const fileSpan = fileLabel.querySelector("span");
-    if(fileSpan) fileSpan.textContent = t("fileBtn").replace(/^[\uD83D\uDCC1\s]+/, "");
+    if (fileSpan) fileSpan.textContent = t("fileBtn").replace(/^[\uD83D\uDCC1\s]+/, "");
     fileLabel.title = t("fileTitle");
   }
 
-  if(searchIn) searchIn.placeholder = t("searchPlaceholder");
-  if(btnCheck){
+  if (searchIn) searchIn.placeholder = t("searchPlaceholder");
+  if (btnCheck) {
     btnCheck.querySelector("span:last-child").textContent = t("checkBtn");
     btnCheck.title = t("checkTitle");
   }
-  if(btnReset){
+  if (btnReset) {
     btnReset.querySelector("span:last-child").textContent = t("showAll");
     btnReset.title = t("showAllTitle");
   }
-  if(scrollBtn) scrollBtn.title = t("scrollTop");
+  if (scrollBtn) scrollBtn.title = t("scrollTop");
 
   // Mini buttons (icon-only, tooltips only)
-  if(pinBtn) pinBtn.title = t("pinChannelTip");
-  if(favBtn) favBtn.title = t("favChannel");
-  if(hideBtn) hideBtn.title = t("hideChannel");
+  if (pinBtn) pinBtn.title = t("pinChannelTip");
+  if (favBtn) favBtn.title = t("favChannel");
+  if (hideBtn) hideBtn.title = t("hideChannel");
 
   // Prev/Next channel buttons
   const _prevBtn = document.getElementById("prevChBtn");
   const _nextBtn = document.getElementById("nextChBtn");
-  if(_prevBtn) _prevBtn.title = t("prevChannel") + " (\u2191)";
-  if(_nextBtn) _nextBtn.title = t("nextChannel") + " (\u2193)";
+  if (_prevBtn) _prevBtn.title = t("prevChannel") + " (\u2191)";
+  if (_nextBtn) _nextBtn.title = t("nextChannel") + " (\u2193)";
 
   // Center controls
-  if(btnPlayPause) btnPlayPause.title = t("playPause") + " (Space)";
-  if(btnSeekBack) btnSeekBack.title = t("seekBack");
-  if(btnSeekFwd) btnSeekFwd.title = t("seekForward");
+  if (btnPlayPause) btnPlayPause.title = t("playPause") + " (Space)";
+  if (btnSeekBack) btnSeekBack.title = t("seekBack");
+  if (btnSeekFwd) btnSeekFwd.title = t("seekForward");
 
   // Shortcuts button
   const _scBtn = document.getElementById("shortcutsBtn");
-  if(_scBtn) _scBtn.title = t("shortcutsTitle");
+  if (_scBtn) _scBtn.title = t("shortcutsTitle");
 
   // List, EPG, Cast & close buttons
   const _listBtn = document.getElementById("listBtn");
   const _epgBtn = document.getElementById("epgBtn");
   const _castBtn = document.getElementById("castBtn");
   const _closeBtn = document.getElementById("channelDrawerCloseBtn");
-  if(_listBtn) _listBtn.title = t("channelListTitle");
-  if(_epgBtn) _epgBtn.title = t("epgTitle");
-  if(_castBtn) _castBtn.title = t("castTip");
-  if(_closeBtn) _closeBtn.title = t("closeTip");
+  if (_listBtn) _listBtn.title = t("channelListTitle");
+  if (_epgBtn) _epgBtn.title = t("epgTitle");
+  if (_castBtn) _castBtn.title = t("castTip");
+  if (_closeBtn) _closeBtn.title = t("closeTip");
 
   // Re-render dynamic content
   renderSources();
@@ -1894,18 +1960,18 @@ function applyLang(){
   // Build lang menu & shortcuts
   buildShortcutsPanel();
   buildLangMenu();
-  
+
   // Sync mute button with video state
   if (mediaEl && btnUnmute) {
-    btnUnmute.querySelector("#muteIcon").innerHTML = mediaEl.muted ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-    btnUnmute.classList.toggle("active", !mediaEl.muted);
+    btnUnmute.querySelector("#muteIcon").innerHTML = isAppMuted() ? '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>' : '<svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+    btnUnmute.classList.toggle("active", !isAppMuted());
   }
 }
 
-function buildLangMenu(){
-  if(!langMenu) return;
+function buildLangMenu() {
+  if (!langMenu) return;
   langMenu.innerHTML = "";
-  for(const [code, lang] of Object.entries(LANGS).sort((a,b) => a[1].label.localeCompare(b[1].label))){
+  for (const [code, lang] of Object.entries(LANGS).sort((a, b) => a[1].label.localeCompare(b[1].label))) {
     const btn = document.createElement("button");
     btn.className = "lang-option" + (code === currentLang ? " active" : "");
     btn.innerHTML = "<span class='lang-flag'>" + lang.flag + "</span><span>" + lang.label + "</span>";
@@ -1924,33 +1990,33 @@ applyLang();
 /* ===== PREV / NEXT CHANNEL BUTTONS ===== */
 
 /** Return indices of channels visible in the active tab (respects search + hidden). */
-function getVisibleIndices(){
+function getVisibleIndices() {
   const q = (searchIn ? searchIn.value : "").toLowerCase();
   const isFavCat = currentCategory === "fav";
   const isRadioCat = currentCategory === "radio";
   const indices = [];
   allChannels.forEach((ch, i) => {
-    if(hidden.has(ch.url)) return;
+    if (hidden.has(ch.url)) return;
     const isFav = favorites.some(f => f.url === ch.url);
-    if(isFavCat){ if(!isFav) return; }
-    else { if(!!ch.isRadio !== isRadioCat) return; }
-    if(q && !ch.name.toLowerCase().includes(q)) return;
+    if (isFavCat) { if (!isFav) return; }
+    else { if (!!ch.isRadio !== isRadioCat) return; }
+    if (q && !ch.name.toLowerCase().includes(q)) return;
     indices.push(i);
   });
   return indices;
 }
 
-function navigatePrev(){
+function navigatePrev() {
   const vis = getVisibleIndices();
-  if(vis.length === 0) return;
+  if (vis.length === 0) return;
   const pos = vis.indexOf(currentIdx);
   const next = pos <= 0 ? vis[vis.length - 1] : vis[pos - 1];
   playByIndex(next, { noScroll: true });
 }
 
-function navigateNext(){
+function navigateNext() {
   const vis = getVisibleIndices();
-  if(vis.length === 0) return;
+  if (vis.length === 0) return;
   const pos = vis.indexOf(currentIdx);
   const next = pos < 0 || pos >= vis.length - 1 ? vis[0] : vis[pos + 1];
   playByIndex(next, { noScroll: true });
@@ -1959,76 +2025,76 @@ function navigateNext(){
 const prevChBtn = document.getElementById("prevChBtn");
 const nextChBtn = document.getElementById("nextChBtn");
 
-if(prevChBtn) prevChBtn.addEventListener("click", navigatePrev);
-if(nextChBtn) nextChBtn.addEventListener("click", navigateNext);
+if (prevChBtn) prevChBtn.addEventListener("click", navigatePrev);
+if (nextChBtn) nextChBtn.addEventListener("click", navigateNext);
 
 /* ===== EPG PANEL ===== */
-var epgBtn       = document.getElementById("epgBtn");
+var epgBtn = document.getElementById("epgBtn");
 var epgToggleBtn = document.getElementById("epgToggleBtn");
-var listBtn      = document.getElementById("listBtn");
-var epgPanel     = document.getElementById("epgPanel");
-var guideDrawer  = document.getElementById("guideDrawer");
-var epgListEl    = document.getElementById("epgList");
+var listBtn = document.getElementById("listBtn");
+var epgPanel = document.getElementById("epgPanel");
+var guideDrawer = document.getElementById("guideDrawer");
+var epgListEl = document.getElementById("epgList");
 var epgPanelTitle = document.getElementById("epgPanelTitle");
-var epgCloseBtn  = document.getElementById("epgCloseBtn");
+var epgCloseBtn = document.getElementById("epgCloseBtn");
 
-function openEpgPanel(){
-  if(!guideDrawer) return;
+function openEpgPanel() {
+  if (!guideDrawer) return;
   guideDrawer.classList.add("open");
-  if(epgBtn) epgBtn.classList.add("active");
-  if(epgToggleBtn) epgToggleBtn.classList.add("active");
+  if (epgBtn) epgBtn.classList.add("active");
+  if (epgToggleBtn) epgToggleBtn.classList.add("active");
   renderEpgPanel();
 }
 
-function closeEpgPanel(){
-  if(guideDrawer) guideDrawer.classList.remove("open");
-  if(epgBtn) epgBtn.classList.remove("active");
-  if(epgToggleBtn) epgToggleBtn.classList.remove("active");
+function closeEpgPanel() {
+  if (guideDrawer) guideDrawer.classList.remove("open");
+  if (epgBtn) epgBtn.classList.remove("active");
+  if (epgToggleBtn) epgToggleBtn.classList.remove("active");
 }
 
-function openList(){
+function openList() {
   document.body.classList.add("list-open");
-  if(listBtn) listBtn.classList.add("active");
+  if (listBtn) listBtn.classList.add("active");
 }
 
-function closeList(){
+function closeList() {
   document.body.classList.remove("list-open");
-  if(listBtn) listBtn.classList.remove("active");
+  if (listBtn) listBtn.classList.remove("active");
 }
 
 // Channel drawer close button
 const channelDrawerCloseBtn = document.getElementById("channelDrawerCloseBtn");
-if(channelDrawerCloseBtn) channelDrawerCloseBtn.addEventListener("click", closeList);
+if (channelDrawerCloseBtn) channelDrawerCloseBtn.addEventListener("click", closeList);
 
 // Close drawers when clicking outside
-document.addEventListener("click", function(e){
-  if(guideDrawer && guideDrawer.classList.contains("open") && !guideDrawer.contains(e.target) && !(epgBtn && epgBtn.contains(e.target)) && !(epgToggleBtn && epgToggleBtn.contains(e.target))){
+document.addEventListener("click", function (e) {
+  if (guideDrawer && guideDrawer.classList.contains("open") && !guideDrawer.contains(e.target) && !(epgBtn && epgBtn.contains(e.target)) && !(epgToggleBtn && epgToggleBtn.contains(e.target))) {
     closeEpgPanel();
   }
   var cd = document.getElementById("channelDrawer");
-  if(cd && document.body.classList.contains("list-open") && !cd.contains(e.target) && !(listBtn && listBtn.contains(e.target))){
+  if (cd && document.body.classList.contains("list-open") && !cd.contains(e.target) && !(listBtn && listBtn.contains(e.target))) {
     closeList();
   }
 });
 
-function renderEpgPanel(){
-  if(!epgListEl) return;
+function renderEpgPanel() {
+  if (!epgListEl) return;
   epgListEl.innerHTML = "";
 
-  if(currentIdx < 0 || currentIdx >= allChannels.length){
-    if(epgPanelTitle) epgPanelTitle.textContent = t("epgTitle");
+  if (currentIdx < 0 || currentIdx >= allChannels.length) {
+    if (epgPanelTitle) epgPanelTitle.textContent = t("epgTitle");
     epgListEl.innerHTML = '<div class="epg-empty">' + t("noChannel") + '</div>';
     return;
   }
 
   const ch = allChannels[currentIdx];
-  if(epgPanelTitle) epgPanelTitle.textContent = ch.name || t("epgTitle");
+  if (epgPanelTitle) epgPanelTitle.textContent = ch.name || t("epgTitle");
 
   // Find programs using the unified matching function
   const epgChId = findEpgChannelId(ch.tvgId, ch.name);
   const programs = epgChId ? epgData[epgChId] : null;
 
-  if(!programs || programs.length === 0){
+  if (!programs || programs.length === 0) {
     const epgKeys = Object.keys(epgData).length;
     const hint = epgKeys === 0 ? t("epgNoData") : t("epgNoProgram");
     epgListEl.innerHTML = '<div class="epg-empty">' + hint + '</div>';
@@ -2043,14 +2109,14 @@ function renderEpgPanel(){
   todayEnd.setHours(23, 59, 59, 999);
 
   let hasItems = false;
-  for(const p of programs){
+  for (const p of programs) {
     // Skip programs that ended before cutoff
-    if(p.stop && p.stop < cutoff) continue;
+    if (p.stop && p.stop < cutoff) continue;
     // Stop after tomorrow
-    if(p.start > todayEnd) {
+    if (p.start > todayEnd) {
       // Show up to a few hours into tomorrow
       const tomorrowCut = new Date(todayEnd.getTime() + 6 * 60 * 60 * 1000);
-      if(p.start > tomorrowCut) break;
+      if (p.start > tomorrowCut) break;
     }
 
     const isNow = p.start <= now && p.stop && p.stop > now;
@@ -2071,7 +2137,7 @@ function renderEpgPanel(){
 
     row.append(timeEl, titleEl);
 
-    if(isNow){
+    if (isNow) {
       const badge = document.createElement("span");
       badge.className = "epg-now-badge";
       badge.textContent = "\u25CF LIVE";
@@ -2081,7 +2147,7 @@ function renderEpgPanel(){
     div.appendChild(row);
 
     // Progress bar for current program
-    if(isNow && p.stop){
+    if (isNow && p.stop) {
       const total = p.stop - p.start;
       const elapsed = now - p.start;
       const pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
@@ -2098,51 +2164,51 @@ function renderEpgPanel(){
     hasItems = true;
   }
 
-  if(!hasItems){
+  if (!hasItems) {
     epgListEl.innerHTML = '<div class="epg-empty">' + t("epgNoUpcoming") + '</div>';
   }
 
   // Scroll the "now" item into view
   const nowItem = epgListEl.querySelector(".epg-item.now");
-  if(nowItem) nowItem.scrollIntoView({ block: "nearest", behavior: "instant" });
+  if (nowItem) nowItem.scrollIntoView({ block: "nearest", behavior: "instant" });
 }
 
-if(epgBtn) epgBtn.addEventListener("click", () => {
-  if(guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
+if (epgBtn) epgBtn.addEventListener("click", () => {
+  if (guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
   else openEpgPanel();
 });
 
-if(epgToggleBtn) epgToggleBtn.addEventListener("click", () => {
-  if(guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
+if (epgToggleBtn) epgToggleBtn.addEventListener("click", () => {
+  if (guideDrawer && guideDrawer.classList.contains("open")) closeEpgPanel();
   else openEpgPanel();
 });
 
-if(listBtn) listBtn.addEventListener("click", () => {
-  if(document.body.classList.contains("list-open")) closeList();
+if (listBtn) listBtn.addEventListener("click", () => {
+  if (document.body.classList.contains("list-open")) closeList();
   else openList();
 });
 
-if(epgCloseBtn) epgCloseBtn.addEventListener("click", closeEpgPanel);
+if (epgCloseBtn) epgCloseBtn.addEventListener("click", closeEpgPanel);
 
 // Don't auto-open panels on load — both are overlays now
 
 // Manual EPG URL loading
 const epgUrlInput = document.getElementById("epgUrlInput");
-const epgUrlBtn   = document.getElementById("epgUrlBtn");
+const epgUrlBtn = document.getElementById("epgUrlBtn");
 
 // Restore saved EPG URL
 const savedEpgUrl = localStorage.getItem("customEpgUrl") || "";
-if(epgUrlInput && savedEpgUrl) epgUrlInput.value = savedEpgUrl;
+if (epgUrlInput && savedEpgUrl) epgUrlInput.value = savedEpgUrl;
 
-if(epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
-  if(!epgUrlInput) return;
+if (epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
+  if (!epgUrlInput) return;
   const rawUrl = epgUrlInput.value.trim();
-  if(!rawUrl) return;
+  if (!rawUrl) return;
 
   // Support multiple URLs separated by comma or newline
   const urls = rawUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u);
-  for(const u of urls){
-    if(!u.startsWith("http://") && !u.startsWith("https://")){ showToast(t("invalidUrl"), 2500); return; }
+  for (const u of urls) {
+    if (!u.startsWith("http://") && !u.startsWith("https://")) { showToast(t("invalidUrl"), 2500); return; }
   }
 
   epgUrlBtn.disabled = true;
@@ -2151,46 +2217,46 @@ if(epgUrlBtn) epgUrlBtn.addEventListener("click", async () => {
     await loadEpgData(urls, true);
     localStorage.setItem("customEpgUrl", rawUrl);
     renderEpgPanel();
-  } catch(e){
+  } catch (e) {
     console.error("[EPG] Load failed:", e.message);
   }
   epgUrlBtn.disabled = false;
   epgUrlBtn.textContent = "Load";
 });
-if(epgUrlInput) epgUrlInput.addEventListener("keydown", (e) => { if(e.key === "Enter" && epgUrlBtn) epgUrlBtn.click(); });
+if (epgUrlInput) epgUrlInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && epgUrlBtn) epgUrlBtn.click(); });
 
 // Auto-load saved EPG URL on startup — delay to let channels render first
-if(savedEpgUrl){
+if (savedEpgUrl) {
   const urls = savedEpgUrl.split(/[,\n]+/).map(u => u.trim()).filter(u => u && u.startsWith("http"));
-  if(urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
+  if (urls.length > 0) setTimeout(() => loadEpgData(urls, true), 5000);
 }
 
 // Panels are overlays — no auto-open on desktop
 
 // Unified EPG refresh — runs every 60s
-function _epgPeriodicRefresh(){
+function _epgPeriodicRefresh() {
   updateEpgDisplay();
-  if(guideDrawer && guideDrawer.classList.contains("open")) renderEpgPanel();
+  if (guideDrawer && guideDrawer.classList.contains("open")) renderEpgPanel();
 }
 epgIntervalId = setInterval(_epgPeriodicRefresh, 60000);
 
 /* ===== PERSIST HIDDEN ===== */
-function saveHidden(){
+function saveHidden() {
   localStorage.setItem("hiddenChannels", JSON.stringify([...hidden]));
 }
 
 /* ===== HLS QUALITY SELECTOR ===== */
-var qualityBtn  = document.getElementById("qualityBtn");
+var qualityBtn = document.getElementById("qualityBtn");
 var qualityMenu = document.getElementById("qualityMenu");
 
-function buildQualityMenu(){
-  if(!qualityMenu) return;
+function buildQualityMenu() {
+  if (!qualityMenu) return;
   qualityMenu.innerHTML = "";
-  if(hlsLevels.length <= 1){
-    if(qualityBtn) qualityBtn.style.display = "none";
+  if (hlsLevels.length <= 1) {
+    if (qualityBtn) qualityBtn.style.display = "none";
     return;
   }
-  if(qualityBtn) qualityBtn.style.display = "";
+  if (qualityBtn) qualityBtn.style.display = "";
 
   // Auto option
   const autoBtn = document.createElement("button");
@@ -2198,7 +2264,7 @@ function buildQualityMenu(){
   autoBtn.textContent = "Auto";
   autoBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    if(hls) hls.currentLevel = -1;
+    if (hls) hls.currentLevel = -1;
     qualityMenu.classList.remove("open");
     updateQualityMenu();
   });
@@ -2215,7 +2281,7 @@ function buildQualityMenu(){
       btn.textContent = label;
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
-        if(hls) hls.currentLevel = idx;
+        if (hls) hls.currentLevel = idx;
         qualityMenu.classList.remove("open");
         updateQualityMenu();
       });
@@ -2223,20 +2289,20 @@ function buildQualityMenu(){
     });
 }
 
-function updateQualityMenu(){
-  if(!qualityMenu) return;
+function updateQualityMenu() {
+  if (!qualityMenu) return;
   const opts = qualityMenu.querySelectorAll(".quality-option");
   const sorted = [...hlsLevels]
     .map((lvl, i) => i)
     .sort((a, b) => (hlsLevels[b]?.height || 0) - (hlsLevels[a]?.height || 0));
   opts.forEach((opt, oi) => {
-    if(oi === 0) opt.classList.toggle("active", !hls || hls.currentLevel === -1);
+    if (oi === 0) opt.classList.toggle("active", !hls || hls.currentLevel === -1);
     else opt.classList.toggle("active", hls && hls.currentLevel === sorted[oi - 1]);
   });
-  if(qualityBtn){
+  if (qualityBtn) {
     const span = qualityBtn.querySelector(".quality-label");
-    if(span){
-      if(!hls || hls.currentLevel === -1) span.textContent = "Auto";
+    if (span) {
+      if (!hls || hls.currentLevel === -1) span.textContent = "Auto";
       else {
         const lvl = hlsLevels[hls.currentLevel];
         span.textContent = lvl && lvl.height ? lvl.height + "p" : "Auto";
@@ -2245,13 +2311,13 @@ function updateQualityMenu(){
   }
 }
 
-if(qualityBtn){
+if (qualityBtn) {
   qualityBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    if(qualityMenu) qualityMenu.classList.toggle("open");
+    if (qualityMenu) qualityMenu.classList.toggle("open");
   });
   document.addEventListener("click", () => {
-    if(qualityMenu) qualityMenu.classList.remove("open");
+    if (qualityMenu) qualityMenu.classList.remove("open");
   });
 }
 
@@ -2259,18 +2325,18 @@ if(qualityBtn){
 document.addEventListener("keydown", (e) => {
   // Don't trigger shortcuts when typing in inputs
   const tag = e.target.tagName;
-  if(tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
+  if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
 
-  switch(e.key){
+  switch (e.key) {
     case " ": // Space = play/pause
       e.preventDefault();
-      if(mediaEl.paused) mediaEl.play().catch(() => {});
+      if (mediaEl.paused) mediaEl.play().catch(() => { });
       else mediaEl.pause();
       break;
     case "m": // M = mute toggle
     case "M":
       e.preventDefault();
-      if(btnUnmute) btnUnmute.click();
+      if (btnUnmute) btnUnmute.click();
       break;
     case "ArrowUp": // Previous channel
     case "MediaTrackPrevious":
@@ -2285,12 +2351,12 @@ document.addEventListener("keydown", (e) => {
     case "p": // P = toggle EPG panel
     case "P":
       e.preventDefault();
-      if(epgToggleBtn) epgToggleBtn.click();
+      if (epgToggleBtn) epgToggleBtn.click();
       break;
     case "l": // L = toggle channel list
     case "L":
       e.preventDefault();
-      if(listBtn) listBtn.click();
+      if (listBtn) listBtn.click();
       break;
     case "ArrowLeft": // ArrowLeft = seek back 10s
       e.preventDefault();
@@ -2307,9 +2373,9 @@ document.addEventListener("keydown", (e) => {
 const shortcutsBtn = document.getElementById("shortcutsBtn");
 const shortcutsPanel = document.getElementById("shortcutsPanel");
 
-function buildShortcutsPanel(){
+function buildShortcutsPanel() {
   const panel = document.getElementById("shortcutsPanel");
-  if(!panel) return;
+  if (!panel) return;
   const shortcuts = [
     { key: "Space", desc: t("playPause") },
     { key: "\u2190", desc: t("seekBack") },
@@ -2321,14 +2387,14 @@ function buildShortcutsPanel(){
     { key: "L", desc: t("channelListTitle") }
   ];
   panel.innerHTML = '<div class="sc-title">\u2328 ' + t("shortcutsTitle") + '</div>' +
-    shortcuts.map(function(s){ return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
+    shortcuts.map(function (s) { return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
 }
 
 buildShortcutsPanel();
 
 /* ===== CHROMECAST (Cast Application Framework) ===== */
-window.__initChromecast = function(){
-  if(typeof cast === "undefined" || !cast.framework){
+window.__initChromecast = function () {
+  if (typeof cast === "undefined" || !cast.framework) {
     // SDK not fully loaded yet — retry shortly
     setTimeout(window.__initChromecast, 500);
     return;
@@ -2341,64 +2407,64 @@ window.__initChromecast = function(){
     autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
   });
 
-  function isCasting(){
+  function isCasting() {
     return context.getCurrentSession() !== null;
   }
 
-  function updateCastBtn(){
-    if(!castBtn) return;
+  function updateCastBtn() {
+    if (!castBtn) return;
     castBtn.classList.toggle("casting", isCasting());
     castBtn.title = isCasting() ? t("castingTip") : t("castTip");
   }
 
-  function loadMedia(){
+  function loadMedia() {
     var session = context.getCurrentSession();
-    if(!session || !currentUrl) return;
+    if (!session || !currentUrl) return;
     var contentType = isHlsUrl(currentUrl) ? "application/x-mpegurl" : "video/mp4";
     var mediaInfo = new chrome.cast.media.MediaInfo(currentUrl, contentType);
     mediaInfo.streamType = chrome.cast.media.StreamType.LIVE;
-    if(currentIdx >= 0 && allChannels[currentIdx]){
+    if (currentIdx >= 0 && allChannels[currentIdx]) {
       mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
       mediaInfo.metadata.title = allChannels[currentIdx].name || "";
       var logo = allChannels[currentIdx].logo;
-      if(logo) mediaInfo.metadata.images = [new chrome.cast.Image(logo)];
+      if (logo) mediaInfo.metadata.images = [new chrome.cast.Image(logo)];
     }
     var request = new chrome.cast.media.LoadRequest(mediaInfo);
     request.autoplay = true;
     session.loadMedia(request).then(
-      function(){ console.log("Cast: media loaded"); },
-      function(err){ console.warn("Cast loadMedia error:", err); }
+      function () { console.log("Cast: media loaded"); },
+      function (err) { console.warn("Cast loadMedia error:", err); }
     );
   }
 
   // Listen for session state changes
   context.addEventListener(
     cast.framework.CastContextEventType.SESSION_STATE_CHANGED,
-    function(event){
+    function (event) {
       updateCastBtn();
-      if(event.sessionState === cast.framework.SessionState.SESSION_STARTED ||
-         event.sessionState === cast.framework.SessionState.SESSION_RESUMED){
-        if(currentUrl) loadMedia();
+      if (event.sessionState === cast.framework.SessionState.SESSION_STARTED ||
+        event.sessionState === cast.framework.SessionState.SESSION_RESUMED) {
+        if (currentUrl) loadMedia();
       }
     }
   );
 
-  if(castBtn){
-    castBtn.addEventListener("click", function(){
-      if(isCasting()){
+  if (castBtn) {
+    castBtn.addEventListener("click", function () {
+      if (isCasting()) {
         context.getCurrentSession().endSession(true);
       } else {
         // Opens the native Chrome cast device picker
         context.requestSession().then(
-          function(){ /* session started — handled by event listener */ },
-          function(err){ if(err.code !== "cancel") console.warn("Cast request error:", err); }
+          function () { /* session started — handled by event listener */ },
+          function (err) { if (err.code !== "cancel") console.warn("Cast request error:", err); }
         );
       }
     });
   }
 
   // Expose so channel switches push to cast device
-  window.__castLoadMedia = function(){ if(isCasting()) setTimeout(loadMedia, 500); };
+  window.__castLoadMedia = function () { if (isCasting()) setTimeout(loadMedia, 500); };
 
   updateCastBtn();
 };
