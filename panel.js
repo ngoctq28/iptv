@@ -1176,6 +1176,38 @@ function bindMediaEvents(el) {
 }
 if (video) bindMediaEvents(video);
 
+/* ===== RESUME ON FOREGROUND (Android background fix) ===== */
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible" || currentIdx < 0) return;
+  // Resume AudioContext if suspended (Chrome suspends in background)
+  if (_audioCtx && _audioCtx.state === "suspended") _audioCtx.resume();
+  // If playback stopped after max retries while in background, reset and retry
+  if (_playbackStopped) {
+    _playbackStopped = false;
+    retryCount = 0;
+    playByIndex(currentIdx, { noScroll: true });
+    return;
+  }
+  // If stream stalled in background, nudge it back
+  if (mediaEl.paused && !_playbackStopped) {
+    mediaEl.play().catch(() => {});
+  }
+  // Check if stream is actually flowing; if not, reload
+  var checkTime = mediaEl.currentTime;
+  setTimeout(() => {
+    if (document.visibilityState !== "visible" || currentIdx < 0) return;
+    if (mediaEl.currentTime === checkTime && !mediaEl.paused) {
+      // Stream stuck — restart
+      if (hls) {
+        hls.startLoad();
+      } else {
+        playByIndex(currentIdx, { noScroll: true });
+      }
+    }
+    resetStallTimer();
+  }, 3000);
+});
+
 
 /* ===== TOGGLE FAVORITE ===== */
 function toggleFav(ch) {
