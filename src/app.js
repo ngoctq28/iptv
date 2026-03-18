@@ -1,5 +1,19 @@
 import './styles.css';
 
+// Stable viewport height for mobile PWAs (avoids dvh jumps on pull-to-refresh)
+(function setAppHeight() {
+  var last = 0;
+  function update() {
+    var h = window.innerHeight;
+    if (h !== last) {
+      last = h;
+      document.documentElement.style.setProperty('--app-height', h + 'px');
+    }
+  }
+  update();
+  window.addEventListener('resize', update);
+})();
+
 // hls.js — expose as global; panel.js accesses window.Hls
 const Hls = require('../hls.light.min.js');
 if (typeof Hls === 'function' || typeof Hls === 'object') {

@@ -656,6 +656,7 @@ if (btnUnmute) btnUnmute.addEventListener("click", () => {
   setAppMuted(!isAppMuted());
   if (!isAppMuted() && getAppVolume() === 0) setAppVolume(0.5);
   updateMuteIcon();
+  if (volumeSlider) volumeSlider.value = Math.round(isAppMuted() ? 0 : getAppVolume() * 100);
 });
 
 /* ===== VOLUME SLIDER ===== */
