@@ -1,3 +1,6 @@
 name = "iptv"
 compatibility_date = "2025-01-01"
-pages_build_output_dir = "./dist"
+main = "functions/worker.js"
+
+[assets]
+directory = "./dist"
