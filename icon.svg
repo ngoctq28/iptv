@@ -1,6 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#202020"/>
-  <rect x="96" y="136" width="320" height="240" rx="32" fill="#2d2d2d" stroke="#60a5fa" stroke-width="16"/>
-  <polygon points="216 196 336 256 216 316" fill="#60a5fa"/>
-  <path d="M176 96 L256 136 L336 96" fill="none" stroke="#60a5fa" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="ac" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="16" fill="url(#bg)"/>
+  <circle cx="60" cy="52" r="28" fill="none" stroke="url(#ac)" stroke-width="2.5" opacity=".6"/>
+  <polygon points="52 40 52 64 72 52" fill="url(#ac)" opacity=".85"/>
+  <rect x="30" y="88" width="60" height="3" rx="1.5" fill="#60a5fa" opacity=".25"/>
+  <rect x="40" y="95" width="40" height="3" rx="1.5" fill="#a78bfa" opacity=".18"/>
 </svg>
