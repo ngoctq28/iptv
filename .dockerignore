@@ -8,6 +8,14 @@ node_modules
 # Docker files themselves
 Dockerfile
 .dockerignore
+docker-compose.yml
+
+# Build output (rebuilt inside the container)
+dist
+
+# Cloudflare Workers / Pages (not used in Docker)
+functions
+wrangler.toml
 
 # Docs / misc
 README.md

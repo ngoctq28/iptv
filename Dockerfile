@@ -8,17 +8,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 
-# Copy source files needed for the webpack build
-COPY webpack.config.js ./
-COPY src/              ./src/
-COPY index.html        ./
-COPY panel.js          ./
-COPY hls.light.min.js  ./
-COPY sw.js             ./
-COPY manifest.json     ./
-COPY icon.svg          ./
-COPY icon-192.png      ./
-COPY icon-512.png      ./
+# Copy all source files (filtered by .dockerignore)
+COPY . .
 
 RUN npm run build
 
