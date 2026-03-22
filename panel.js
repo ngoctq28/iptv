@@ -2136,6 +2136,10 @@ function closeEpgPanel() {
 function openList() {
   document.body.classList.add("list-open");
   if (listBtn) listBtn.classList.add("active");
+  // Focus the currently playing card so arrow-key navigation starts from it
+  var activeCard = document.querySelector("#channelDrawer .ch-card.active");
+  if (!activeCard) activeCard = document.querySelector("#channelDrawer .ch-card");
+  if (activeCard) { activeCard.focus(); activeCard.scrollIntoView({ block: "nearest" }); }
 }
 
 function closeList() {
@@ -2403,9 +2407,169 @@ if (qualityBtn) {
 }
 
 /* ===== KEYBOARD SHORTCUTS ===== */
+
+// D-pad helpers for channel list navigation
+function _dpadGetZone(el) {
+  // Returns which zone the focused element is in: 'tab', 'search', 'grid', or null
+  if (!el) return null;
+  if (el.classList && el.classList.contains("cat-tab")) return "tab";
+  if (el.id === "searchInput") return "search";
+  if (el.classList && el.classList.contains("ch-card")) return "grid";
+  return null;
+}
+
+function _dpadGetCols() {
+  var cards = document.querySelectorAll("#channelDrawer .ch-card");
+  if (!cards.length) return 1;
+  var firstTop = cards[0].getBoundingClientRect().top;
+  for (var i = 1; i < cards.length; i++) {
+    if (cards[i].getBoundingClientRect().top !== firstTop) return i;
+  }
+  return cards.length; // single row
+}
+
+function _dpadFocusActiveCard() {
+  var card = document.querySelector("#channelDrawer .ch-card.active");
+  if (!card) card = document.querySelector("#channelDrawer .ch-card");
+  if (card) { card.focus(); card.scrollIntoView({ block: "nearest" }); }
+}
+
+function _dpadFocusActiveTab() {
+  var tab = document.querySelector(".cat-tab.active");
+  if (!tab) tab = document.querySelector(".cat-tab");
+  if (tab) tab.focus();
+}
+
+function _dpadHandleList(e) {
+  var zone = _dpadGetZone(document.activeElement);
+  var cards, ci, cols, target, tabs, ti;
+
+  switch (e.key) {
+    case "ArrowUp":
+      e.preventDefault();
+      if (zone === "grid") {
+        cards = Array.from(document.querySelectorAll("#channelDrawer .ch-card"));
+        ci = cards.indexOf(document.activeElement);
+        cols = _dpadGetCols();
+        target = ci - cols;
+        if (target < 0) {
+          // Move up to search input
+          var si = document.getElementById("searchInput");
+          if (si) si.focus(); else _dpadFocusActiveTab();
+        } else {
+          cards[target].focus();
+          cards[target].scrollIntoView({ block: "nearest" });
+        }
+      } else if (zone === "search") {
+        _dpadFocusActiveTab();
+      } else if (zone === "tab") {
+        // Already at top — do nothing
+      } else {
+        _dpadFocusActiveCard();
+      }
+      break;
+
+    case "ArrowDown":
+      e.preventDefault();
+      if (zone === "tab") {
+        var si = document.getElementById("searchInput");
+        if (si) si.focus(); else _dpadFocusActiveCard();
+      } else if (zone === "search") {
+        var firstCard = document.querySelector("#channelDrawer .ch-card");
+        if (firstCard) { firstCard.focus(); firstCard.scrollIntoView({ block: "nearest" }); }
+      } else if (zone === "grid") {
+        cards = Array.from(document.querySelectorAll("#channelDrawer .ch-card"));
+        ci = cards.indexOf(document.activeElement);
+        cols = _dpadGetCols();
+        target = ci + cols;
+        if (target >= cards.length) {
+          // Wrap to first card
+          cards[0].focus();
+          cards[0].scrollIntoView({ block: "nearest" });
+        } else {
+          cards[target].focus();
+          cards[target].scrollIntoView({ block: "nearest" });
+        }
+      } else {
+        _dpadFocusActiveCard();
+      }
+      break;
+
+    case "ArrowLeft":
+      e.preventDefault();
+      if (zone === "tab") {
+        tabs = Array.from(document.querySelectorAll(".cat-tab"));
+        ti = tabs.indexOf(document.activeElement);
+        var prev = ti <= 0 ? tabs[tabs.length - 1] : tabs[ti - 1];
+        prev.focus();
+      } else if (zone === "grid") {
+        cards = Array.from(document.querySelectorAll("#channelDrawer .ch-card"));
+        ci = cards.indexOf(document.activeElement);
+        if (ci > 0) {
+          cards[ci - 1].focus();
+          cards[ci - 1].scrollIntoView({ block: "nearest" });
+        }
+      }
+      // search: let browser handle cursor movement
+      break;
+
+    case "ArrowRight":
+      e.preventDefault();
+      if (zone === "tab") {
+        tabs = Array.from(document.querySelectorAll(".cat-tab"));
+        ti = tabs.indexOf(document.activeElement);
+        var next = ti >= tabs.length - 1 ? tabs[0] : tabs[ti + 1];
+        next.focus();
+      } else if (zone === "grid") {
+        cards = Array.from(document.querySelectorAll("#channelDrawer .ch-card"));
+        ci = cards.indexOf(document.activeElement);
+        if (ci < cards.length - 1) {
+          cards[ci + 1].focus();
+          cards[ci + 1].scrollIntoView({ block: "nearest" });
+        }
+      }
+      // search: let browser handle cursor movement
+      break;
+
+    case "Enter":
+      e.preventDefault();
+      if (zone === "tab") {
+        document.activeElement.click();
+        // After tab switch, focus the active card in the new grid
+        setTimeout(function() { _dpadFocusActiveCard(); }, 50);
+      } else if (zone === "grid" && document.activeElement.dataset.idx != null) {
+        playByIndex(parseInt(document.activeElement.dataset.idx, 10));
+        closeList();
+      } else {
+        closeList();
+      }
+      return; // don't fall through to outer handler
+
+    case "Escape":
+    case "Backspace":
+      if (zone !== "search") {
+        e.preventDefault();
+        closeList();
+        return;
+      }
+      break;
+  }
+}
+
 document.addEventListener("keydown", (e) => {
-  // Don't trigger shortcuts when typing in inputs
+  // Don't trigger shortcuts when typing in inputs (except when list D-pad handles it)
   const tag = e.target.tagName;
+  const listOpen = document.body.classList.contains("list-open");
+
+  // When list is open, route through D-pad handler
+  if (listOpen) {
+    var zone = _dpadGetZone(document.activeElement);
+    // Let search input handle its own typing except for ArrowUp/ArrowDown/Escape
+    if (zone === "search" && e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Escape") return;
+    _dpadHandleList(e);
+    return;
+  }
+
   if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
 
   switch (e.key) {
@@ -2429,6 +2593,14 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       navigateNext();
       break;
+    case "ArrowLeft": // Seek back 10s
+      e.preventDefault();
+      mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10);
+      break;
+    case "ArrowRight": // Seek forward 10s
+      e.preventDefault();
+      mediaEl.currentTime += 10;
+      break;
     case "p": // P = toggle EPG panel
     case "P":
       e.preventDefault();
@@ -2439,28 +2611,9 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       if (listBtn) listBtn.click();
       break;
-    case "ArrowLeft": // ArrowLeft = seek back 10s
+    case "Enter": // OK button on Android TV remote — open channel list
       e.preventDefault();
-      mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10);
-      break;
-    case "ArrowRight": // ArrowRight = seek forward 10s
-      e.preventDefault();
-      mediaEl.currentTime += 10;
-      break;
-    case "Enter": // OK button on Android TV remote — toggle channel list or select card
-      e.preventDefault();
-      // If a channel card is focused, play it
-      if (e.target.classList.contains("ch-card") && e.target.dataset.idx != null) {
-        playByIndex(parseInt(e.target.dataset.idx, 10));
-        closeList();
-      } else if (document.body.classList.contains("list-open")) {
-        closeList();
-      } else {
-        openList();
-        // Focus the first channel card for D-pad navigation
-        var _firstCard = document.querySelector("#channelDrawer .ch-card");
-        if (_firstCard) _firstCard.focus();
-      }
+      openList();
       break;
   }
 });
