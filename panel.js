@@ -65,6 +65,8 @@ const LANGS = {
     prevChannel: "K\u00EAnh tr\u01B0\u1EDBc",
     nextChannel: "K\u00EAnh ti\u1EBFp",
     fullscreen: "To\u00E0n m\u00E0n h\u00ECnh",
+    dpadNav: "Di chuy\u1EC3n \u0111i\u1EC1u khi\u1EC3n",
+    dpadExit: "Tho\u00E1t \u0111i\u1EC1u khi\u1EC3n",
     epgLoaded: "\u0110\u00E3 t\u1EA3i EPG",
     retryProxy: "\u0110ang th\u1EED l\u1EA1i qua proxy\u2026",
     epgLoadFailed: "Kh\u00F4ng t\u1EA3i \u0111\u01B0\u1EE3c EPG",
@@ -136,6 +138,8 @@ const LANGS = {
     prevChannel: "Previous channel",
     nextChannel: "Next channel",
     fullscreen: "Fullscreen",
+    dpadNav: "Navigate controls",
+    dpadExit: "Exit controls",
     epgLoaded: "EPG loaded",
     retryProxy: "Retrying via proxy…",
     epgLoadFailed: "Failed to load EPG",
@@ -735,11 +739,11 @@ if (btnPlayerFs) btnPlayerFs.addEventListener("click", () => {
     document.body.requestFullscreen();
   }
 });
-/* ===== FULLSCREEN CONTROLS AUTO-HIDE ===== */
+/* ===== CONTROLS AUTO-HIDE ===== */
 const playerSection = document.getElementById("playerSection");
 let _fsControlsTimer = null;
 function showFsControls() {
-  if (!document.fullscreenElement || !playerSection) return;
+  if (!playerSection) return;
   playerSection.classList.add("controls-visible");
   clearTimeout(_fsControlsTimer);
   _fsControlsTimer = setTimeout(() => {
@@ -750,11 +754,13 @@ if (playerSection) {
   playerSection.addEventListener("mousemove", showFsControls);
   playerSection.addEventListener("touchstart", showFsControls);
   playerSection.addEventListener("click", (e) => {
-    if (document.fullscreenElement && !e.target.closest(".ctrl-btn,.ctrl-group")) showFsControls();
+    if (!e.target.closest(".ctrl-btn,.ctrl-group")) showFsControls();
     if (document.pictureInPictureElement && !e.target.closest(".ctrl-btn,.ctrl-group")) {
       document.exitPictureInPicture().catch(() => { });
     }
   });
+  // Show controls initially then start auto-hide
+  showFsControls();
 }
 
 document.addEventListener("fullscreenchange", () => {
@@ -764,12 +770,7 @@ document.addEventListener("fullscreenchange", () => {
       ? '<svg viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg>'
       : '<svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>';
   }
-  if (document.fullscreenElement) {
-    showFsControls();
-  } else {
-    clearTimeout(_fsControlsTimer);
-    if (playerSection) playerSection.classList.remove("controls-visible");
-  }
+  showFsControls();
 });
 
 /* ===== RETRY ===== */
@@ -2556,6 +2557,133 @@ function _dpadHandleList(e) {
   }
 }
 
+// D-pad helpers for player control button navigation
+var _dpadPlayerActive = false; // whether d-pad focus mode is active on player controls
+
+function _dpadGetVisibleBtns(container) {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll(".ctrl-btn")).filter(function (btn) {
+    if (btn.offsetParent === null) return false;
+    if (btn.style.display === "none") return false;
+    // Skip buttons inside collapsed collapsible groups
+    var parent = btn.closest(".ctrl-collapsible");
+    if (parent && parent.closest(".ctrl-overflow") && !parent.classList.contains("expanded")) return false;
+    return true;
+  });
+}
+
+function _dpadGetPlayerZone(el) {
+  if (!el || !el.classList || !el.classList.contains("ctrl-btn")) return null;
+  var top = document.getElementById("controlsTop");
+  var bot = document.getElementById("controlsBottom");
+  if (top && top.contains(el)) return "top";
+  if (bot && bot.contains(el)) return "bottom";
+  return null;
+}
+
+function _dpadPlayerShowControls() {
+  if (typeof showFsControls === "function") showFsControls();
+}
+
+function _dpadPlayerEnter(preferZone) {
+  _dpadPlayerActive = true;
+  _dpadPlayerShowControls();
+  // If caller indicates a preferred zone, go there
+  if (preferZone === "top") {
+    var topBtns = _dpadGetVisibleBtns(document.getElementById("controlsTop"));
+    if (topBtns.length) { topBtns[topBtns.length - 1].focus(); return; }
+  }
+  // Default: focus the play/pause button in bottom controls
+  var pp = document.getElementById("btnPlayPause");
+  if (pp && pp.offsetParent !== null) { pp.focus(); return; }
+  // Fallback: first visible button in bottom controls
+  var btns = _dpadGetVisibleBtns(document.getElementById("controlsBottom"));
+  if (btns.length) btns[0].focus();
+}
+
+function _dpadPlayerExit() {
+  _dpadPlayerActive = false;
+  if (document.activeElement && document.activeElement.classList.contains("ctrl-btn")) {
+    document.activeElement.blur();
+  }
+}
+
+function _dpadPlayerHandle(e) {
+  _dpadPlayerShowControls();
+  var zone = _dpadGetPlayerZone(document.activeElement);
+  var topEl = document.getElementById("controlsTop");
+  var botEl = document.getElementById("controlsBottom");
+
+  if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+    e.preventDefault();
+    var container = zone === "top" ? topEl : botEl;
+    var btns = _dpadGetVisibleBtns(container);
+    var ci = btns.indexOf(document.activeElement);
+    if (ci < 0) return;
+    var next = e.key === "ArrowRight" ? ci + 1 : ci - 1;
+    if (next >= 0 && next < btns.length) btns[next].focus();
+    return;
+  }
+
+  if (e.key === "ArrowUp") {
+    e.preventDefault();
+    if (zone === "bottom") {
+      // Move to top controls row, pick closest button horizontally
+      var topBtns = _dpadGetVisibleBtns(topEl);
+      if (topBtns.length) {
+        var curRect = document.activeElement.getBoundingClientRect();
+        var best = topBtns[0], bestDist = Infinity;
+        topBtns.forEach(function (b) {
+          var r = b.getBoundingClientRect();
+          var d = Math.abs((r.left + r.right) / 2 - (curRect.left + curRect.right) / 2);
+          if (d < bestDist) { bestDist = d; best = b; }
+        });
+        best.focus();
+      }
+    } else if (zone === "top") {
+      // Already on top row — exit d-pad mode
+      _dpadPlayerExit();
+    }
+    return;
+  }
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    if (zone === "top") {
+      // Move to bottom controls row, pick closest button horizontally
+      var botBtns = _dpadGetVisibleBtns(botEl);
+      if (botBtns.length) {
+        var curRect = document.activeElement.getBoundingClientRect();
+        var best = botBtns[0], bestDist = Infinity;
+        botBtns.forEach(function (b) {
+          var r = b.getBoundingClientRect();
+          var d = Math.abs((r.left + r.right) / 2 - (curRect.left + curRect.right) / 2);
+          if (d < bestDist) { bestDist = d; best = b; }
+        });
+        best.focus();
+      }
+    } else if (zone === "bottom") {
+      // Already on bottom row — exit d-pad mode
+      _dpadPlayerExit();
+    }
+    return;
+  }
+
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (document.activeElement && document.activeElement.classList.contains("ctrl-btn")) {
+      document.activeElement.click();
+    }
+    return;
+  }
+
+  if (e.key === "Escape" || e.key === "Backspace") {
+    e.preventDefault();
+    _dpadPlayerExit();
+    return;
+  }
+}
+
 document.addEventListener("keydown", (e) => {
   // Don't trigger shortcuts when typing in inputs (except when list D-pad handles it)
   const tag = e.target.tagName;
@@ -2572,6 +2700,39 @@ document.addEventListener("keydown", (e) => {
 
   if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
 
+  // D-pad player control navigation mode
+  var isArrow = e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight";
+  if (_dpadPlayerActive && _dpadGetPlayerZone(document.activeElement)) {
+    // Currently navigating controls — handle d-pad, Enter, Escape
+    if (isArrow || e.key === "Enter" || e.key === "Escape" || e.key === "Backspace") {
+      _dpadPlayerHandle(e);
+      return;
+    }
+  }
+
+  // Enter on an already-focused ctrl-btn (e.g. Tab-focused)
+  if (e.key === "Enter" && document.activeElement && document.activeElement.classList.contains("ctrl-btn")) {
+    e.preventDefault();
+    _dpadPlayerActive = true;
+    _dpadPlayerShowControls();
+    document.activeElement.click();
+    return;
+  }
+
+  // Arrow key pressed while no control button is focused — enter d-pad mode
+  if (isArrow) {
+    e.preventDefault();
+    _dpadPlayerEnter(e.key === "ArrowUp" ? "top" : undefined);
+    return;
+  }
+
+  // Enter — open channel list (Android TV remote OK button)
+  if (e.key === "Enter") {
+    e.preventDefault();
+    openList();
+    return;
+  }
+
   switch (e.key) {
     case " ": // Space = play/pause
       e.preventDefault();
@@ -2583,23 +2744,13 @@ document.addEventListener("keydown", (e) => {
       e.preventDefault();
       if (btnUnmute) btnUnmute.click();
       break;
-    case "ArrowUp": // Previous channel
     case "MediaTrackPrevious":
       e.preventDefault();
       navigatePrev();
       break;
-    case "ArrowDown": // Next channel
     case "MediaTrackNext":
       e.preventDefault();
       navigateNext();
-      break;
-    case "ArrowLeft": // Seek back 10s
-      e.preventDefault();
-      mediaEl.currentTime = Math.max(0, mediaEl.currentTime - 10);
-      break;
-    case "ArrowRight": // Seek forward 10s
-      e.preventDefault();
-      mediaEl.currentTime += 10;
       break;
     case "p": // P = toggle EPG panel
     case "P":
@@ -2610,10 +2761,6 @@ document.addEventListener("keydown", (e) => {
     case "L":
       e.preventDefault();
       if (listBtn) listBtn.click();
-      break;
-    case "Enter": // OK button on Android TV remote — open channel list
-      e.preventDefault();
-      openList();
       break;
   }
 });
@@ -2627,13 +2774,12 @@ function buildShortcutsPanel() {
   if (!panel) return;
   const shortcuts = [
     { key: "Space", desc: t("playPause") },
-    { key: "\u2190", desc: t("seekBack") },
-    { key: "\u2192", desc: t("seekForward") },
+    { key: "\u2190\u2191\u2192\u2193", desc: t("dpadNav") },
+    { key: "Enter", desc: t("channelListTitle") },
     { key: "M", desc: t("sound") },
-    { key: "\u2191", desc: t("prevChannel") },
-    { key: "\u2193", desc: t("nextChannel") },
     { key: "P", desc: t("epgTitle") },
-    { key: "L", desc: t("channelListTitle") }
+    { key: "L", desc: t("channelListTitle") },
+    { key: "Esc", desc: t("dpadExit") }
   ];
   panel.innerHTML = '<div class="sc-title">\u2328 ' + t("shortcutsTitle") + '</div>' +
     shortcuts.map(function (s) { return '<div class="sc-row"><span class="sc-key">' + s.key + '</span><span class="sc-desc">' + s.desc + '</span></div>'; }).join("");
