@@ -1018,8 +1018,10 @@ function playByIndex(idx, opts) {
         switch (data.type) {
           case Hls.ErrorTypes.NETWORK_ERROR:
             if (data.details === "manifestLoadError" || data.details === "manifestLoadTimeOut" || data.details === "manifestParsingError") {
-              // First failure on a direct URL → escalate to HLS proxy (handles CORS)
-              if (!_hlsProxyRetried && !useProxy) {
+              // Only escalate to proxy when server was reached (CORS / non-ok response);
+              // skip proxy if network is down (no HTTP response at all).
+              var _httpReached = data.response && data.response.code > 0;
+              if (!_hlsProxyRetried && !useProxy && _httpReached) {
                 _hlsProxyRetried = true;
                 showToast(t("retryProxy"), 0);
                 console.warn("[HLS] Switching to HLS proxy for:", ch.url);
@@ -1155,23 +1157,32 @@ function bindMediaEvents(el) {
   });
   el.addEventListener("timeupdate", () => { if (el === mediaEl) resetStallTimerThrottled(); });
   el.addEventListener("waiting", () => { if (el === mediaEl) showToast(t("loading"), 0); });
-  el.addEventListener("error", () => {
+  el.addEventListener("error", async () => {
     if (el !== mediaEl) return;
     if (nowBar) nowBar.classList.remove("live");
     clearTimeout(stallTimer);
     if (currentIdx < 0 || _playbackStopped) return;
     if (hls) return;
-    // Native HLS: escalate to proxy on first failure (handles CORS on iOS Safari)
+    // Native HLS: escalate to proxy on first failure only if server was reached
+    // (CORS block, 403, etc.) — skip proxy when offline / network unreachable.
     if (!_nativeHlsProxyRetried && isHlsUrl(currentUrl)) {
       _nativeHlsProxyRetried = true;
-      _nativeHlsUseProxy = true;
-      console.warn("[Native HLS] Switching to proxy for:", currentUrl);
-      showToast(t("retryProxy"), 0);
-      mediaEl.src = "/api/hls?url=" + encodeURIComponent(currentUrl);
-      mediaEl.load();
-      safePlay();
-      resetStallTimer();
-      return;
+      // Probe whether the server is reachable before escalating to proxy
+      var _nativeCanProxy = false;
+      try {
+        var _probe = await fetch(currentUrl, { method: "HEAD", mode: "no-cors" });
+        _nativeCanProxy = true; // server responded (even opaque = reachable)
+      } catch (_e) { /* network unreachable */ }
+      if (_nativeCanProxy) {
+        _nativeHlsUseProxy = true;
+        console.warn("[Native HLS] Switching to proxy for:", currentUrl);
+        showToast(t("retryProxy"), 0);
+        mediaEl.src = "/api/hls?url=" + encodeURIComponent(currentUrl);
+        mediaEl.load();
+        safePlay();
+        resetStallTimer();
+        return;
+      }
     }
     doRetry();
   });
@@ -1195,6 +1206,7 @@ function makeCard(ch, idx, container) {
   const div = document.createElement("div");
   div.className = "ch-card";
   div.dataset.idx = idx;
+  div.tabIndex = 0;
 
   const img = document.createElement("img");
   img.src = ch.logo || fallbackImg;
@@ -1608,6 +1620,17 @@ function parseM3U(text) {
   return { channels, epgUrl };
 }
 
+/* ===== CHANNEL CACHE ===== */
+function _cacheKey() {
+  return "cachedChannels_" + [...activeSources].sort((a, b) => a - b).join(",");
+}
+function _saveChannelCache(channels) {
+  try { localStorage.setItem(_cacheKey(), JSON.stringify(channels)); } catch (e) { /* quota */ }
+}
+function _loadChannelCache() {
+  try { var d = localStorage.getItem(_cacheKey()); return d ? JSON.parse(d) : null; } catch (e) { return null; }
+}
+
 /* ===== LOAD FROM ACTIVE SOURCES ===== */
 async function loadActiveSources() {
   const all = getAllSources();
@@ -1616,6 +1639,13 @@ async function loadActiveSources() {
   if (indices.length === 0) {
     showEmptyState();
     return;
+  }
+
+  // Restore cached channels for instant display while fetching fresh data
+  const cached = _loadChannelCache();
+  if (cached && cached.length > 0) {
+    allChannels = cached;
+    renderGrid();
   }
 
   allChannels = [];
@@ -1641,17 +1671,19 @@ async function loadActiveSources() {
         result = parseM3U(src.content);
       } else {
         let text = null;
+        let httpReached = false;
 
         // 1st attempt: direct fetch
         try {
           const resp = await fetch(src.url);
+          httpReached = true;
           if (resp && resp.ok) text = await resp.text();
         } catch (err) {
-          console.warn("[Source] Direct fetch failed, will try proxy:", err.message);
+          console.warn("[Source] Direct fetch failed:", err.message);
         }
 
-        // 2nd attempt: route through local proxy server as fallback
-        if (text === null) {
+        // 2nd attempt: proxy only when server was reachable but returned non-ok
+        if (text === null && httpReached) {
           try {
             showToast(t("retryProxy"), 0);
             const proxyResp = await fetch("/api/proxy?url=" + encodeURIComponent(src.url));
@@ -1664,7 +1696,7 @@ async function loadActiveSources() {
           }
         }
 
-        if (text === null) throw new Error("All fetch attempts failed (direct + proxy)");
+        if (text === null) throw new Error(httpReached ? "Proxy fallback failed" : "Network unreachable");
         result = parseM3U(text);
       }
       allChannels = allChannels.concat(result.channels);
@@ -1685,6 +1717,7 @@ async function loadActiveSources() {
         : t("noChannelFound");
     }
   } else {
+    _saveChannelCache(allChannels);
     if (errors > 0) showToast(t("sourceError").replace("{e}", errors).replace("{n}", allChannels.length), 3000);
     else showToast(t("sourceOk").replace("{n}", allChannels.length).replace("{s}", indices.length), 2000);
 
@@ -1740,6 +1773,49 @@ if (activeSources.size > 0) {
     emptyState.querySelector("div:last-child").textContent = t("selectSource");
   }
 }
+
+/* ===== NETWORK STATUS: reload when connection restores ===== */
+
+// Auto-fullscreen on Android TV (leanback)
+if (/Android/.test(navigator.userAgent) && /TV|AFTN|AFTM|AFTS|Nexus Player|ADT-|Leanback/i.test(navigator.userAgent)) {
+  document.addEventListener("click", function _tvFs() {
+    document.removeEventListener("click", _tvFs);
+    if (!document.fullscreenElement) document.body.requestFullscreen().catch(() => {});
+  }, { once: true });
+}
+
+window.addEventListener("online", () => {
+  console.log("[Network] Connection restored — reloading");
+  showToast(t("reloading"), 2000);
+  var _resumeIdx = currentIdx;
+  var _resumeUrl = currentUrl;
+  _playbackStopped = false;
+  retryCount = 0;
+  clearTimeout(retryTimer);
+  clearTimeout(stallTimer);
+  if (activeSources.size > 0) {
+    loadActiveSources().then(() => {
+      // Resume the channel that was playing before disconnect (match by URL first, fallback to index)
+      var _idx = _resumeUrl ? allChannels.findIndex(c => c.url === _resumeUrl) : -1;
+      if (_idx < 0 && _resumeIdx >= 0 && _resumeIdx < allChannels.length) _idx = _resumeIdx;
+      if (_idx >= 0) playByIndex(_idx, { noScroll: true });
+
+      // Reload EPG — merge M3U-discovered URLs + user-configured custom URLs
+      var _allEpgUrls = [..._epgUrlsConfigured];
+      var _customEpg = localStorage.getItem("customEpgUrl") || "";
+      if (_customEpg) {
+        _customEpg.split(/[,\n]+/).map(u => u.trim()).filter(u => u && u.startsWith("http")).forEach(u => {
+          if (!_allEpgUrls.includes(u)) _allEpgUrls.push(u);
+        });
+      }
+      if (_allEpgUrls.length > 0) loadEpgData(_allEpgUrls, false);
+    });
+  }
+});
+window.addEventListener("offline", () => {
+  console.log("[Network] Connection lost");
+  showToast(t("networkError"), 0);
+});
 
 /* ===== COLLAPSE / EXPAND CONTROLS ===== */
 (function () {
@@ -2370,6 +2446,21 @@ document.addEventListener("keydown", (e) => {
     case "ArrowRight": // ArrowRight = seek forward 10s
       e.preventDefault();
       mediaEl.currentTime += 10;
+      break;
+    case "Enter": // OK button on Android TV remote — toggle channel list or select card
+      e.preventDefault();
+      // If a channel card is focused, play it
+      if (e.target.classList.contains("ch-card") && e.target.dataset.idx != null) {
+        playByIndex(parseInt(e.target.dataset.idx, 10));
+        closeList();
+      } else if (document.body.classList.contains("list-open")) {
+        closeList();
+      } else {
+        openList();
+        // Focus the first channel card for D-pad navigation
+        var _firstCard = document.querySelector("#channelDrawer .ch-card");
+        if (_firstCard) _firstCard.focus();
+      }
       break;
   }
 });
