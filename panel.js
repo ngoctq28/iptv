@@ -157,7 +157,7 @@ let currentLang = localStorage.getItem("lang") || "en";
 function t(key) { return (LANGS[currentLang] || LANGS.vi)[key] || (LANGS.vi)[key] || key; }
 
 const DEFAULT_SOURCES = [
-  { name: "VietNam IPTV (Default)", url: "https://raw.githubusercontent.com/vuminhthanh12/vuminhthanh12/refs/heads/main/tv.m3u", default: true }
+  { name: "VietNam IPTV (Default)", url: "https://raw.githubusercontent.com/giangnam0201/All-In-One-IPTV/refs/heads/main/channels.m3u", default: true }
 ];
 
 /* ===== DOM ===== */
